@@ -7,6 +7,7 @@ const morgan = require('morgan')
 const { port, mongoURI } = require('./config')
 const transactionsRoutes = require('./routes/transactions')
 const authRoutes = require('./routes/auth')
+const configRoutes = require('./routes/config')
 const path = require('path')
 const User = require('./models/User')
 const passport = require('passport')
@@ -44,6 +45,7 @@ app.use(passport.session())
 
 app.use('/api/transactions', transactionsRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/config',configRoutes)
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/public'))

@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "svelte-spa-router": "^2.2.0"
+    "svelte-spa-router": "^2.2.0",
+    "svelte-video-player": "^1.2.5"
   }
 }

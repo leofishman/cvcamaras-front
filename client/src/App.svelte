@@ -5,11 +5,14 @@
   import Signup from "./pages/Signup.svelte";
   import Login from "./pages/Login.svelte";
   import Prolife from "./pages/Profile.svelte";
+  import Config from "./pages/Config.svelte";
   import Navbar from "./components/Navbar.svelte";
   import Loading from "./components/Loading.svelte";
+
   import { onMount } from "svelte";
   import axios from "axios";
   import { user } from "./stores";
+
 
   let loading = true;
 
@@ -24,7 +27,8 @@
     "/dashboard": wrap(Dashboard, { reason: "unauthenticated" }, () => $user),
     "/signup": wrap(Signup, { reason: "authenticated" }, () => !$user),
     "/login": wrap(Login, { reason: "authenticated" }, () => !$user),
-    "/profile": wrap(Prolife, { reason: "unauthenticated" }, () => $user)
+    "/profile": wrap(Prolife, { reason: "unauthenticated" }, () => $user),
+    "/config": wrap(Config, { reason: "unauthenticated" }, () => $user)
   };
 
   function conditionsFailed(event) {
