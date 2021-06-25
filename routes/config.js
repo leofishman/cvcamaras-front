@@ -41,5 +41,20 @@ router.post('/cameras', ensureLogin, async (req, res) => {
     }
 })
 
+router.post('/cameras/update', ensureLogin, async (req, res) => {
+
+    const filter = {_id: req.body._id}
+    
+    try {
+
+        const camera = await Camera.findOneAndUpdate(filter, req.body, {new:true})
+        if (!camera) {
+            throw new Error('There was an error updating the camera')
+        }
+        res.status(200).json(camera)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
 
 module.exports = router

@@ -8,10 +8,12 @@
   import Config from "./pages/Config.svelte";
   import Navbar from "./components/Navbar.svelte";
   import Loading from "./components/Loading.svelte";
+  import Camaras from "./pages/Camaras.svelte"
 
   import { onMount } from "svelte";
   import axios from "axios";
   import { user } from "./stores";
+  import Eventos from "./pages/Eventos.svelte";
 
 
   let loading = true;
@@ -28,7 +30,9 @@
     "/signup": wrap(Signup, { reason: "authenticated" }, () => !$user),
     "/login": wrap(Login, { reason: "authenticated" }, () => !$user),
     "/profile": wrap(Prolife, { reason: "unauthenticated" }, () => $user),
-    "/config": wrap(Config, { reason: "unauthenticated" }, () => $user)
+    "/config": wrap(Config, { reason: "unauthenticated" }, () => $user),
+    "/camaras": wrap(Camaras, { reason: "unauthenticated"}, () => $user),
+    "/eventos": wrap(Eventos, { reason: "unauthenticated"}, () => $user)
   };
 
   function conditionsFailed(event) {
@@ -37,7 +41,7 @@
       case "unauthenticated":
         return push("/login");
       case "authenticated":
-        return push("/dashboard");
+        return push("/config");
     }
   }
 </script>
