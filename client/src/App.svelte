@@ -12,7 +12,7 @@
 
   import { onMount } from "svelte";
   import axios from "axios";
-  import { user } from "./stores";
+  import { user, pageAction } from "./stores";
   import Eventos from "./pages/Eventos.svelte";
 
 
@@ -62,5 +62,6 @@
   </div>
 {:else}
   <Navbar />
+  <br />
   <Router {routes} on:conditionsFailed={conditionsFailed} />
 {/if}

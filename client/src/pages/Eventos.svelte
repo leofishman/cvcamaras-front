@@ -1,3 +1,4 @@
+
 <script>
     import axios from "axios";
     import Eventos from "../components/Eventos.svelte"
@@ -5,6 +6,7 @@
     import { onMount } from "svelte";
     import {
       cameras,
+      pageAction
     } from "../stores";
     import 'bulma/css/bulma.css'
   
@@ -18,15 +20,20 @@
     let frames_capt = 50;
     let active = true;
     let loading = false;
-  
+    $: alertas = '';
     $: disabled = (feed == '' || id == '');
+    
 
     onMount(async () => {
       loading = true;
-      const { data } = await axios.get("/api/config/cameras");
-      $cameras = data;
-      console.log(data);
+
+      const { data } = await axios.get("/api/alertas/", {params: {tipo: "inmediata"}});
+      
+      console.log(28, data);
       loading = false;
+      alertas = data;
+      $pageAction = 'Eventos';
+      console.log(35, $pageAction)
     });
     
     
@@ -39,11 +46,10 @@
 <Loading />
 {/if}
 
-{#if $cameras.length > 0}
 <div class="container">
-    {#each $cameras as camera, i}
-       <Eventos />
-    {/each}    
+  {#if alertas.length > 0}
+    {#each alertas as evento, i}
+       <Eventos eventType={'alerta'} alertType={evento.tipo} {evento} {i} />
+    {/each}  
+  {/if}  
 </div>
-
-{/if}

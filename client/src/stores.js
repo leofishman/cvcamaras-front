@@ -11,3 +11,4 @@ export const expenses = derived(transactions, (value) =>
     value.filter((t) => t.value < 0).reduce((acc, t) => acc + t.value, 0)
 )
 export const cameras = writable([])
+export const pageAction = writable(null)

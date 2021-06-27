@@ -4,19 +4,27 @@
       cameras,
     } from "../stores";
   import 'bulma/css/bulma.css'
-
-  let eventType="Alerta";
-
+  
+ export let alertType;
+ export let camera;
+ export let alerta;
+export  let eventType;
+  let iconEvent = '';
+  if (eventType == "alerta") {
+      iconEvent = 'bell';
+  }
+  if (eventType == "log") {
+      iconEvent = 'history';
+  }
 </script>
 
 <div class="container {eventType}">
     <div class="text">
-        Camara 1 <span class="alert">Alerta Inmediata</span> 25/6 10:25
+        <i class="fas fa-{iconEvent}"></i>
+        {eventType} <span class="alert"> {alertType}</span> 
     </div>
-    <ExpansionPanel name={eventType}>
+    <ExpansionPanel name="25/6 10:25">
     <div class="container">
-        {#if (eventType=="Alerta")}
-
             <div class="columns">
                 <div class="column">
                     Casco:  
@@ -39,20 +47,26 @@
               <img src="images/1.png" alt="Sin Casco">
               <img src="images/1.png" alt="Sin Casco">               
               <img src="images/1.png" alt="Sin Casco">
-              <img src="images/1.png" alt="Sin Casco">
+              <img src="images/1.png" alt="Sin Casco">      
+        {#if (eventType=="alerta")}
+
+            ALERTA!!!!
         {/if}
     </div>
 </ExpansionPanel>
 </div>
 
 <style>
-    .Alerta {
+    .alerta {
         background-color: orangered;
         
     }
-
-    .Alerta .text {
+    .text {
+        padding-left: 30px;
+    }
+    
+    .alerta .text {
        color: white; 
-       padding-left: 30px;
+      
     }
 </style>

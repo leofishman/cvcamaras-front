@@ -5,6 +5,7 @@
       income,
       expenses,
       balance,
+      title,
       cameras,
     } from "../stores";
 

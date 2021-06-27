@@ -1,6 +1,6 @@
 <script>
   import axios from "axios";
-  import { user, transactions } from "../stores";
+  import { user, pageAction, transactions } from "../stores";
   import { push } from "svelte-spa-router";
   let isActive = false;
   async function logout() {
@@ -15,7 +15,7 @@
   <div class="container">
     <div class="navbar-brand">
       <a href="#/" class="navbar-item">
-        <span class="title">💸</span>
+        <span class="title">💸 {$pageAction}</span>
       </a>
       <span
         class="navbar-burger burger"
