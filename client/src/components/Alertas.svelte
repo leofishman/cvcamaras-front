@@ -37,7 +37,7 @@
         <td><abbr title="Tipo">
             <div class="text">
                 <i class="fas fa-{iconEvent}"></i>
-                {eventType} <span class="alert"> {alerta.tipo}</span> 
+                 <span class="alert"> {alerta.tipo}</span> 
             </div>
         </abbr></td>
         <td><abbr title="Camara">Camara</abbr></td>

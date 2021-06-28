@@ -31,7 +31,6 @@
       loading = true;
       const { data } = await axios.get("/api/config/cameras");
       $cameras = data;
-      console.log(data);
       loading = false;
     });
     
