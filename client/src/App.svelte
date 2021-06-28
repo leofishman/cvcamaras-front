@@ -1,5 +1,5 @@
 <script>
-  import Router, { wrap, push } from "svelte-spa-router";
+  import Router, { wrap, push, querystring } from "svelte-spa-router";
   import Home from "./pages/Home.svelte";
   import Dashboard from "./pages/Dashboard.svelte";
   import Signup from "./pages/Signup.svelte";
@@ -13,7 +13,7 @@
   import { onMount } from "svelte";
   import axios from "axios";
   import { user, pageAction } from "./stores";
-  import Eventos from "./pages/Eventos.svelte";
+  import Alertas from "./pages/Alertas.svelte";
 
 
   let loading = true;
@@ -32,7 +32,7 @@
     "/profile": wrap(Prolife, { reason: "unauthenticated" }, () => $user),
     "/config": wrap(Config, { reason: "unauthenticated" }, () => $user),
     "/camaras": wrap(Camaras, { reason: "unauthenticated"}, () => $user),
-    "/eventos": wrap(Eventos, { reason: "unauthenticated"}, () => $user)
+    "/alertas": wrap(Alertas, { reason: "unauthenticated"}, () => $user)
   };
 
   function conditionsFailed(event) {

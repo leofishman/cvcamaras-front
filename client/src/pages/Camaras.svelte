@@ -35,8 +35,6 @@
       loading = false;
     });
     
-    
-    export let name;
     // optional import focus-visible polyfill only once
     import 'focus-visible';
 
