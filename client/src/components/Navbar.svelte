@@ -11,11 +11,11 @@
   }
 </script>
 
-<nav class="navbar is-info">
+<nav class="navbar is-light">
   <div class="container">
     <div class="navbar-brand">
-      <a href="#/" class="navbar-item">
-        <span class="title">💸 {$pageAction}</span>
+      <a href="#/" class="navbar-item"> 
+        <span class="title"> <img src="/images/logo.svg" width="200px"> {$pageAction}</span>
       </a>
       <span
         class="navbar-burger burger"
@@ -31,6 +31,12 @@
     <div class="navbar-menu" class:is-active={isActive}>
       <div class="navbar-end">
         <div class="navbar-item">
+          <div class="navbar-menu-link pr-6">
+            <a href="#/alertas" class="menu-link">Alertas</a>
+          </div>
+          <div class="navbar-menu-link pr-6">
+            <a href="#/camaras" class="menu-link">Camaras</a>
+          </div>
           <div class="buttons">
             {#if $user}
               <a class="button is-primary is-light" href="#/profile">

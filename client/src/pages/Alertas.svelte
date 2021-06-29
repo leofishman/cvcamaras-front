@@ -79,6 +79,7 @@
       <div class="column">
         <div class="select">
           <select bind:value="{opciones.tipo}">Tipo de Alerta
+            <!--option value="">--TODAS--</option-->
             <option value="inmediata">Inmediata</option>
             <option value="dia">Diaria</option>
             <option value="hora">horaria</option>
@@ -108,8 +109,6 @@
     </div>Filtros x fecha, tipo de alerta, camara y elementos
   </ExpansionPanel>
   
-  {#if alertas.length > 0}
-
   <table class="table is-fullwidth">
     <thead>
       <tr>
@@ -128,13 +127,15 @@
       </tr>
     </tfoot>
     <tbody>
-      {#each alertas as alerta, i}
-
-          <Alertas eventType={'alerta'} alertType={alerta.tipo} {alerta} {i} />
-      {/each} 
+      {#if alertas.length > 0}
+        {#each alertas as alerta, i}
+            <Alertas eventType={'alerta'} alertType={alerta.tipo} {alerta} {i} />
+        {/each} 
+      {:else}
+        No se registran alertas
+      {/if}
 
 
     </tbody>
   </table> 
-  {/if}  
 </div>

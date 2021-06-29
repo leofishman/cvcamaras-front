@@ -41,7 +41,7 @@
       case "unauthenticated":
         return push("/login");
       case "authenticated":
-        return push("/config");
+        return push("/alertas");
     }
   }
 </script>
