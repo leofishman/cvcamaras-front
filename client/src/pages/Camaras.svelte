@@ -10,6 +10,7 @@
       income,
       expenses,
       balance,
+      pageAction,
       cameras,
     } from "../stores";
     import { text } from "svelte/internal";
@@ -32,6 +33,7 @@
       const { data } = await axios.get("/api/config/cameras");
       $cameras = data;
       loading = false;
+      $pageAction = 'Camaras';
     });
     
     // optional import focus-visible polyfill only once

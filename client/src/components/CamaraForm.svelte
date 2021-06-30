@@ -21,7 +21,7 @@
     }
 </script>
 
-<div class="form_add_camera">
+<div class="form_add_camera ">
     <div class="title">{accion} camara {camera.id}</div>
     <div class="field">
       <p class="control">
@@ -99,9 +99,14 @@
         </label>
       </p>
     </div>
-    <div class="field">
-        <p class="control">
-          <button class="button" on:click={postCamera} {disabled}>{accion} Camara</button>
+    <footer class="card-footer is-flex">
+      <div class="field flex-wrap">
+        <p class="control is-flex-direction-row">
+          <button class="button " on:click={postCamera} {disabled}>Grabar</button>
+          <button class="button" on:click={postCamera} {disabled}> Borrar</button>
+          <button class="button" on:click={postCamera} {disabled}> Cancelar</button>
         </p>
       </div>
+    </footer>
+      
 </div>

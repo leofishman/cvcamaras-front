@@ -1,4 +1,6 @@
 <script>
+  import { onMount } from 'svelte';
+
   export let mode = "balance";
 
   export let id = '';
@@ -15,6 +17,7 @@
  
 
   import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+  import { fade } from 'svelte/transition';
   import CamaraForm from "./CamaraForm.svelte";
   let showSidepanel = false;
   let showDialog = false;
@@ -44,12 +47,23 @@
 
 
   // For now I open only the first panel, latter I can open any panel with alerts
-  let expand = i==0 ? 'expand': '';
-  
+  let expand = false;
+  expand = '';
   let editable = false;
   function enableEdit() {
-    editable = true;
+    editable = !editable;
   }
+
+  function toggleConfig() {
+    expand = !expand
+  }
+  function estado(element) {
+        if (element) {
+            return ''
+        } else {
+            return 'disabled'
+        }
+    }
 
   </script>
   
@@ -61,54 +75,80 @@
 
   </style>
 
-
-
-<ExpansionPanel name="Nombre: {id}  ID: {idn}" bind:group {expand} on:change={onchage}>
-
-  <div class="notification {cssClass} is-light ">
-  <span class="ml-0">
-    <button class="material-icons ml-0" on:click={enableEdit} on:mouseenter="">
-      edit_note
+<div class="card">
+  <header class="card-header" on:click={toggleConfig}>
+    <p class="card-header-title mr-4 {cssDisabled} ">
+      <i class="fas fa-video mr-3">  </i>
+        {id}: {idn} 
+        <i class="fas fa-hard-hat ml-6 {estado(det_casco)}"></i>
+        <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}"></i>  
+        <i class="fas fa-vest ml-3 {estado(det_chaleco)}"></i>
+        
+    </p>
+    <button class="card-header-icon" aria-label="more options">
+      <span class="icon">
+        {#if expand}
+          <i class="fas fa-angle-up" aria-hidden="true"></i>
+        {:else}
+          <i class="fas fa-angle-down" aria-hidden="true"></i>
+        {/if}
+      </span>
     </button>
-  </span>
-  <div class="has-text-centered {cssDisabled}">
-    Feed:{feed}
-    <div class="d-flex">
-    <hr />
+  </header>
+  {#if expand}
+  <div class="card-content"  transition:fade="{{ duration: 200 }}">
+    <div class="content">
+      
+      <ExpansionPanel name="Editar"  class="mb-4">
 
-      <div>
-        <span class="material-icons" disabled={!det_casco}>
-          child_care
-        </span>
-        Casco:
-
-        <strong>{det_casco}</strong>
-      </div>
-      <div>
-        <span class="material-icons" disabled={!det_barbijo}>
-          masks
-        </span>
-        Barbijo:{det_barbijo} 
-      </div>
-      <i class="fas fa-vest"></i>
-
-        Chaleco:
-        <strong>{det_chaleco}</strong>
+        <div class="notification {cssClass} {cssDisabled} is-light">
+          <span class="ml-0">
+            <button class="material-icons ml-0" on:click={enableEdit} on:mouseenter="">
+              edit_note
+            </button>
+          </span>
+  
+        {#if (editable)}
+          <div class="editable">
+            <CamaraForm {camera} {i} accion="editar"></CamaraForm>
+          </div>
+        {:else}
+            <br />
+            
+            <div class="noeditable">
+              Active:{active}
+              Feed:{feed}<hr />
+              <div class="d-flex">
+                
+                fps:
+                <strong>{fps}</strong>
+              
+                frames capt:
+                <strong>{frames_capt}</strong>
+              </div>
+            </div>
+  
+        {/if}
+         <footer class="card-footer"  transition:fade="{{ duration: 300 }}">
+    <a href="#" class="card-footer-item">Save</a>
+    <a href="#" class="card-footer-item">Edit</a>
+    <a href="#" class="card-footer-item">Delete</a>
+  </footer>
+      </ExpansionPanel>
     </div>
-    fps:
-    <strong>{fps}</strong>
-   
-    frames capt:
-    <strong>{frames_capt}</strong>
+     
   </div>
+
+  {/if}
+</div>
+
+<div class="card is-half">
+
+  <card class="content">
     
-    Active:
-    <strong>{active}</strong>  
-  </div>
-</ExpansionPanel>
-<Dialog  bind:visible={editable} width="640" >
-  <CamaraForm {camera} {i} accion="editar"></CamaraForm>
-</Dialog>
+  </card>
+</div>
+
 
 
 <!--
@@ -145,6 +185,4 @@
   <Datepicker bind:value={date}></Datepicker>
 
 </div>
-
-
 -->
