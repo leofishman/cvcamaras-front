@@ -13,15 +13,17 @@
     export let accion;
     export let i;
     export let camera;
+    export let editable;
     $: disabled = (camera.feed == '' || camera.id == '');
 
     async function postCamera() {
       const response = await axios.post("/api/config/cameras/update", camera);
         $cameras[i] = response.data
+        editable = false;
     }
 </script>
 
-<div class="form_add_camera ">
+<div class="form_add_camera ">editable = {editable}
     <div class="title">{accion} camara {camera.id}</div>
     <div class="field">
       <p class="control">
@@ -33,6 +35,54 @@
           ID de la Camara
       </p>
     </div>
+    <div class="field">
+      <p class="control">
+        <label on:click={camera.det_barbijo = !camera.det_barbijo}>
+          <input type=checkbox  bind:checked={camera.det_barbijo }>
+          {#if camera.det_barbijo}
+            <i class="fas fa-head-side-mask ml-3"></i>  
+             Detectar Barbijo?
+            <i class="fas fa-toggle-on"></i>
+          {:else}
+            <i class="fas fa-head-side-mask ml-3 disabled"></i>  
+            Detectar Barbijo?
+            <i class="fas fa-toggle-off"></i>
+          {/if}
+        </label>
+      </p>
+    </div> 
+    <div class="field">
+      <p class="control">
+        <label on:click={camera.det_casco = !camera.det_casco}>
+          <input type=checkbox  bind:checked={camera.det_casco }>
+          {#if camera.det_casco}
+            <i class="fas fa-hard-hat ml-3"></i>  
+             Detectar Casco?
+            <i class="fas fa-toggle-on"></i>
+          {:else}
+            <i class="fas fa-hard-hat ml-3 disabled"></i>  
+            Detectar Casco?
+            <i class="fas fa-toggle-off"></i>
+          {/if}
+        </label>
+      </p>
+    </div> 
+    <div class="field">
+      <p class="control">
+        <label on:click={camera.det_chaleco = !camera.det_chaleco}>
+          <input type=checkbox  bind:checked={camera.det_chaleco }>
+          {#if camera.det_chaleco}
+            <i class="fas fa-vest ml-3"></i>  
+             Detectar Chaleco?
+            <i class="fas fa-toggle-on"></i>
+          {:else}
+            <i class="fas fa-vest ml-3 disabled"></i>  
+            Detectar Chaleco?
+            <i class="fas fa-toggle-off"></i>
+          {/if}
+        </label>
+      </p>
+    </div> 
     <div class="field">
       <p class="control">
         <input
@@ -59,30 +109,8 @@
       </label>
       </p>
     </div>
-    <div class="field">
-      <p class="control">
-        <label>
-          <input type=checkbox  bind:checked={camera.det_barbijo }>
-          Detectar Barbijo?
-        </label>
-      </p>
-    </div> 
-    <div class="field">
-      <p class="control">
-        <label>
-          <input type=checkbox  bind:checked={camera.det_casco}>
-          Detectar Casco?
-        </label>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <label>
-          <input type=checkbox  bind:checked={camera.det_chaleco}>
-          Detectar Chaleco?
-        </label>
-      </p>
-    </div>    
+
+
     <div class="field">
       <p class="control">
         <label>
@@ -110,3 +138,8 @@
     </footer>
       
 </div>
+<style>
+    .disabled {
+      opacity: 0.4;
+  }
+</style>

@@ -37,6 +37,9 @@
           <div class="navbar-menu-link pr-6">
             <a href="#/camaras" class="menu-link">Camaras</a>
           </div>
+          <div class="navbar-menu-link pr-6">
+            <a href="#/config" class="menu-link">Config  <i class="fas fa-cog "></i></a>
+          </div>          
           <div class="buttons">
             {#if $user}
               <a class="button is-primary is-light" href="#/profile">

@@ -12,6 +12,8 @@
       balance,
       cameras,
     } from "../stores";
+    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+
     import { text } from "svelte/internal";
   
     let id = '';
@@ -68,91 +70,95 @@
 </style>
   
 <div class="app container">
-  <div class="form_add_camera">
-    <div class="title">Agregue una camara</div>
-    <div class="field">
-      <p class="control">
-        <input
-          class="input"
-          type="text"
-          bind:value={id}
-          placeholder="Id de la camara" />
-          ID de la Camara
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <input
-          class="input"
-          type="text"
-          bind:value={feed}
-          placeholder="rtsp live de la camara" />
-          Feed
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <label>
-        <input type=number bind:value={idn} placeholder="IDn">
-        valor de idn
-      </label>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <label>
-        <input type=number bind:value={fps} placeholder="fps">
-        FPS
-      </label>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <label>
-          <input type=checkbox  bind:checked={det_barbijo }>
-          Detectar Barbijo?
-        </label>
-      </p>
-    </div> 
-    <div class="field">
-      <p class="control">
-        <label>
-          <input type=checkbox  bind:checked={det_casco}>
-          Detectar Casco?
-        </label>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <label>
-          <input type=checkbox  bind:checked={det_chaleco}>
-          Detectar Chaleco?
-        </label>
-      </p>
-    </div>    
-    <div class="field">
-      <p class="control">
-        <label>
-        <input type=number bind:value={frames_capt} placeholder="frames capt">
-        Frames Capt
-      </label>
-      </p>
-    </div>    
-    <div class="field">
-      <p class="control">
-        <label>
-          <input type=checkbox  bind:checked={active}>
-          Activa
-        </label>
-      </p>
-    </div>
+  <div class="add-camera">
+    <ExpansionPanel name="Agregue una camara">
+      <div class="form_add_camera">
+        <div class="field">
+          <p class="control">
+            <input
+              class="input"
+              type="text"
+              bind:value={id}
+              placeholder="Id de la camara" />
+              ID de la Camara
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <input
+              class="input"
+              type="text"
+              bind:value={feed}
+              placeholder="rtsp live de la camara" />
+              Feed
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <label>
+            <input type=number bind:value={idn} placeholder="IDn">
+            valor de idn
+          </label>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <label>
+            <input type=number bind:value={fps} placeholder="fps">
+            FPS
+          </label>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <label>
+              <input type=checkbox  bind:checked={det_barbijo }>
+              Detectar Barbijo?
+            </label>
+          </p>
+        </div> 
+        <div class="field">
+          <p class="control">
+            <label>
+              <input type=checkbox  bind:checked={det_casco}>
+              Detectar Casco?
+            </label>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <label>
+              <input type=checkbox  bind:checked={det_chaleco}>
+              Detectar Chaleco?
+            </label>
+          </p>
+        </div>    
+        <div class="field">
+          <p class="control">
+            <label>
+            <input type=number bind:value={frames_capt} placeholder="frames capt">
+            Frames Capt
+          </label>
+          </p>
+        </div>    
+        <div class="field">
+          <p class="control">
+            <label>
+              <input type=checkbox  bind:checked={active}>
+              Activa
+            </label>
+          </p>
+        </div>
 
-    <div class="field">
-      <p class="control">
-        <button class="button" on:click={addCamera} {disabled}>Agregar Camara</button>
-      </p>
-    </div>
+        <div class="field">
+          <p class="control">
+            <button class="button" on:click={addCamera} {disabled}>Agregar Camara</button>
+          </p>
+        </div>
+      </div>
+    </ExpansionPanel>
   </div>
+
 
 
   {#if loading}

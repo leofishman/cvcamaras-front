@@ -67,23 +67,26 @@
 
   </script>
   
-  <style>
-    .disabled {
-        pointer-events: none;
-        opacity: 0.4;
-    }       
+<style>
+  .disabled {
+      pointer-events: none;
+      opacity: 0.4;
+  }
+  
+  .editar {
+    pointer-events: visiblePainted;
+  }
 
   </style>
 
-<div class="card">
+<div class="card" >
   <header class="card-header" on:click={toggleConfig}>
-    <p class="card-header-title mr-4 {cssDisabled} ">
+    <p class="card-header-title mr-4  {cssDisabled} ">
       <i class="fas fa-video mr-3">  </i>
         {id}: {idn} 
         <i class="fas fa-hard-hat ml-6 {estado(det_casco)}"></i>
         <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}"></i>  
         <i class="fas fa-vest ml-3 {estado(det_chaleco)}"></i>
-        
     </p>
     <button class="card-header-icon" aria-label="more options">
       <span class="icon">
@@ -98,19 +101,15 @@
   {#if expand}
   <div class="card-content"  transition:fade="{{ duration: 200 }}">
     <div class="content">
-      
+
       <ExpansionPanel name="Editar"  class="mb-4">
 
-        <div class="notification {cssClass} {cssDisabled} is-light">
-          <span class="ml-0">
-            <button class="material-icons ml-0" on:click={enableEdit} on:mouseenter="">
-              edit_note
-            </button>
-          </span>
-  
+        <div class="notification {cssClass} {cssDisabled} editar is-light">
+
+          <input type="text" name="name" bind:value={editable} />
         {#if (editable)}
           <div class="editable">
-            <CamaraForm {camera} {i} accion="editar"></CamaraForm>
+            <CamaraForm {camera} {editable} {i} accion="editar">editable={editable};</CamaraForm>
           </div>
         {:else}
             <br />
@@ -118,22 +117,22 @@
             <div class="noeditable">
               Active:{active}
               Feed:{feed}<hr />
-              <div class="d-flex">
+              <!--div class="d-flex">
                 
                 fps:
                 <strong>{fps}</strong>
               
                 frames capt:
                 <strong>{frames_capt}</strong>
-              </div>
+              </div-->
+              <span class="ml-2" on:click={enableEdit}>
+              <i class="fas fa-edit"  mr-2>  </i>
+              Habilitar edicion
+
+              </span>
             </div>
   
         {/if}
-         <footer class="card-footer"  transition:fade="{{ duration: 300 }}">
-    <a href="#" class="card-footer-item">Save</a>
-    <a href="#" class="card-footer-item">Edit</a>
-    <a href="#" class="card-footer-item">Delete</a>
-  </footer>
       </ExpansionPanel>
     </div>
      
