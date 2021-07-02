@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const User = require('../models/User')
 const Camera = require('../models/Camera')
+const Config = require('../models/Config')
 
 const router = Router()
 
@@ -10,6 +11,20 @@ function ensureLogin(req, res, next) {
     }
     next()
 }
+
+router.get('/', ensureLogin, async(req, res) => {
+    try {
+        const configuraciones = await Config.find({});
+        console.log(18,  configuraciones)
+        if (!configuraciones) {
+            throw new Error('No hay configuraciones guardadas');
+        }
+        res.status(200).json(configuraciones)
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+
+})
 
 router.get('/cameras/', ensureLogin, async(req, res) => {
         try {

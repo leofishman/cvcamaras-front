@@ -11,6 +11,8 @@
       expenses,
       balance,
       cameras,
+      pageAction,
+      config,
     } from "../stores";
     import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
 
@@ -30,10 +32,15 @@
     $: disabled = (feed == '' || id == '');
 
     onMount(async () => {
+      $pageAction = "Configuración";
       loading = true;
       const { data } = await axios.get("/api/config/cameras");
       $cameras = data;
       loading = false;
+      const  configuraciones = await axios.get("/api/config/");
+      console.log(41, configuraciones)
+      $config = configuraciones;
+
     });
   
     async function addCamera() {
@@ -70,6 +77,18 @@
 </style>
   
 <div class="app container">
+  <div class="conf-alertas">
+    <div class="field">
+      <p class="control">
+        <input
+          class="input"
+          type="text"
+          bind:value={config.trigeralert}
+          placeholder="tiempo de alerta" />
+          Cuanto tiempo del evento genera una alerta?
+      </p>
+    </div>
+  </div>
   <div class="add-camera">
     <ExpansionPanel name="Agregue una camara">
       <div class="form_add_camera">

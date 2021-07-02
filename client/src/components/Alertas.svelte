@@ -13,7 +13,6 @@
     export  let eventType;
 
     var dateFormat = require("dateformat");
-
     let iconEvent = '';
     if (eventType == "alerta") {
         iconEvent = 'bell';
@@ -40,7 +39,7 @@
                  <span class="alert"> {alerta.tipo}</span> 
             </div>
         </abbr></td>
-        <td><abbr title="Camara">Camara</abbr></td>
+        <td><abbr title="Camara">{alerta.cam}</abbr></td>
         <td><abbr title="Elemento">
             <div class="columns">
                 <div class="column">

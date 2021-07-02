@@ -12,3 +12,4 @@ export const expenses = derived(transactions, (value) =>
 )
 export const cameras = writable([])
 export const pageAction = writable(null)
+export const config = writable([])

@@ -41,6 +41,10 @@
       loading = false;
       alertas = data;
       $pageAction = 'Alertas';
+      if ($cameras.length == 0) {
+        const { data } = await axios.get("/api/config/cameras");
+      $cameras = data;
+      }
     });
     
     // optional import focus-visible polyfill only once
@@ -75,7 +79,15 @@
          hasta 
         {/if}
       </div>
-
+      <div class="column">
+        <div class="select">
+          <select bind:value="{opciones.cam}">Camara
+            {#each $cameras as camera, i}
+              <option value="{camera.id}">{camera.id} </option>
+            {/each}
+          </select>
+        </div>
+      </div>
       <div class="column">
         <div class="select">
           <select bind:value="{opciones.tipo}">Tipo de Alerta
