@@ -9,6 +9,6 @@ const ConfigSchema = new Schema({
   },
 });
 
-const Config = model('config', ConfigSchema);
+const Config = model('settings', ConfigSchema);
 
 module.exports = Config;

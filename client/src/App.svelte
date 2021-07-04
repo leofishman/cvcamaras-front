@@ -14,6 +14,9 @@
   import axios from "axios";
   import { user, pageAction } from "./stores";
   import Alertas from "./pages/Alertas.svelte";
+  import {
+      cameras
+    } from "./stores";
 
 
   let loading = true;
@@ -21,6 +24,13 @@
   onMount(async () => {
     const { data } = await axios.get("api/auth/user");
     $user = data.user;
+    if ($user) {
+      if ($cameras.length == 0) {
+        const { data } = await axios.get("/api/config/cameras");
+      $cameras = data;
+      }
+    }
+
     loading = false;
   });
 

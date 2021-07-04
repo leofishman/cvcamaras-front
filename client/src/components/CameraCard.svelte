@@ -54,6 +54,10 @@
     editable = !editable;
   }
 
+  function saved() {
+    expand = false;
+  }
+
   function toggleConfig() {
     expand = !expand
   }
@@ -65,6 +69,11 @@
         }
     }
 
+  
+  
+  
+  
+  
   </script>
   
 <style>
@@ -80,7 +89,7 @@
   </style>
 
 <div class="card" >
-  <header class="card-header" on:click={toggleConfig}>
+  <header class="card-header" on:click={toggleConfig} on:saved={console.log(83, 'saved')}>
     <p class="card-header-title mr-4  {cssDisabled} ">
       <i class="fas fa-video mr-3">  </i>
         {id}: {idn} 
@@ -100,88 +109,15 @@
   </header>
   {#if expand}
   <div class="card-content"  transition:fade="{{ duration: 200 }}">
-    <div class="content">
+      <div class="notification {cssClass} {cssDisabled} editar is-light">
 
-      <ExpansionPanel name="Editar"  class="mb-4">
+        <div class="editable">
+          <CamaraForm on:saved={saved} {camera} {editable} {i} accion="editar"></CamaraForm>
+        </div>
 
-        <div class="notification {cssClass} {cssDisabled} editar is-light">
-
-          <input type="text" name="name" bind:value={editable} />
-        {#if (editable)}
-          <div class="editable">
-            <CamaraForm {camera} {editable} {i} accion="editar">editable={editable};</CamaraForm>
-          </div>
-        {:else}
-            <br />
-            
-            <div class="noeditable">
-              Active:{active}
-              Feed:{feed}<hr />
-              <!--div class="d-flex">
-                
-                fps:
-                <strong>{fps}</strong>
-              
-                frames capt:
-                <strong>{frames_capt}</strong>
-              </div-->
-              <span class="ml-2" on:click={enableEdit}>
-              <i class="fas fa-edit"  mr-2>  </i>
-              Habilitar edicion
-
-              </span>
-            </div>
-  
-        {/if}
-      </ExpansionPanel>
     </div>
      
   </div>
 
   {/if}
 </div>
-
-<div class="card is-half">
-
-  <card class="content">
-    
-  </card>
-</div>
-
-
-
-<!--
-
-
-
-<div class="container" >
-  <Button on:click={()=>showSidepanel=true} raised color="#FF4136">
-    Show Sidepanel 
-  </Button>
-
-  <Button on:click={()=>showDialog=true}  color="#0074D9">
-    Show Dialog
-  </Button>
-
-  <Button on:click={()=>showSnackbar=true}  color="#B10C9">
-    Show Snackbar
-  </Button>
-
-  <Sidepanel bind:visible={showSidepanel} left>
-  This is the sidepanel for {date}
-  </Sidepanel>
-
-  <Dialog bind:visible={showDialog}>
-    Dialog on {date}!!
-  </Dialog>
-
-  <Snackbar bind:visible={showSnackbar}>
-    Snackbar on {date}!!!
-  </Snackbar>
-
-  <br />
-
-  <Datepicker bind:value={date}></Datepicker>
-
-</div>
--->

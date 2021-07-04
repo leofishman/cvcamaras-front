@@ -1,6 +1,5 @@
 <script>
     import axios from "axios";
-    import Transaction from "../components/Transaction.svelte";
     import CamaraCard from "../components/CameraCard.svelte"
     import Loading from "../components/Loading.svelte";
     import { onMount } from "svelte";
@@ -17,6 +16,7 @@
     import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
 
     import { text } from "svelte/internal";
+import { get } from "svelte/store";
   
     let id = '';
     let idn = 0;
@@ -34,15 +34,20 @@
     onMount(async () => {
       $pageAction = "Configuración";
       loading = true;
-      const { data } = await axios.get("/api/config/cameras");
-      $cameras = data;
+      getCameras();
+      getConfig();
       loading = false;
-      const  configuraciones = await axios.get("/api/config/");
-      console.log(41, configuraciones)
-      $config = configuraciones;
-
     });
   
+    async function getConfig() {
+      const  {data} = await axios.get("/api/config/");
+      $config = data;
+      $config = data;
+    }
+    async function getCameras() {
+      const { data } = await axios.get("/api/config/cameras");
+      $cameras = data;
+    }
     async function addCamera() {
       const camera = {
         id: id,
@@ -68,6 +73,27 @@
         $transactions = $transactions.filter(t => t._id !== id);
       }
     }
+
+    function getType(type) {
+      
+      let tipo = typeof type;
+      switch(tipo) {
+        case "string": 
+          tipo = "text";
+          break;
+        case "boolean":
+          tipo = "boolean";
+          break;
+        case "number":
+          tipo = "number";
+          break;
+        
+        default:
+          tipo = "text";
+      }
+      return tipo;
+    }
+
 </script>
   
 <style>
@@ -75,11 +101,37 @@
     margin: 40px auto;
   }
 </style>
-  
+ 
+
+{#if loading}
+  <Loading />
+{/if}
+
+
+
 <div class="app container">
   <div class="conf-alertas">
+
+       {#if $config.length > 0}
+    <ExpansionPanel name="Configuraciones Globales">
+        {#each $config as configuracion, i }
+          <div class="column is-4">
+
+            <div class="columns">
+              <div class="column is-8">
+                <label>{configuracion['key']}: </label>
+              </div>
+              <div class="column is-4">
+                {configuracion['value']}
+              </div>
+            </div>
+          </div>
+        {/each} 
+    </ExpansionPanel>
+    {/if} 
     <div class="field">
       <p class="control">
+        <label>Tiempo de generacion de alerta</label>
         <input
           class="input"
           type="text"
@@ -89,6 +141,18 @@
       </p>
     </div>
   </div>
+
+
+
+  {#if $cameras.length > 0}
+    {#each $cameras as camera}  
+      <CamaraCard {camera} id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
+    {/each}
+  {:else if !loading}
+    <div class="notification">Agregue la primera camera</div>
+  {/if}
+
+  
   <div class="add-camera">
     <ExpansionPanel name="Agregue una camara">
       <div class="form_add_camera">
@@ -177,25 +241,5 @@
       </div>
     </ExpansionPanel>
   </div>
-
-
-
-  {#if loading}
-    <Loading />
-  {/if}
-
-  {#if $cameras.length > 0}
-    {#each $cameras as camera}
-    
-      <CamaraCard id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
-    {/each}
-  {:else if !loading}
-    <div class="notification">Add your first camera</div>
-  {/if}
-
-  {#each $sortedTransactions as transaction (transaction._id)}
-    <Transaction {transaction} {removeTransaction} />
-  {/each}
-
 </div>
   

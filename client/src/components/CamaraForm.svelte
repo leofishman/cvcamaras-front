@@ -10,20 +10,26 @@
     } from "../stores";
 
     import axios from "axios";
+    import { createEventDispatcher } from 'svelte'
     export let accion;
     export let i;
     export let camera;
-    export let editable;
+    export let editable = true;
     $: disabled = (camera.feed == '' || camera.id == '');
+
+    const dispatch = createEventDispatcher();
 
     async function postCamera() {
       const response = await axios.post("/api/config/cameras/update", camera);
         $cameras[i] = response.data
         editable = false;
+        disabled = true;
+        dispatch('saved')
+
     }
 </script>
 
-<div class="form_add_camera ">editable = {editable}
+<div class="form_add_camera ">
     <div class="title">{accion} camara {camera.id}</div>
     <div class="field">
       <p class="control">

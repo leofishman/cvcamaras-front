@@ -41,10 +41,7 @@
       loading = false;
       alertas = data;
       $pageAction = 'Alertas';
-      if ($cameras.length == 0) {
-        const { data } = await axios.get("/api/config/cameras");
-      $cameras = data;
-      }
+
     });
     
     // optional import focus-visible polyfill only once
