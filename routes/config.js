@@ -15,7 +15,6 @@ function ensureLogin(req, res, next) {
 router.get('/', ensureLogin, async(req, res) => {
     try {
         const configuraciones = await Config.find({});
-        console.log(18,  configuraciones)
         if (!configuraciones) {
             throw new Error('No hay configuraciones guardadas');
         }

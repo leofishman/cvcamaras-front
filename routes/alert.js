@@ -15,7 +15,6 @@ var getQueryParameters = function(query) {
     var result = {};
     for (let q in query) {
         queries = query[q].split("&");
-        console.log(18, queries)
         for (var i = 0; i < queries.length; i++) {
             const values = queries[i].split("=");
             if (values[0] === 'fecha_desde'){
