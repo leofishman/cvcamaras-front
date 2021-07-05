@@ -69,7 +69,10 @@
       timeout: 3000,
       });
     expand = false;
-    console.log(75, type, event);
+  }
+
+  function cancelar(event) {
+    expand = false;
   }
 
   function toggleConfig() {
@@ -132,7 +135,7 @@
       <div class="notification {cssClass} {cssDisabled} editar is-light">
 
         <div class="editable">
-          <CamaraForm on:toast={saved} {camera} {editable} {i} accion="editar"></CamaraForm>
+          <CamaraForm on:toast={saved} on:cancelar={cancelar} {camera} {editable} {i} accion="editar"></CamaraForm>
         </div>
 
     </div>

@@ -3,12 +3,8 @@
     import CamaraCard from "../components/CameraCard.svelte"
     import Loading from "../components/Loading.svelte";
     import { onMount } from "svelte";
+    import { fade } from 'svelte/transition';
     import {
-      transactions,
-      sortedTransactions,
-      income,
-      expenses,
-      balance,
       cameras,
       pageAction,
       config,
@@ -87,6 +83,10 @@
   .app {
     margin: 40px auto;
   }
+
+  .editar :hover {
+    pointer-events: visibleStroke;
+  }
 </style>
  
 
@@ -143,12 +143,19 @@
   <div class="add-camera">
     <div class="card" >
       <header class="card-header" on:click={toggleAddCamera}>
-      Agregar Camara
+        <p class="card-header-title editar mr-4">
+          <Button>
+            <i class="fas fa-plus mr-3"></i>
+            Agregar Camara
+          </Button>
+          
+        </p>
+        
       </header>
     
       {#if addCameraExpand}
         <div class="card-content"  transition:fade="{{ duration: 200 }}">
-            <div class="notification {cssClass} {cssDisabled} editar is-light">
+            <div class="notification  editar is-light">
               <div class="form_add_camera">
                 <div class="field">
                   <p class="control">
@@ -240,92 +247,6 @@
     
       {/if}
     </div>
-    <ExpansionPanel name="Agregue una camara" bind:expand={addCameraExpand}>
-      <div class="form_add_camera">
-        <div class="field">
-          <p class="control">
-            <input
-              class="input"
-              type="text"
-              bind:value={id}
-              placeholder="Id de la camara" />
-              ID de la Camara
-          </p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <input
-              class="input"
-              type="text"
-              bind:value={feed}
-              placeholder="rtsp live de la camara" />
-              Feed
-          </p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <label>
-            <input type=number bind:value={idn} placeholder="IDn">
-            valor de idn
-          </label>
-          </p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <label>
-            <input type=number bind:value={fps} placeholder="fps">
-            FPS
-          </label>
-          </p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <label>
-              <input type=checkbox  bind:checked={det_barbijo }>
-              Detectar Barbijo?
-            </label>
-          </p>
-        </div> 
-        <div class="field">
-          <p class="control">
-            <label>
-              <input type=checkbox  bind:checked={det_casco}>
-              Detectar Casco?
-            </label>
-          </p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <label>
-              <input type=checkbox  bind:checked={det_chaleco}>
-              Detectar Chaleco?
-            </label>
-          </p>
-        </div>    
-        <div class="field">
-          <p class="control">
-            <label>
-            <input type=number bind:value={frames_capt} placeholder="frames capt">
-            Frames Capt
-          </label>
-          </p>
-        </div>    
-        <div class="field">
-          <p class="control">
-            <label>
-              <input type=checkbox  bind:checked={active}>
-              Activa
-            </label>
-          </p>
-        </div>
-
-        <div class="field">
-          <p class="control">
-            <button class="button" on:click={addCamera} {disabled}>Agregar Camara</button>
-          </p>
-        </div>
-      </div>
-    </ExpansionPanel>
   </div>
 </div>
   
