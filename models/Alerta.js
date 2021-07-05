@@ -51,6 +51,26 @@ const AlertSchema = new Schema({
     },    
 })
 
+AlertSchema.statics.queryAlerts = function(filter) {
+    const fecha_desde = filter.fecha_desde;
+    let fecha_hasta = filter.fecha_hasta;
+    if (!fecha_hasta) {
+        fecha_hasta = new Date();
+    } else {
+        fecha_hasta = new Date(fecha_hasta);
+    }
+    
+    if (fecha_desde) {
+        filter.date_alerta = {
+            $gte: new Date(fecha_desde), 
+            $lte: fecha_hasta
+        };
+    }
+  //  console.log(55, chaleco , 333, filtro)
+    
+    return this.find(filter).limit(20);
+}
+
 const Alerta = model ('alertas', AlertSchema)
 
 module.exports = Alerta

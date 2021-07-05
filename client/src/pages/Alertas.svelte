@@ -49,11 +49,11 @@
 
     async function filtrar() {
     //  loading = true;
+    
       let params = '';
       for (const param in opciones) {
         params = params + param + "=" + opciones[param] + "&"
       }
-      
       const { data } = await axios.get("/api/alertas/", {params: params});
       loading = false;
       alertas = data;
@@ -121,18 +121,18 @@
   <table class="table is-fullwidth">
     <thead>
       <tr>
-        <th><abbr title="Fecha">Fecha</abbr></th>
-        <th><abbr title="Tipo">Tipo</abbr></th>
-        <th><abbr title="Camara">Camara</abbr></th>
-        <th><abbr title="Elemento">Elemento</abbr></th>
+        <th>Fecha</th>
+        <th><i class="fas fa-bell mr-3"></i>Tipo</th>
+        <th>Camara</th>
+        <th>Elemento</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-        <th><abbr title="Fecha">Fecha</abbr></th>
-        <th><abbr title="Tipo">Tipo</abbr></th>
-        <th><abbr title="Camara">Camara</abbr></th>
-        <th><abbr title="Elemento">Elemento</abbr></th>
+        <th>Fecha</th>
+        <th><i class="fas fa-bell mr-3"></i>Tipo</th>
+        <th>Camara</th>
+        <th>Elemento</th>
       </tr>
     </tfoot>
     <tbody>

@@ -17,13 +17,18 @@ var getQueryParameters = function(query) {
         queries = query[q].split("&");
         for (var i = 0; i < queries.length; i++) {
             const values = queries[i].split("=");
-            if (values[0] === 'fecha_desde'){
-               // result['date_alerta'] = {$gt: ISODate(value[1])}
-               // result['date_alerta'] = "{gt$: " + values[1] + "}";
-            } else if (values[0] && values[1]) {
+            if (values[1] != 'false') {
                 result[values[0]] = values[1];
             }
-            
+            /*
+            if (values[0] === 'fecha_desde'){
+                result['date_alerta'] = values[1];
+               // result['date_alerta'] = {$gt: ISODate(value[1])}
+               // result['date_alerta'] = "{gt$: " + values[1] + "}";
+            } else if (values[1] != 'false') {
+                result[values[0]] = values[1];
+            }
+            */
         }
     }
     return result;
@@ -32,8 +37,9 @@ var getQueryParameters = function(query) {
 
 router.get('/', ensureLogin, async(req, res) => {
     let filter = getQueryParameters(req.query);
+  
     try {
-        const alertas = await Alerta.find(filter).limit(10)
+        const alertas = await Alerta.queryAlerts(filter); 
         if (!alertas) {
             throw new Error('No hay alertas de' . req.params.tipo)
         }

@@ -32,31 +32,25 @@
 
 
     <tr>
-        <td><abbr title="Fecha">{dateFormat(alerta.date_alerta, "dd-mm-yy  h:M")}</abbr></td>
-        <td><abbr title="Tipo">
-            <div class="text">
-                <i class="fas fa-{iconEvent}"></i>
+        <td>{dateFormat(alerta.date_alerta, "dd-mm-yy  h:M")}</td>
+        <td><div class="text"> 
                  <span class="alert"> {alerta.tipo}</span> 
             </div>
-        </abbr></td>
-        <td><abbr title="Camara">{alerta.cam}</abbr></td>
-        <td><abbr title="Elemento">
+        </td>
+        <td>{alerta.cam}</td>
+        <td>
             <div class="columns">
                 <div class="column">
-
                     <i class="fas fa-hard-hat {estado(alerta.casco)}"></i>
-                    
                 </div>
                 <div class="column">
-
                     <i class="fas fa-head-side-mask {estado(alerta.barbijo)}"></i>
                 </div>
                 <div class="column ">
-
                     <i class="fas fa-vest {estado(alerta.chaleco)}"></i>  
                 </div>
             </div>
-        </abbr></td>
+        </td>
     </tr>
     <tr>
         <td colspan="4">
@@ -85,11 +79,6 @@
     }
     .text {
         padding-left: 30px;
-    }
-    
-    .alerta .text {
-       color: white; 
-      
     }
 
     .disabled {
