@@ -16,34 +16,38 @@
   export let camera;
  
 
-  import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
   import { fade } from 'svelte/transition';
   import CamaraForm from "./CamaraForm.svelte";
-  let showSidepanel = false;
-  let showDialog = false;
-  let showSnackbar = false;
+
+  import { addToast } from "../stores";
+
+
   let checked = true;
   let date = new Date();
+  let message = '';
+  let visible = false;
+  let timeout = 4;
+  let type;
 
   let group = '';
 
   const onchage = ({ detail }) => {
        console.log(detail.expanded ? 'open' : 'close', detail.name);
   };
-    $: label = mode.toUpperCase();
-    $: cssClass = getCssClass(mode);
-    $: cssDisabled = active ? '' : 'disabled' 
+  $: label = mode.toUpperCase();
+  $: cssClass = getCssClass(mode);
+  $: cssDisabled = active ? '' : 'disabled' 
 
-    function getCssClass(mode) {
-      switch (mode) {
-        case "balance":
-          return "is-info";
-        case "income":
-          return "is-success";
-        case "expenses":
-          return "is-danger";
-      }
+  function getCssClass(mode) {
+    switch (mode) {
+      case "balance":
+        return "is-info";
+      case "income":
+        return "is-success";
+      case "expenses":
+        return "is-danger";
     }
+  }
 
 
   // For now I open only the first panel, latter I can open any panel with alerts
@@ -54,8 +58,18 @@
     editable = !editable;
   }
 
-  function saved() {
+  function saved(event) {
+    visible = true;
+    message = event.detail.message;
+    type = event.detail.type;
+    addToast({
+      message: message,
+      type: type,
+      dismissible: true,
+      timeout: 3000,
+      });
     expand = false;
+    console.log(75, type, event);
   }
 
   function toggleConfig() {
@@ -77,6 +91,7 @@
   </script>
   
 <style>
+
   .disabled {
       pointer-events: none;
       opacity: 0.4;
@@ -86,10 +101,14 @@
     pointer-events: visiblePainted;
   }
 
+  .message {
+    background-color: #1976d2;
+  }
+
   </style>
 
 <div class="card" >
-  <header class="card-header" on:click={toggleConfig} on:saved={console.log(83, 'saved')}>
+  <header class="card-header" on:click={toggleConfig}>
     <p class="card-header-title mr-4  {cssDisabled} ">
       <i class="fas fa-video mr-3">  </i>
         {id}: {idn} 
@@ -107,12 +126,13 @@
       </span>
     </button>
   </header>
+
   {#if expand}
   <div class="card-content"  transition:fade="{{ duration: 200 }}">
       <div class="notification {cssClass} {cssDisabled} editar is-light">
 
         <div class="editable">
-          <CamaraForm on:saved={saved} {camera} {editable} {i} accion="editar"></CamaraForm>
+          <CamaraForm on:toast={saved} {camera} {editable} {i} accion="editar"></CamaraForm>
         </div>
 
     </div>

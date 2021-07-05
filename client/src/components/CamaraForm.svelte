@@ -24,9 +24,22 @@
         $cameras[i] = response.data
         editable = false;
         disabled = true;
-        dispatch('saved')
-
+        console.log(27, camera.id)
+        dispatch('toast', {message:'La camara ' + camera.id + ' a sido actualizada', type:'info', element: camera.id})
     }
+
+    async function removeCamera(camera) {
+      console.log(32, 'remove',  camera._id);
+      const response = await axios.delete("/api/config/cameras/delete/" + camera._id);
+      console.log(33, 'remove', response, camera);
+      if (response.data.id === camera) {
+        $cameras = $cameras.filter(c => c._id !== camera);
+      }
+      editable = false;
+      disabled = true;
+      dispatch('toast', {message:'La camara ' + camera.id + ' a sido eliminada', type:'error', element: camera.id})
+    }
+
 </script>
 
 <div class="form_add_camera ">
@@ -137,7 +150,7 @@
       <div class="field flex-wrap">
         <p class="control is-flex-direction-row">
           <button class="button " on:click={postCamera} {disabled}>Grabar</button>
-          <button class="button" on:click={postCamera} {disabled}> Borrar</button>
+          <button class="button" on:click={removeCamera(camera)} {disabled}> Borrar</button>
           <button class="button" on:click={postCamera} {disabled}> Cancelar</button>
         </p>
       </div>

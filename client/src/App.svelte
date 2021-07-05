@@ -8,16 +8,13 @@
   import Config from "./pages/Config.svelte";
   import Navbar from "./components/Navbar.svelte";
   import Loading from "./components/Loading.svelte";
+  import Toasts from "./components/Toasts.svelte"
   import Camaras from "./pages/Camaras.svelte"
 
   import { onMount } from "svelte";
   import axios from "axios";
-  import { user, pageAction } from "./stores";
+  import { user, pageAction, cameras, addToasts,  } from "./stores";
   import Alertas from "./pages/Alertas.svelte";
-  import {
-      cameras
-    } from "./stores";
-
 
   let loading = true;
 
@@ -72,6 +69,7 @@
   </div>
 {:else}
   <Navbar />
+  <Toasts />
   <br />
   <Router {routes} on:conditionsFailed={conditionsFailed} />
 {/if}

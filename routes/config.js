@@ -71,4 +71,27 @@ router.post('/cameras/update', ensureLogin, async (req, res) => {
     }
 })
 
+router.delete('/cameras/delete/:id', ensureLogin, async(req, res) => {
+
+    const { id } = req.params
+    console.log(77, id)
+    try {
+
+        const camera = await Camera.findById(id)
+        if (!camera) {
+            throw new Error('There was an error deleting the camera')
+        }
+        const removed = await camera.remove()
+  
+        if (!removed) {
+            throw new Error('There was a problem deleting the transaction')
+        }
+        res.status(200).json({ id })
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    } 
+    
+})
+
 module.exports = router
