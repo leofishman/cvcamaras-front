@@ -10,7 +10,7 @@
     } from "../stores";
 
     import axios from "axios";
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher } from 'svelte';
     export let accion;
     export let i;
     export let camera;
@@ -29,8 +29,10 @@
 
     async function removeCamera(camera) {
       const response = await axios.delete("/api/config/cameras/delete/" + camera._id);
-      if (response.data.id === camera) {
-        $cameras = $cameras.filter(c => c._id !== camera);
+      console.log(32, response.data, 4444, camera)
+      if (response.data.id === camera._id) {
+        $cameras = $cameras.filter(c => c._id !== camera._id);
+       
       }
       editable = false;
       disabled = true;

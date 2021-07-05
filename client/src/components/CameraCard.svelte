@@ -18,6 +18,9 @@
   import { addToast } from '../stores'
   import { fade } from 'svelte/transition';
   import CamaraForm from "./CamaraForm.svelte";
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
 
   let checked = true;
   let date = new Date();
@@ -66,6 +69,7 @@
         timeout: 3000,
         });
       expand = false;
+      dispatch('toast');
     }
 
   function cancelar(event) {

@@ -69,7 +69,6 @@
           timeout: 3000,
         });
         addCameraExpand = false;
-        detail.expand = false
       }
       
     }
@@ -79,16 +78,8 @@
     }
 
     function saved(event) {
-      visible = true;
-      message = event.detail.message;
-      type = event.detail.type;
-      addToast({
-        message: message,
-        type: type,
-        dismissible: true,
-        timeout: 3000,
-        });
-      expand = false;
+
+      console.log(90, $cameras, 22 , event)  
     }
 </script>
   
@@ -139,8 +130,8 @@
   </div>
 
   {#if $cameras.length > 0}
-    {#each $cameras as camera}  
-      <CamaraCard on:toast={saved} {camera} id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
+    {#each $cameras as camera, i}  
+      <CamaraCard on:toast={saved} visible:bind({$cameras.id}) {camera} id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
     {/each}
   {:else if !loading}
     <div class="notification">Agregue la primera camera</div>

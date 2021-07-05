@@ -31,7 +31,6 @@ export const addToast = (toast) => {
     dismissible: true,
     timeout: 3000,
   };
-  console.log(34, toast)
   // Push the toast to the top of the list of toasts
   toasts.update((all) => [{ ...defaults, ...toast }, ...all]);
 
