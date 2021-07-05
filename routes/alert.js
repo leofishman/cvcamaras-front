@@ -19,7 +19,6 @@ var getQueryParameters = function(query) {
             const values = queries[i].split("=");
             if (values[0] === 'fecha_desde'){
                // result['date_alerta'] = {$gt: ISODate(value[1])}
-                console.log(21, result,  values[1])
                // result['date_alerta'] = "{gt$: " + values[1] + "}";
             } else if (values[0] && values[1]) {
                 result[values[0]] = values[1];
@@ -33,7 +32,6 @@ var getQueryParameters = function(query) {
 
 router.get('/', ensureLogin, async(req, res) => {
     let filter = getQueryParameters(req.query);
-    console.log(40, filter)
     try {
         const alertas = await Alerta.find(filter).limit(10)
         if (!alertas) {

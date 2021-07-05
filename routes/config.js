@@ -74,7 +74,6 @@ router.post('/cameras/update', ensureLogin, async (req, res) => {
 router.delete('/cameras/delete/:id', ensureLogin, async(req, res) => {
 
     const { id } = req.params
-    console.log(77, id)
     try {
 
         const camera = await Camera.findById(id)

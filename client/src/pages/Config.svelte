@@ -77,15 +77,24 @@
     function toggleAddCamera () {
       addCameraExpand = !addCameraExpand;
     }
+
+    function saved(event) {
+      visible = true;
+      message = event.detail.message;
+      type = event.detail.type;
+      addToast({
+        message: message,
+        type: type,
+        dismissible: true,
+        timeout: 3000,
+        });
+      expand = false;
+    }
 </script>
   
 <style>
   .app {
     margin: 40px auto;
-  }
-
-  .editar :hover {
-    pointer-events: visibleStroke;
   }
 </style>
  
@@ -129,11 +138,9 @@
     </div>
   </div>
 
-
-
   {#if $cameras.length > 0}
     {#each $cameras as camera}  
-      <CamaraCard {camera} id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
+      <CamaraCard on:toast={saved} {camera} id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
     {/each}
   {:else if !loading}
     <div class="notification">Agregue la primera camera</div>

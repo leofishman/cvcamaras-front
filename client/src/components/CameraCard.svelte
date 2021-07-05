@@ -15,12 +15,9 @@
   export let i;
   export let camera;
  
-
+  import { addToast } from '../stores'
   import { fade } from 'svelte/transition';
   import CamaraForm from "./CamaraForm.svelte";
-
-  import { addToast } from "../stores";
-
 
   let checked = true;
   let date = new Date();
@@ -59,17 +56,17 @@
   }
 
   function saved(event) {
-    visible = true;
-    message = event.detail.message;
-    type = event.detail.type;
-    addToast({
-      message: message,
-      type: type,
-      dismissible: true,
-      timeout: 3000,
-      });
-    expand = false;
-  }
+      visible = true;
+      message = event.detail.message;
+      type = event.detail.type;
+      addToast({
+        message: message,
+        type: type,
+        dismissible: true,
+        timeout: 3000,
+        });
+      expand = false;
+    }
 
   function cancelar(event) {
     expand = false;
