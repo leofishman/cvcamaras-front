@@ -66,7 +66,6 @@ AlertSchema.statics.queryAlerts = function(filter) {
             $lte: fecha_hasta
         };
     }
-  //  console.log(55, chaleco , 333, filtro)
     
     return this.find(filter).limit(20);
 }
