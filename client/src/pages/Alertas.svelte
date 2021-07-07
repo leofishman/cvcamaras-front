@@ -41,7 +41,6 @@
       loading = false;
       alertas = data;
       $pageAction = 'Alertas';
-
     });
     
     // optional import focus-visible polyfill only once

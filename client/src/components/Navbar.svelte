@@ -41,6 +41,9 @@
                 <a href="#/alertas" class="menu-link">Alertas<i class="fas fa-bell ml-1"></i></a>
               </div>
               <div class="navbar-menu-link pr-6">
+                <a href="#/detectiones" class="menu-link">Detecciones<i class="fas fa-bell ml-1"></i></a>
+              </div>              
+              <div class="navbar-menu-link pr-6">
                 <a href="#/camaras" class="menu-link">Camaras <i class="fas fa-video ml-1"></i></a>
               </div>
               <div class="navbar-menu-link pr-6">

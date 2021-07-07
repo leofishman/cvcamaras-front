@@ -6,6 +6,7 @@
   import Login from "./pages/Login.svelte";
   import Prolife from "./pages/Profile.svelte";
   import Config from "./pages/Config.svelte";
+  import Detections from "./pages/Detections.svelte";
   import Navbar from "./components/Navbar.svelte";
   import Loading from "./components/Loading.svelte";
   import Toasts from "./components/Toasts.svelte"
@@ -33,13 +34,14 @@
 
   const routes = {
     "/": wrap(Home, { reason: "authenticated" }, () => !$user),
-    "/dashboard": wrap(Dashboard, { reason: "unauthenticated" }, () => $user),
-    "/signup": wrap(Signup, { reason: "authenticated" }, () => !$user),
+    /*"/dashboard": wrap(Dashboard, { reason: "unauthenticated" }, () => $user),*/
+    "/signup": wrap(Signup, { reason: "unauthenticated" }, () => $user),
     "/login": wrap(Login, { reason: "authenticated" }, () => !$user),
     "/profile": wrap(Prolife, { reason: "unauthenticated" }, () => $user),
     "/config": wrap(Config, { reason: "unauthenticated" }, () => $user),
     "/camaras": wrap(Camaras, { reason: "unauthenticated"}, () => $user),
-    "/alertas": wrap(Alertas, { reason: "unauthenticated"}, () => $user)
+    "/alertas": wrap(Alertas, { reason: "unauthenticated"}, () => $user),
+    "/detections": wrap(Detections, { reason: "unauthenticated"}, () => $user),
   };
 
   function conditionsFailed(event) {

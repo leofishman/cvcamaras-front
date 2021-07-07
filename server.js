@@ -9,6 +9,7 @@ const transactionsRoutes = require('./routes/transactions')
 const authRoutes = require('./routes/auth')
 const configRoutes = require('./routes/config')
 const alertRoutes = require('./routes/alert')
+const detectionsRoute = require('./routes/detections')
 const path = require('path')
 const User = require('./models/User')
 const passport = require('passport')
@@ -45,9 +46,11 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/api/transactions', transactionsRoutes)
+app.use('/api/detections', detectionsRoute)
 app.use('/api/auth', authRoutes)
 app.use('/api/config',configRoutes)
 app.use('/api/alertas', alertRoutes)
+
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/public'))
