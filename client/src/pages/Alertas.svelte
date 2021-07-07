@@ -121,9 +121,9 @@
   <table class="table is-fullwidth">
     <thead>
       <tr>
-        <th>Fecha</th>
+        <th><i class="far fa-calendar-alt mr-3"></i>Fecha</th>
         <th><i class="fas fa-bell mr-3"></i>Tipo</th>
-        <th>Camara</th>
+        <th><i class="fas fa-video mr-3"></i>Camara</th>
         <th>Elemento</th>
       </tr>
     </thead>

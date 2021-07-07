@@ -47,7 +47,9 @@
     margin: 40px auto;
   }
 </style>
+<Loading />
 
+{#if (1 == 2)}
 <div class="app container">
   <div class="field has-addons">
     <p class="control">
@@ -69,9 +71,7 @@
       <button class="button" on:click={addTransaction} {disabled}>Save</button>
     </p>
   </div>
-  {#if loading}
-    <Loading />
-  {/if}
+
 
   {#if $transactions.length > 0}
     <SummaryCard mode="balance" value={$balance} />
@@ -93,3 +93,4 @@
     <Transaction {transaction} {removeTransaction} />
   {/each}
 </div>
+{/if}

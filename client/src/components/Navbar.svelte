@@ -3,6 +3,11 @@
   import { user, pageAction, transactions } from "../stores";
   import { push } from "svelte-spa-router";
   let isActive = false;
+
+  if ($pageAction === null) {
+    $pageAction = 'AlgoLabs powerfull Dashboard'
+  }
+
   async function logout() {
     await axios.post("/api/auth/logout");
     $user = null;
@@ -31,21 +36,23 @@
     <div class="navbar-menu" class:is-active={isActive}>
       <div class="navbar-end">
         <div class="navbar-item">
-          <div class="navbar-menu-link pr-6">
-            <a href="#/alertas" class="menu-link">Alertas</a>
-          </div>
-          <div class="navbar-menu-link pr-6">
-            <a href="#/camaras" class="menu-link">Camaras</a>
-          </div>
-          <div class="navbar-menu-link pr-6">
-            <a href="#/config" class="menu-link">Config  <i class="fas fa-cog "></i></a>
-          </div>          
-          <div class="buttons">
-            {#if $user}
-              <a class="button is-primary is-light" href="#/profile">
-                👤 {$user.username}
-              </a>
-              <button class="button" on:click={logout}>Log out</button>
+          {#if $user}
+              <div class="navbar-menu-link pr-6">
+                <a href="#/alertas" class="menu-link">Alertas<i class="fas fa-bell ml-1"></i></a>
+              </div>
+              <div class="navbar-menu-link pr-6">
+                <a href="#/camaras" class="menu-link">Camaras <i class="fas fa-video ml-1"></i></a>
+              </div>
+              <div class="navbar-menu-link pr-6">
+                <a href="#/config" class="menu-link">Config  <i class="fas fa-cog "></i></a>
+              </div>          
+              <div class="buttons">
+                
+                  <a class="button is-primary is-light" href="#/profile">
+                    👤 {$user.username}
+                  </a>
+                  <button class="button" on:click={logout}>Log out</button>
+              </div>
             {:else}
               <a class="button" href="#/login">Login</a>
             {/if}
@@ -54,5 +61,4 @@
 
       </div>
     </div>
-  </div>
 </nav>
