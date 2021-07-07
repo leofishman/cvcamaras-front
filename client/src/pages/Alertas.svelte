@@ -47,12 +47,13 @@
     import 'focus-visible';
 
     async function filtrar() {
-    //  loading = true;
-    
+      loading = true;
+    console.log(51, opciones)
       let params = '';
       for (const param in opciones) {
         params = params + param + "=" + opciones[param] + "&"
       }
+      console.log(56, params)
       const { data } = await axios.get("/api/alertas/", {params: params});
       loading = false;
       alertas = data;

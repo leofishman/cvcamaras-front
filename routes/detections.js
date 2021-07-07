@@ -28,7 +28,6 @@ var getQueryParameters = function(query) {
 
 router.get('/', ensureLogin, async(req, res) => {
     let filter = getQueryParameters(req.query);
-
     try {
         const detections = await Detections.queryDetections(filter); 
         if (!detections) {

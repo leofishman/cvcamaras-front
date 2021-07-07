@@ -32,7 +32,6 @@
       loading = false;
       detections = data;
       $pageAction = 'Detecciones 😷 ';
-console.log(35, detections)
     });
     
     // optional import focus-visible polyfill only once
@@ -43,11 +42,13 @@ console.log(35, detections)
     
       let params = '';
       for (const param in opciones) {
-        params = params + param + "=" + opciones[param] + "&"
+        params = params + "&" + param + "=" + opciones[param]
+
       }
       const { data } = await axios.get("/api/detections/", {params: params});
       loading = false;
       detections = data;
+      console.log(50, params, opciones)
     }
 </script>
     

@@ -52,21 +52,26 @@ const AlertSchema = new Schema({
 })
 
 AlertSchema.statics.queryAlerts = function(filter) {
-    const fecha_desde = filter.fecha_desde;
+    console.log(55, filter  )
+    let fecha_desde = filter.fecha_desde;
     let fecha_hasta = filter.fecha_hasta;
     if (!fecha_hasta) {
         fecha_hasta = new Date();
     } else {
-        fecha_hasta = new Date(fecha_hasta);
+        fecha_hasta =  new Date(fecha_hasta);
     }
     
     if (fecha_desde) {
+        //fecha_desde =  new Date(fecha_desde);
+        fecha_desde = 'ISODate(' + fecha_desde + ')'
+        fecha_hasta = 'ISODate(' + fecha_hasta + ')'
         filter.date_alerta = {
-            $gte: new Date(fecha_desde), 
-            $lte: fecha_hasta
+            $gte:  fecha_desde, 
+            $lte: fecha_hasta, 
         };
     }
-    
+
+console.log(72, filter)
     return this.find(filter).limit(20);
 }
 
