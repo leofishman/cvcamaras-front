@@ -12,12 +12,6 @@
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.3.1"
   },
-  "Dependencies": {
-    "style-loader": "^0.23.1",
-    "svelte": "^3.0.0",
-    "svelte-loader": "2.13.3",
-    "svelte-preprocess": "^4.7.3"
-  },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "dev": "webpack-dev-server --content-base public"
@@ -34,6 +28,10 @@
     "svelte-mui": "^0.3.3-7",
     "svelte-spa-router": "^2.2.0",
     "svelte-tooltip": "^1.2.0",
-    "svelte-video-player": "^1.2.5"
+    "svelte-video-player": "^1.2.5",
+    "style-loader": "^0.23.1",
+    "svelte": "^3.0.0",
+    "svelte-loader": "2.13.3",
+    "svelte-preprocess": "^4.7.3"
   }
 }
