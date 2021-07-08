@@ -2,7 +2,6 @@
   "name": "algolabs-app",
   "version": "1.0.0",
   "devDependencies": {
-    "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
     "focus-visible": "^5.2.0",
     "mini-css-extract-plugin": "^0.6.0",
@@ -24,6 +23,8 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bulma": "^0.9.3",
+    "cross-env": "^5.2.0",
+    "cvcamaras": "file:..",
     "CVCamaras": "file:..",
     "dateformat": "^4.5.1",
     "svelma": "^0.4.5",
