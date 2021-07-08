@@ -15,25 +15,41 @@ const DetectionSchema = new Schema({
 });
 
 DetectionSchema.statics.queryDetections = function(filter) {
-
-    const fecha_desde = filter.fecha_desde;
-    let fecha_hasta = filter.fecha_hasta;
     
-
+    let fecha_desde = filter.fecha_desde;
+    let fecha_hasta = filter.fecha_hasta;
     if (!fecha_hasta) {
         fecha_hasta = new Date();
     } else {
-        fecha_hasta = new Date(fecha_hasta);
+        fecha_hasta =  new Date(fecha_hasta);
     }
-    
     if (fecha_desde) {
-            filter.datetimetz = {
-            $gte: new Date(fecha_desde), 
-            $lte: fecha_hasta
+        fecha_desde = new Date(fecha_desde);
+        fecha_hasta = fecha_hasta;
+        filter.datetimetz = {
+            $gte:  fecha_desde, 
+            $lte: fecha_hasta, 
         };
+        delete filter.fecha_desde;
+        delete filter.fecha_hasta;
     }
-console.log(35,filter)
-    return this.find(filter).limit(20);
+
+    filter.detections = [];
+
+    if (filter.barbijo) {
+         filter.detections[0] = "mask"
+    }
+    if (filter.casco) {
+        filter.detections[1] = "hard hat"
+    }
+
+    if (filter.detections.length == 0) delete filter.detections
+    delete filter.casco
+    delete filter.chaleco
+    delete filter.barbijo
+    delete filter.tipo
+
+    return  this.find(filter).limit(20);
 }
 
 const Detection = model('detections', DetectionSchema);

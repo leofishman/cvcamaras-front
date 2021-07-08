@@ -19,7 +19,6 @@
     if (type == "detection") {
         iconEvent = 'history';
     }
-console.log(22, detection, detection.detections[1])
     function estado(element) {
         if (element) {
             return 'detection'

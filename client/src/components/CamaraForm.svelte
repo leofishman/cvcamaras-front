@@ -1,11 +1,5 @@
 <script>
     import {
-      transactions,
-      sortedTransactions,
-      income,
-      expenses,
-      balance,
-      title,
       cameras,
     } from "../stores";
 
@@ -29,7 +23,6 @@
 
     async function removeCamera(camera) {
       const response = await axios.delete("/api/config/cameras/delete/" + camera._id);
-      console.log(32, response.data, 4444, camera)
       if (response.data.id === camera._id) {
         $cameras = $cameras.filter(c => c._id !== camera._id);
        

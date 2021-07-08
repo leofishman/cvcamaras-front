@@ -14,41 +14,30 @@
     import 'bulma/css/bulma.css'
   
     let loading = false;
-    let query = $querystring;
     let detections;
     // $: disabled = (feed == '' || id == '');
     $: detections = '';
     let opciones = {}
-    let queries = query.split("&");
-    if (queries.length > 1) {
-      queries.forEach(element => {
-        opciones[element.split("=")[0]] = element.split("=")[1]
-      });
+
+    async function getDetections() {
+      const { data } = await axios.post("/api/detections/", {opciones});
+      return data
     }
 
     onMount(async () => {
-      loading = true;
-      const { data } = await axios.get("/api/detections/", {params: $querystring});
-      loading = false;
-      detections = data;
       $pageAction = 'Detecciones 😷 ';
+      loading = true;
+      detections = await getDetections();
+      loading = false;
     });
     
     // optional import focus-visible polyfill only once
     import 'focus-visible';
 
     async function filtrar() {
-    //  loading = true;
-    
-      let params = '';
-      for (const param in opciones) {
-        params = params + "&" + param + "=" + opciones[param]
-
-      }
-      const { data } = await axios.get("/api/detections/", {params: params});
+      loading = true;
+      detections = await getDetections();
       loading = false;
-      detections = data;
-      console.log(50, params, opciones)
     }
 </script>
     
@@ -68,7 +57,7 @@
         </div>
         <div class="column">
           <div class="select">
-            <select bind:value="{opciones.cam}">Camara
+            <select bind:value="{opciones.source}">Camara
               {#each $cameras as camera, i}
                 <option value="{camera.id}">{camera.id} </option>
               {/each}

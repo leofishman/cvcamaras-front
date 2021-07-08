@@ -52,6 +52,7 @@ const AlertSchema = new Schema({
 })
 
 AlertSchema.statics.queryAlerts = function(filter) {
+    
     let fecha_desde = filter.fecha_desde;
     let fecha_hasta = filter.fecha_hasta;
     if (!fecha_hasta) {
@@ -70,7 +71,7 @@ AlertSchema.statics.queryAlerts = function(filter) {
         delete filter.fecha_hasta;
     }
 
-    return this.find(filter).limit(200);
+    return this.find(filter).limit(20);
 }
 
 const Alerta = model ('alertas', AlertSchema)

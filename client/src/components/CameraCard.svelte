@@ -5,12 +5,9 @@
 
   export let id = '';
   export let idn = 0;
-  export let feed = '';
-  export let fps = 1;
   export let det_barbijo = true;
   export let det_casco = true;
   export let det_chaleco = false;
-  export let frames_capt = 50;
   export let active = true;  
   export let i;
   export let camera;
