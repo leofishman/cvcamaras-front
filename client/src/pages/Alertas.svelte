@@ -35,28 +35,27 @@
       });
     }
 
+    async function getAlerts() {
+      const { data } = await axios.post("/api/alertas/", {opciones});
+      return data
+    }    
+
     onMount(async () => {
       loading = true;
-      const { data } = await axios.get("/api/alertas/", {params: $querystring});
+      alertas = await getAlerts()
       loading = false;
-      alertas = data;
       $pageAction = 'Alertas';
     });
     
     // optional import focus-visible polyfill only once
     import 'focus-visible';
 
+
+
     async function filtrar() {
       loading = true;
-    console.log(51, opciones)
-      let params = '';
-      for (const param in opciones) {
-        params = params + param + "=" + opciones[param] + "&"
-      }
-      console.log(56, params)
-      const { data } = await axios.get("/api/alertas/", {params: params});
+      alertas = await getAlerts()
       loading = false;
-      alertas = data;
       $pageAction = 'Alertas';
     }
 </script>
