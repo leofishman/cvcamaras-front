@@ -17,7 +17,7 @@
         password
       });
       $user = data.user;
-      push("/dashboard");
+      push("/camaras");
     } catch (error) {
       if (error.response.data.message === "UserExistsError") {
         username = "";

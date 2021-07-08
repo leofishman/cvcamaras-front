@@ -8,13 +8,15 @@
     "node-sass": "^6.0.1",
     "rollup-plugin-postcss": "^4.0.0",
     "serve": "^11.0.0",
-    "style-loader": "^0.23.1",
-    "svelte": "^3.0.0",
-    "svelte-loader": "2.13.3",
-    "svelte-preprocess": "^4.7.3",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.3.1"
+  },
+  "Dependencies": {
+    "style-loader": "^0.23.1",
+    "svelte": "^3.0.0",
+    "svelte-loader": "2.13.3",
+    "svelte-preprocess": "^4.7.3"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
