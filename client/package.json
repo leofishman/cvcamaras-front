@@ -24,6 +24,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bulma": "^0.9.3",
+    "CVCamaras": "file:..",
     "dateformat": "^4.5.1",
     "svelma": "^0.4.5",
     "svelte-material-ui": "^4.2.0",
