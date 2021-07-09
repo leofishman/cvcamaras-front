@@ -5,7 +5,7 @@
     } from "../stores";
 
 
-    import 'bulma/css/bulma.css'
+  //  import 'bulma/css/bulma.css'
     import SvelteTooltip from 'svelte-tooltip';
 
   //  export let camera;

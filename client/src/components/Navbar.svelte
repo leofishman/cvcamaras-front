@@ -1,6 +1,6 @@
 <script>
   import axios from "axios";
-  import 'bulma/css/bulma.css'
+  //import 'bulma/css/bulma.css'
   import { user, pageAction, transactions } from "../stores";
   import { push } from "svelte-spa-router";
   let isActive = false;
