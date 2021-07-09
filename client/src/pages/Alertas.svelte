@@ -1,12 +1,10 @@
-
 <script>
     import axios from "axios";
     import Alertas from "../components/Alertas.svelte"
     import { querystring } from "svelte-spa-router";
     import Loading from "../components/Loading.svelte";
     import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
-    import { onMount } from "svelte";
-    
+    import { onMount } from "svelte";   
     import {
       cameras,
       pageAction
@@ -16,15 +14,19 @@
     let id = '';
     let idn = 0;
     let feed = '';
-    let fps = 1;
-    let det_barbijo = true;
-    let det_casco = true;
-    let det_chaleco = false;
-    let frames_capt = 50;
-    let active = true;
+    let totalDocs;
+    let limit;
+    let page;
+    let totalPages;
+    let hasNextPage;
+    let nextPage;
+    let hasPrevPage;
+    let prevPage;
+    let pagingCounter;
     let loading = false;
     let query = $querystring;
     $: alertas = '';
+    $: mostrando = alertas.length
     $: disabled = (feed == '' || id == '');
 
     let opciones = {}
@@ -37,7 +39,9 @@
 
     async function getAlerts() {
       const { data } = await axios.post("/api/alertas/", {opciones});
-      return data
+      console.log(38, data)
+      totalDocs = data.totalDocs
+      return data.docs
     }    
 
     onMount(async () => {
@@ -45,12 +49,8 @@
       alertas = await getAlerts()
       loading = false;
       $pageAction = 'Alertas';
+      console.log(47, alertas.length)
     });
-    
-    // optional import focus-visible polyfill only once
-    import 'focus-visible';
-
-
 
     async function filtrar() {
       loading = true;
@@ -117,6 +117,7 @@
   {#if loading}
     <Loading />
   {:else}
+      <div >mostrando: {mostrando} de {totalDocs} alertas</div> 
       <table class="table is-fullwidth">
         <thead>
           <tr>

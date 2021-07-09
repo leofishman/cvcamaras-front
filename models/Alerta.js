@@ -1,4 +1,5 @@
 const {Schema, model} = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const AlertSchema = new Schema({
     _ids_cabeza: {
@@ -51,8 +52,15 @@ const AlertSchema = new Schema({
     },    
 })
 
-AlertSchema.statics.queryAlerts = function(filter) {
-    
+AlertSchema.plugin(mongoosePaginate);
+
+AlertSchema.statics.queryAlerts = async function(filter) {
+
+    const options = {
+        page: 1,
+        limit: 6,
+      };
+
     let fecha_desde = filter.fecha_desde;
     let fecha_hasta = filter.fecha_hasta;
     if (!fecha_hasta) {
@@ -71,8 +79,12 @@ AlertSchema.statics.queryAlerts = function(filter) {
         delete filter.fecha_hasta;
     }
 
-    return this.find(filter).limit(20);
+    const result = await this.paginate(filter, options, function (err, resultado) {
+        return resultado;
+    })
+    return result;
 }
+
 
 const Alerta = model ('alertas', AlertSchema)
 
