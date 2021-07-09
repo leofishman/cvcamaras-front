@@ -10,6 +10,7 @@ const authRoutes = require('./routes/auth')
 const configRoutes = require('./routes/config')
 const alertRoutes = require('./routes/alert')
 const detectionsRoute = require('./routes/detections')
+const framesRpute = require('./routes/frames')
 const path = require('path')
 const User = require('./models/User')
 const passport = require('passport')
@@ -50,6 +51,7 @@ app.use('/api/detections', detectionsRoute)
 app.use('/api/auth', authRoutes)
 app.use('/api/config',configRoutes)
 app.use('/api/alertas', alertRoutes)
+app.use('/api/frames', framesRpute)
 
 
 if (process.env.NODE_ENV === 'production') {

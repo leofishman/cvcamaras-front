@@ -11,7 +11,7 @@
       cameras,
       pageAction
     } from "../stores";
-    import 'bulma/css/bulma.css'
+  //  import 'bulma/css/bulma.css'
   
     let loading = false;
     let detections;

@@ -1,5 +1,6 @@
 <script>
   import axios from "axios";
+  //import 'bulma/css/bulma.css'
   import { user, pageAction, transactions } from "../stores";
   import { push } from "svelte-spa-router";
   let isActive = false;
@@ -20,7 +21,7 @@
   <div class="container">
     <div class="navbar-brand">
       <a href="#/" class="navbar-item"> 
-        <span class="title"> <img src="/images/logo.svg" width="200px"> {$pageAction}</span>
+        <span class="title"> <img src="/images/logo.svg" alt="home" width="200px"> {$pageAction}</span>
       </a>
       <span
         class="navbar-burger burger"
