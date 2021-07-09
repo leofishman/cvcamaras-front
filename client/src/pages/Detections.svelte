@@ -40,10 +40,7 @@
       loading = false;
     }
 </script>
-    
-{#if loading}
-  <Loading />
-{:else}
+
   <div class="container">
     <ExpansionPanel name="Filtros">
       <div class="columns" on:change="{filtrar}">
@@ -95,8 +92,14 @@
         </div>
 
       </div>Filtros x fecha, tipo de alerta, camara y elementos
-    </ExpansionPanel>
-    
+    </ExpansionPanel>    
+  </div>
+{#if loading}
+  <Loading />
+{:else}
+
+<div class="container">
+  
     <table class="table is-fullwidth">
       <thead>
         <tr>

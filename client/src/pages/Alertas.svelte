@@ -60,9 +60,7 @@
     }
 </script>
     
-{#if loading}
-<Loading />
-{/if}
+
 
 <div class="container">
   <ExpansionPanel name="Filtros">
@@ -116,34 +114,44 @@
 
     </div>Filtros x fecha, tipo de alerta, camara y elementos
   </ExpansionPanel>
-  
-  <table class="table is-fullwidth">
-    <thead>
-      <tr>
-        <th><i class="far fa-calendar-alt mr-3"></i>Fecha</th>
-        <th><i class="fas fa-bell mr-3"></i>Tipo</th>
-        <th><i class="fas fa-video mr-3"></i>Camara</th>
-        <th>Elemento</th>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <th>Fecha</th>
-        <th><i class="fas fa-bell mr-3"></i>Tipo</th>
-        <th>Camara</th>
-        <th>Elemento</th>
-      </tr>
-    </tfoot>
-    <tbody>
-      {#if alertas.length > 0}
-        {#each alertas as alerta, i}
-            <Alertas eventType={'alerta'} alertType={alerta.tipo} {alerta} {i} />
-        {/each} 
-      {:else}
-        No se registran alertas
-      {/if}
+  {#if loading}
+    <Loading />
+  {:else}
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th><i class="far fa-calendar-alt mr-3"></i>Fecha</th>
+            <th><i class="fas fa-bell mr-3"></i>Tipo</th>
+            <th><i class="fas fa-video mr-3"></i>Camara</th>
+            <th>Elemento</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Fecha</th>
+            <th><i class="fas fa-bell mr-3"></i>Tipo</th>
+            <th>Camara</th>
+            <th>Elemento</th>
+          </tr>
+        </tfoot>
+        <tbody>
+
+        {#if alertas.length > 0}
+          {#each alertas as alerta, i}
+              <Alertas eventType={'alerta'} alertType={alerta.tipo} {alerta} {i} />
+          {/each} 
+        {:else}
+            <tr>
+              <td>
+                No se registran alertas
+              </td>
+            </tr>
+
+        {/if}
 
 
-    </tbody>
-  </table> 
+      </tbody>
+    </table> 
+  {/if}
+    
 </div>
