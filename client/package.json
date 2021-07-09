@@ -32,7 +32,6 @@
     "svelte-mui": "^0.3.3-7",
     "svelte-preprocess": "^4.7.3",
     "svelte-spa-router": "^2.2.0",
-    "svelte-tooltip": "^1.2.0",
     "svelte-video-player": "^1.2.5"
   }
 }

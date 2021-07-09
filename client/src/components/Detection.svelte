@@ -6,7 +6,7 @@
 
 
   //  import 'bulma/css/bulma.css'
-    import SvelteTooltip from 'svelte-tooltip';
+    import SvelteTooltip from './SvelteTooltip.svelte';
 
   //  export let camera;
     export let detection;

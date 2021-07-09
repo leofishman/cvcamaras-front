@@ -5,7 +5,7 @@
     } from "../stores";
 
     
-    import 'bulma/css/bulma.css'
+   // import 'bulma/css/bulma.css'
 
     export let alertType;
     export let camera;
