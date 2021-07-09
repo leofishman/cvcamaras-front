@@ -3,7 +3,7 @@ const {Schema, model} = require('mongoose');
 const DetectionSchema = new Schema({
     name: String,
     source: String,
-    datetimetz: Date,
+    datetime: Date,
     source_storage_path: String,
     person: Boolean,
     person_crop: Schema.Types.Mixed,
@@ -26,7 +26,7 @@ DetectionSchema.statics.queryDetections = function(filter) {
     if (fecha_desde) {
         fecha_desde = new Date(fecha_desde);
         fecha_hasta = fecha_hasta;
-        filter.datetimetz = {
+        filter.datetime = {
             $gte:  fecha_desde, 
             $lte: fecha_hasta, 
         };
@@ -36,11 +36,14 @@ DetectionSchema.statics.queryDetections = function(filter) {
 
     filter.detections = [];
 
+    if (filter.chaleco) {
+         filter.detections[0] = "person"
+    }
     if (filter.barbijo) {
-         filter.detections[0] = "mask"
+        filter.detections[1] = "no facemask"
     }
     if (filter.casco) {
-        filter.detections[1] = "hard hat"
+        filter.detections[2] = "hard hat"
     }
 
     if (filter.detections.length == 0) delete filter.detections
