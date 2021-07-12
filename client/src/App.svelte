@@ -35,7 +35,7 @@
   const routes = {
     "/": wrap(Home, { reason: "authenticated" }, () => !$user),
     /*"/dashboard": wrap(Dashboard, { reason: "unauthenticated" }, () => $user),*/
-    "/signup": wrap(Signup, { reason: "authenticated" }, () => !$user),
+    "/signup": wrap(Signup, { reason: "unauthenticated" }, () => $user),
     "/login": wrap(Login, { reason: "authenticated" }, () => !$user),
     "/profile": wrap(Prolife, { reason: "unauthenticated" }, () => $user),
     "/config": wrap(Config, { reason: "unauthenticated" }, () => $user),
