@@ -11,17 +11,20 @@
       cameras,
       pageAction
     } from "../stores";
-  //  import 'bulma/css/bulma.css'
   
     let loading = false;
     let detections;
     // $: disabled = (feed == '' || id == '');
     $: detections = '';
-    let opciones = {}
+    $: mostrando = detections.length
+    let opciones = {};
+    let totalDocs;
+
 
     async function getDetections() {
       const { data } = await axios.post("/api/detections/", {opciones});
-      return data
+      totalDocs = data.totalDocs
+      return data.docs
     }
 
     onMount(async () => {
@@ -99,7 +102,7 @@
 {:else}
 
 <div class="container">
-  
+  <div >mostrando: {mostrando} de {totalDocs} detecciones</div> 
     <table class="table is-fullwidth">
       <thead>
         <tr>

@@ -19,7 +19,6 @@ router.post('/', ensureLogin, async(req, res) => {
     }
     try {
         const alertas = await Alerta.queryAlerts(filter); 
-        console.log(22, alertas)
         if (!alertas) {
             throw new Error('No hay alertas')
         }
