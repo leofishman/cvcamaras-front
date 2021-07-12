@@ -18,12 +18,17 @@
     $: detections = '';
     $: mostrando = detections.length
     let opciones = {};
-    let totalDocs;
+    let totalDocs, hasNextPage, hasPrevPage, limit, nextPage, page, pagingCounter, prevPage, totalPages;
+
 
 
     async function getDetections() {
       const { data } = await axios.post("/api/detections/", {opciones});
       totalDocs = data.totalDocs
+      hasNextPage = data.hasNextPage
+      hasPrevPage = data.hasPrevPage
+      page = data.page
+      console.log(27, data)
       return data.docs
     }
 
@@ -41,6 +46,23 @@
       loading = true;
       detections = await getDetections();
       loading = false;
+    }
+
+    function estado(elemento) {
+      if (!elemento) {
+        return 'disabled'
+      }
+    }
+
+    async function handlePagination(handle) {
+      if (handle == ('next')) {
+        page++
+        opciones = {page}
+      loading = true;
+   //   detections = await getDetections();
+      loading = false;
+      }
+
     }
 </script>
 
@@ -64,17 +86,7 @@
             </select>
           </div>
         </div>
-        <div class="column">
-          <div class="select">
-            <select bind:value="{opciones.tipo}">Tipo de Alerta
-              <!--option value="">--TODAS--</option-->
-              <option value="inmediata">Inmediata</option>
-              <option value="dia">Diaria</option>
-              <option value="hora">horaria</option>
-              <option value="especial">Especiales</option>
-            </select>
-          </div>
-        </div>
+
         <div class="column">
           <Checkbox name="casco" value="casco" bind:checked="{opciones.casco}">
             <i class="fas fa-hard-hat"></i>
@@ -132,6 +144,31 @@
       </tbody>
     </table> 
   </div>
+  <nav class="pagination" role="navigation" aria-label="pagination">
+    <a class="pagination-previous {estado(hasPrevPage)}"> anterior </a>
+    <a class="pagination-next {estado(hasNextPage)}" on:click={handlePagination('next')}> proxima </a>
+    <ul class="pagination-list">
+      <li>
+        <a class="pagination-link" aria-label="Ir a pagina 1">1</a>
+      </li>
+      <li>
+        <span class="pagination-ellipsis">&hellip;</span>
+      </li>
+     
+      <li>
+        <span class="pagination-ellipsis">&hellip;</span>
+      </li>
+
+    </ul>
+  </nav>
 {/if}
 
+
+<style>
+  .disabled {
+      pointer-events: none;
+      opacity: 0.4;
+  } 
+  
+</style>
 

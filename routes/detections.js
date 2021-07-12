@@ -20,7 +20,7 @@ router.post('/', ensureLogin, async(req, res) => {
     }
     try {
         const detections = await Detections.queryDetections(filter); 
-        
+        console.log(23,filter)
         if (!detections) {
             throw new Error('No hay detecciones')
         }

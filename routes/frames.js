@@ -28,13 +28,13 @@ function ensureLogin(req, res, next) {
 
         frames.forEach(element => {
             
-            const frame_jpg = element._id
+            const frame_jpg = element.frame_jpg
 console.log(30, element._id, frame_jpg)
         });
      //   res.contentType('image/jpg');
      
-    //    res.send(frame_jpg);
-        res.status(200).json(frame_jpg)
+     //   res.send(frame_jpg);
+        res.status(200).json(frames)
     } catch (error) {
         res.status(400).json({ message: error.message })
     }

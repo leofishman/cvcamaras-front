@@ -59,6 +59,12 @@
     opacity: 1;
     visibility: initial;
   }
+
+  
+  .detection {
+        color: red;
+        background-color: white;
+    }
 </style>
 
 <div class="tooltip-wrapper">
