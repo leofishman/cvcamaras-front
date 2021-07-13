@@ -1,6 +1,7 @@
 <script>
     import axios from "axios";
     import CamaraCard from "../components/CameraCard.svelte"
+    import CamaraForm from "../components/CamaraForm.svelte"
     import Loading from "../components/Loading.svelte";
     import { onMount } from "svelte";
     import { fade } from 'svelte/transition';
@@ -12,7 +13,6 @@
     } from "../stores";
     import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
 
-    import { text } from "svelte/internal";
   
     let id = '';
     let idn = 0;
@@ -27,7 +27,12 @@
     let addCameraExpand = false;
 
     $: disabled = (feed == '' || id == '');
+    $: cssDisabled = active ? '' : 'disabled' 
 
+    let editable = false;
+      function enableEdit() {
+        editable = !editable;
+      }
 
     onMount(async () => {
       $pageAction = "Configuración";
@@ -39,7 +44,6 @@
   
     async function getConfig() {
       const  {data} = await axios.get("/api/config/");
-      $config = data;
       $config = data;
     }
     async function getCameras() {
@@ -77,10 +81,24 @@
       addCameraExpand = !addCameraExpand;
     }
 
+    function cancelar(event) {
+      addCameraExpand = false;
+    }
+
     function saved(event) {
 
-      console.log(90, $cameras, 22 , event)  
+      message = event.detail.message;
+      type = event.detail.type;
+      addToast({
+        message: message,
+        type: type,
+        dismissible: true,
+        timeout: 3000,
+        });
+      addCameraExpand = false;
+      dispatch('toast');
     }
+
 </script>
   
 <style>
@@ -98,23 +116,22 @@
 
 <div class="app container">
   <div class="conf-alertas">
+    {#if $config.length > 0}
+      <ExpansionPanel name="Configuraciones Globales">
+          {#each $config as configuracion, i }
+            <div class="column is-4">
 
-       {#if $config.length > 0}
-    <ExpansionPanel name="Configuraciones Globales">
-        {#each $config as configuracion, i }
-          <div class="column is-4">
-
-            <div class="columns">
-              <div class="column is-8">
-                <label>{configuracion['key']}: </label>
-              </div>
-              <div class="column is-4">
-                {configuracion['value']}
+              <div class="columns">
+                <div class="column is-8">
+                  <label>{configuracion['key']}: </label>
+                </div>
+                <div class="column is-4">
+                  {configuracion['value']}
+                </div>
               </div>
             </div>
-          </div>
-        {/each} 
-    </ExpansionPanel>
+          {/each} 
+      </ExpansionPanel>
     {/if} 
     <div class="field">
       <p class="control">
@@ -152,6 +169,19 @@
       </header>
     
       {#if addCameraExpand}
+        <div class="card-content"  transition:fade="{{ duration: 200 }}">
+            <div class="notification  {cssDisabled} is-info editar is-light">
+
+              <div class="editable">
+                <CamaraForm on:toast={saved} on:cancelar={cancelar}  {editable} accion="agregar"></CamaraForm>
+              </div>
+
+          </div>
+          
+        </div>
+      <!--
+
+      
         <div class="card-content"  transition:fade="{{ duration: 200 }}">
             <div class="notification  editar is-light">
               <div class="form_add_camera">
@@ -242,8 +272,9 @@
           </div>
           
         </div>
-    
+      -->
       {/if}
+
     </div>
   </div>
 </div>

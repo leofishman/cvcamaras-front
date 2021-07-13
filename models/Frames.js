@@ -33,8 +33,8 @@ FrameSchema.statics.queryFrames = async function(filter) {
   
   const frames = await this.find().limit(1);
 //  let frame_jpg = await frames.frame_jpg.toString('hex');
-  console.log(33, frames)
-  return  frames;
+  //console.log(33, frames[0])
+  return  frames[0]._doc;
 }
 const Frames = model('frames', FrameSchema);
 

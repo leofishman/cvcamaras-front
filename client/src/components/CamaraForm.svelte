@@ -1,24 +1,49 @@
 <script>
     import {
       cameras,
+      addToast
     } from "../stores";
 
     import axios from "axios";
     import { createEventDispatcher } from 'svelte';
-    export let accion;
+    export let accion = 'agregar';
     export let i;
-    export let camera;
+    export let camera = {};
     export let editable = true;
     $: disabled = (camera.feed == '' || camera.id == '');
 
     const dispatch = createEventDispatcher();
 
-    async function postCamera() {
+    async function updateCamera() {
       const response = await axios.post("/api/config/cameras/update", camera);
         $cameras[i] = response.data
         editable = false;
         disabled = true;
         dispatch('toast', {message:'La camara ' + camera.id + ' a sido actualizada', type:'info', element: camera.id})
+    }
+
+    async function addCamera() {
+
+      
+      const response = await axios.post("/api/config/cameras", camera);
+      if (response.status == 200) {
+        $cameras = [response.data, ...$cameras];
+        addToast({
+          message: 'La camara ' + response.data.id + ' a sido agregada',
+          type: 'info',
+          dismissible: true,
+          timeout: 3000,
+        });
+      }      
+    }
+
+    async function handleSave() {
+      if (accion == 'agregar') {
+        addCamera()
+      } else {
+        updateCamera()
+      }
+
     }
 
     async function removeCamera(camera) {
@@ -38,8 +63,16 @@
 
 </script>
 
-<div class="form_add_camera ">
+<div class="form_camera ">
     <div class="title">{accion} camara {camera.id}</div>
+    <div class="field">
+      <p class="control">
+        <label>
+          <input type=checkbox  bind:checked={camera.active}>
+          Activa
+        </label>
+      </p>
+    </div>
     <div class="field">
       <p class="control">
         <input
@@ -47,9 +80,25 @@
           type="text"
           bind:value={camera.id}
           placeholder="Id de la camara" />
-          ID de la Camara
+          ID de la Camara (nombre)
       </p>
     </div>
+    <div class="field">
+      <p class="control">
+        <label on:click={camera.det_persona = !camera.det_persona}>
+          <input type=checkbox  bind:checked={camera.det_persona }>
+          {#if camera.det_persona}
+            <i class="fas fa-male ml-3"></i>  
+             Detectar persona?
+            <i class="fas fa-toggle-on"></i>
+          {:else}
+            <i class="fas fa-male ml-3 disabled"></i>  
+            Detectar persona?
+            <i class="fas fa-toggle-off"></i>
+          {/if}
+        </label>
+      </p>
+    </div>     
     <div class="field">
       <p class="control">
         <label on:click={camera.det_barbijo = !camera.det_barbijo}>
@@ -134,18 +183,11 @@
       </label>
       </p>
     </div>    
-    <div class="field">
-      <p class="control">
-        <label>
-          <input type=checkbox  bind:checked={camera.active}>
-          Activa
-        </label>
-      </p>
-    </div>
+
     <footer class="card-footer is-flex">
       <div class="field flex-wrap">
         <p class="control is-flex-direction-row">
-          <button class="button " on:click={postCamera} {disabled}>Grabar</button>
+          <button class="button " on:click={handleSave} {disabled}>Grabar</button>
           <button class="button" on:click={removeCamera(camera)} {disabled}> Borrar</button>
           <button class="button" on:click={cancelar} > Cancelar</button>
         </p>
