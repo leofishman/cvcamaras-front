@@ -38,6 +38,7 @@
     }
 
     async function getAlerts() {
+      console.log(31, opciones)
       const { data } = await axios.post("/api/alertas/", {opciones});
       console.log(38, data)
       totalDocs = data.totalDocs
@@ -52,7 +53,18 @@
       console.log(47, alertas.length)
     });
 
+    function clean(obj) {
+      for (var propName in obj) {
+        if (obj[propName] === null || obj[propName] === undefined || obj[propName] === '' || obj[propName] === false) {
+          delete obj[propName];
+        }
+      }
+      return obj
+    }
+
     async function filtrar() {
+      opciones = clean(opciones)
+      console.log(57, opciones)
       loading = true;
       alertas = await getAlerts()
       loading = false;
@@ -76,6 +88,7 @@
       <div class="column">
         <div class="select">
           <select bind:value="{opciones.cam}">Camara
+            <option value="">Todas</option>
             {#each $cameras as camera, i}
               <option value="{camera.id}">{camera.id} </option>
             {/each}
@@ -86,6 +99,7 @@
         <div class="select">
           <select bind:value="{opciones.tipo}">Tipo de Alerta
             <!--option value="">--TODAS--</option-->
+            <option value="">Todas</option>
             <option value="inmediata">Inmediata</option>
             <option value="dia">Diaria</option>
             <option value="hora">horaria</option>

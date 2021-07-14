@@ -91,6 +91,7 @@
             <i class="fas fa-male ml-3"></i>  
              Detectar persona?
             <i class="fas fa-toggle-on"></i>
+            Date
           {:else}
             <i class="fas fa-male ml-3 disabled"></i>  
             Detectar persona?

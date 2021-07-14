@@ -144,23 +144,25 @@
       </tbody>
     </table> 
   </div>
-  <nav class="pagination" role="navigation" aria-label="pagination">
-    <a class="pagination-previous {estado(hasPrevPage)}"> anterior </a>
-    <a class="pagination-next {estado(hasNextPage)}" on:click={handlePagination('next')}> proxima </a>
-    <ul class="pagination-list">
-      <li>
-        <a class="pagination-link" aria-label="Ir a pagina 1">1</a>
-      </li>
-      <li>
-        <span class="pagination-ellipsis">&hellip;</span>
-      </li>
-     
-      <li>
-        <span class="pagination-ellipsis">&hellip;</span>
-      </li>
+  {#if detections}
+    <nav class="pagination" role="navigation" aria-label="pagination">
+      <a class="pagination-previous {estado(hasPrevPage)}"> anterior </a>
+      <a class="pagination-next {estado(hasNextPage)}" on:click={handlePagination('next')}> proxima </a>
+      <ul class="pagination-list">
+        <li>
+          <a class="pagination-link" aria-label="Ir a pagina 1">1</a>
+        </li>
+        <li>
+          <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+      
+        <li>
+          <span class="pagination-ellipsis">&hellip;</span>
+        </li>
 
-    </ul>
-  </nav>
+      </ul>
+    </nav>
+    {/if}
 {/if}
 
 

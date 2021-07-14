@@ -2,6 +2,16 @@ const {Schema, model} = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const AlertSchema = new Schema({
+    source: String,
+    frame_id: String,
+    datetime: Date,
+    person_crop: Buffer,
+    head_crop: Buffer,
+    detections: Array,
+    detections_confidences: Array,
+    frame_id: String,
+
+    /*
     _ids_cabeza: {
         type: Array,
     },
@@ -50,6 +60,7 @@ const AlertSchema = new Schema({
     uid: {
         type: String,
     },    
+    */
 })
 
 AlertSchema.plugin(mongoosePaginate);
@@ -71,7 +82,7 @@ AlertSchema.statics.queryAlerts = async function(filter) {
     if (fecha_desde) {
         fecha_desde = new Date(fecha_desde);
         fecha_hasta = fecha_hasta;
-        filter.date_alerta = {
+        filter.datetime = {
             $gte:  fecha_desde, 
             $lte: fecha_hasta, 
         };
