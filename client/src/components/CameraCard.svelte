@@ -3,14 +3,14 @@
 
   export let mode = "balance";
 
-  export let id = '';
+  export let camera, id = '';
   export let idn = 0;
   export let det_barbijo = true;
   export let det_casco = true;
   export let det_chaleco = false;
+  export let det_persona = camera.det_persona;
   export let active = true;  
   export let i;
-  export let camera;
  
   import { addToast } from '../stores'
   import { fade } from 'svelte/transition';
@@ -34,6 +34,7 @@
   $: label = mode.toUpperCase();
   $: cssClass = getCssClass(mode);
   $: cssDisabled = active ? '' : 'disabled' 
+  $: det_persona = camera.det_persona
 
   function getCssClass(mode) {
     switch (mode) {
@@ -116,6 +117,7 @@
         <i class="fas fa-hard-hat ml-6 {estado(det_casco)}"></i>
         <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}"></i>  
         <i class="fas fa-vest ml-3 {estado(det_chaleco)}"></i>
+        <i class="fas fa-male ml-3 {estado(det_persona)}"></i>
     </p>
     <button class="card-header-icon" aria-label="more options">
       <span class="icon">

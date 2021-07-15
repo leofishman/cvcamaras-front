@@ -15,6 +15,7 @@ const CameraSchema = new Schema({
         type: Number,
         defaultValue: 1,
     },
+    det_persona: Boolean,
     det_barbijo: {
         type: Boolean,
         defaultValue: true,

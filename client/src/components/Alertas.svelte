@@ -5,7 +5,7 @@
     } from "../stores";
 
     
-    import 'bulma/css/bulma.css'
+   // import 'bulma/css/bulma.css'
 
     export let alertType;
     export let camera;
@@ -32,27 +32,27 @@
 
 
     <tr>
-        <td>{dateFormat(alerta.date_alerta, "dd-mm-yy  h:M")}</td>
+        <td>{dateFormat(alerta.datetime, "dd-mm-yy  h:M")}</td>
         <td><div class="text"> 
-                 <span class="alert"> {alerta.tipo}</span> 
+                 <span class="alert"> {alerta.tipo || 'alerta'}</span> 
             </div>
         </td>
-        <td>{alerta.cam}</td>
+        <td>{alerta.cam || 'camara X'}</td>
         <td>
             <div class="columns">
                 <div class="column">
-                    <i class="fas fa-hard-hat {estado(alerta.casco)}"></i>
+                    <i class="fas fa-hard-hat {estado(alerta.detections[2])}"></i>
                 </div>
                 <div class="column">
-                    <i class="fas fa-head-side-mask {estado(alerta.barbijo)}"></i>
+                    <i class="fas fa-head-side-mask {estado(alerta.detections[1])}"></i>
                 </div>
                 <div class="column ">
-                    <i class="fas fa-vest {estado(alerta.chaleco)}"></i>  
+                    <i class="fas fa-vest {estado(alerta.detections[0])}"></i>  
                 </div>
             </div>
         </td>
     </tr>
-    <tr>
+    <!--tr>
         <td colspan="4">
             <ExpansionPanel name="Fotos">
                 <div class="container">
@@ -70,7 +70,7 @@
 
             </ExpansionPanel>
         </td>
-    </tr>
+    </tr-->
     
 <style>
     .alerta {

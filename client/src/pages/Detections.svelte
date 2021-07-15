@@ -11,40 +11,88 @@
       cameras,
       pageAction
     } from "../stores";
-  //  import 'bulma/css/bulma.css'
   
     let loading = false;
-    let detections;
+    let detections, head;
     // $: disabled = (feed == '' || id == '');
     $: detections = '';
-    let opciones = {}
+    $: mostrando = detections.length
+    let opciones = {};
+    let totalDocs, hasNextPage, hasPrevPage, limit, nextPage, page, pagingCounter, prevPage, totalPages;
+
+   
+    function arrayBufferToBase64(buffer) {
+      var binary = '';
+      var bytes = [].slice.call(new Uint8Array(buffer));
+      console.log(26, bytes)
+      bytes.forEach((b) => binary += String.fromCharCode(b));
+      console.log(27, bytes, binary, buffer)
+      return window.btoa(binary);
+    };  
+
+    async function getHead() {
+      const { data } = await axios.post("/api/detections/head", {opciones});
+
+      var base64Flag = 'data:image/jpeg;base64,';
+        var imageStr = arrayBufferToBase64(data);
+        console.log(37, data, imageStr)
+      head = base64Flag +  data.toString('base64')// "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAA9TXL0Y4OHwAAAABJRU5ErkJggg=="
+      console.log(33, head, 1111111, data)
+    }
 
     async function getDetections() {
+
       const { data } = await axios.post("/api/detections/", {opciones});
-      return data
+
+      totalDocs = data.totalDocs
+      hasNextPage = data.hasNextPage
+      hasPrevPage = data.hasPrevPage
+      page = data.page
+      console.log(43, data)
+      return data.docs
     }
+  
 
     onMount(async () => {
       $pageAction = 'Detecciones 😷 ';
       loading = true;
-      detections = await getDetections();
+      let detections = await getDetections();
+      let head = await getHead()
       loading = false;
     });
-    
-    // optional import focus-visible polyfill only once
-    import 'focus-visible';
 
     async function filtrar() {
       loading = true;
       detections = await getDetections();
       loading = false;
     }
+
+    function estado(elemento) {
+      if (!elemento) {
+        return 'disabled'
+      }
+    }
+
+    async function handlePagination(handle) {
+      if (handle == ('next')) {
+        page++
+        opciones = {page}
+      loading = true;
+      detections = await getDetections();
+      loading = false;
+      }
+
+    }
 </script>
-    
-{#if loading}
-  <Loading />
-{:else}
+
   <div class="container">
+    11<img src="{head}">22
+    <div>
+      <p>Taken from wikpedia</p>
+      <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
+        AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+            9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+    </div>
     <ExpansionPanel name="Filtros">
       <div class="columns" on:change="{filtrar}">
         <div class="column">
@@ -64,17 +112,7 @@
             </select>
           </div>
         </div>
-        <div class="column">
-          <div class="select">
-            <select bind:value="{opciones.tipo}">Tipo de Alerta
-              <!--option value="">--TODAS--</option-->
-              <option value="inmediata">Inmediata</option>
-              <option value="dia">Diaria</option>
-              <option value="hora">horaria</option>
-              <option value="especial">Especiales</option>
-            </select>
-          </div>
-        </div>
+
         <div class="column">
           <Checkbox name="casco" value="casco" bind:checked="{opciones.casco}">
             <i class="fas fa-hard-hat"></i>
@@ -95,8 +133,14 @@
         </div>
 
       </div>Filtros x fecha, tipo de alerta, camara y elementos
-    </ExpansionPanel>
-    
+    </ExpansionPanel>    
+  </div>
+{#if loading}
+  <Loading />
+{:else}
+
+<div class="container">
+  <div >mostrando: {mostrando} de {totalDocs} detecciones</div> 
     <table class="table is-fullwidth">
       <thead>
         <tr>
@@ -126,6 +170,33 @@
       </tbody>
     </table> 
   </div>
+  {#if detections}
+    <nav class="pagination" role="navigation" aria-label="pagination">
+      <a class="pagination-previous {estado(hasPrevPage)}"> anterior </a>
+      <a class="pagination-next {estado(hasNextPage)}" on:click={handlePagination('next')}> proxima </a>
+      <ul class="pagination-list">
+        <li>
+          <a class="pagination-link" aria-label="Ir a pagina 1">1</a>
+        </li>
+        <li>
+          <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+      
+        <li>
+          <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+
+      </ul>
+    </nav>
+    {/if}
 {/if}
 
+
+<style>
+  .disabled {
+      pointer-events: none;
+      opacity: 0.4;
+  } 
+  
+</style>
 

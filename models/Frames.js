@@ -4,7 +4,10 @@ const { model, Schema } = require("mongoose")
 const FrameSchema = new Schema({
   _id: String,
   datetime: String,
-  frame_jpg: Buffer,
+  frame_jpg:   {
+    data: Buffer,
+    contentType: String
+  },
   source: String,
 });
 
@@ -30,8 +33,8 @@ FrameSchema.statics.queryFrames = async function(filter) {
   
   const frames = await this.find().limit(1);
 //  let frame_jpg = await frames.frame_jpg.toString('hex');
- // console.log(33, frame_jpg)
-  return  frames;
+  //console.log(33, frames[0])
+  return  frames[0]._doc;
 }
 const Frames = model('frames', FrameSchema);
 

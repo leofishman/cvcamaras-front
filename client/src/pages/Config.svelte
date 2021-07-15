@@ -1,6 +1,7 @@
 <script>
     import axios from "axios";
     import CamaraCard from "../components/CameraCard.svelte"
+    import CamaraForm from "../components/CamaraForm.svelte"
     import Loading from "../components/Loading.svelte";
     import { onMount } from "svelte";
     import { fade } from 'svelte/transition';
@@ -11,9 +12,10 @@
       addToast,
     } from "../stores";
     import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+    import { createEventDispatcher } from 'svelte';
 
-    import { text } from "svelte/internal";
-  
+
+    const dispatch = createEventDispatcher();
     let id = '';
     let idn = 0;
     let feed = '';
@@ -25,9 +27,16 @@
     let active = true;
     let loading = false;
     let addCameraExpand = false;
+    let configLocal = {};
+
 
     $: disabled = (feed == '' || id == '');
+    $: cssDisabled = configLocal.smtp_enable ? '' : 'disabled' 
 
+    let editable = false;
+      function enableEdit() {
+        editable = !editable;
+      }
 
     onMount(async () => {
       $pageAction = "Configuración";
@@ -38,9 +47,28 @@
     });
   
     async function getConfig() {
-      const  {data} = await axios.get("/api/config/");
-      $config = data;
-      $config = data;
+      const  {data} = await axios.get("/api/config/")
+      $config = data
+      configLocal = $config
+    }
+
+    async function actualizarConfiguraciones () {
+      const igual = $config != configLocal
+      console.log(56,igual,  $config, configLocal)
+      if ($config == configLocal) {
+         const response = await axios.put("/api/config", configLocal)
+         console.log(60, response)
+        $config = response.data
+        addToast({
+          message: 'Configuración actualizada',
+          type: 'info',
+          dismissible: true,
+          timeout: 3000,
+          });
+        dispatch('toast');
+        console.log(67, response)
+      }
+
     }
     async function getCameras() {
       const { data } = await axios.get("/api/config/cameras");
@@ -77,59 +105,154 @@
       addCameraExpand = !addCameraExpand;
     }
 
-    function saved(event) {
-
-      console.log(90, $cameras, 22 , event)  
+    function cancelar(event) {
+      addCameraExpand = false;
     }
+
+    function saved(event) {
+      message = event.detail.message;
+      type = event.detail.type;
+      addToast({
+        message: message,
+        type: type,
+        dismissible: true,
+        timeout: 3000,
+        });
+      addCameraExpand = false;
+      dispatch('toast');
+    }
+
 </script>
   
 <style>
   .app {
     margin: 40px auto;
   }
+  .disabled {
+      opacity: 0.4;
+  }
 </style>
- 
 
 {#if loading}
   <Loading />
 {/if}
 
-
-
 <div class="app container">
   <div class="conf-alertas">
-
-       {#if $config.length > 0}
-    <ExpansionPanel name="Configuraciones Globales">
-        {#each $config as configuracion, i }
-          <div class="column is-4">
-
-            <div class="columns">
-              <div class="column is-8">
-                <label>{configuracion['key']}: </label>
-              </div>
-              <div class="column is-4">
-                {configuracion['value']}
+    {#if $config.length > 0}
+      <ExpansionPanel name="Configuraciones Globales">
+          {#each $config as configuracion, i }
+            <div class="column is-4">
+              <div class="columns">
+                <div class="column is-8">
+                  <label>{configuracion['key']}: </label>
+                </div>
+                <div class="column is-4">
+                  {configuracion['value']}
+                </div>
               </div>
             </div>
-          </div>
-        {/each} 
-    </ExpansionPanel>
+          {/each} 
+      </ExpansionPanel>
     {/if} 
+
     <div class="field">
       <p class="control">
-        <label>Tiempo de generacion de alerta</label>
+        <label>Email de alertas</label>
         <input
           class="input"
-          type="text"
-          bind:value={config.trigeralert}
+          type="email"
+          bind:value={configLocal.alertas_email}
+          placeholder="alertas@mail.com" />
+          A que direccion de email se envian las alertas
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        <label>Telefono/Telegram de alertas</label>
+        <input
+          class="input"
+          type="number"
+          bind:value={configLocal.alertas_telefono}
+          placeholder="Telefono / Telegram que se envian las alertas" />
+          Telefono / Telegram que se envian las alertas
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        <label>Periodicidad de alertas</label>
+        <input
+          class="input"
+          type="number"
+          bind:value={configLocal.alertas_periodicidad}
           placeholder="tiempo de alerta" />
           Cuanto tiempo del evento genera una alerta?
       </p>
     </div>
+    <div class="config-smtp">
+      <ExpansionPanel name="smtp">
+        <div class="field {cssDisabled}">
+          <p class="control">
+            <label>
+              <input type=checkbox  bind:checked={configLocal.smtp_enable}>
+              Habilitado
+            </label>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <label>Server:</label>
+            <input
+              class="input"
+              type="text"
+              bind:value={configLocal.smtp_server}
+              placeholder="smtp.example.com" />
+          </p>
+        </div>        
+        <div class="field">
+          <p class="control">
+            <label>Usuario:</label>
+            <input
+              class="input"
+              type="text"
+              bind:value={configLocal.smtp_user} />
+          </p>
+        </div>  
+        <div class="field">
+          <p class="control">
+            <label>Password:</label>
+            <input
+              class="input"
+              type="password"
+              bind:value={configLocal.smtp_password} />
+          </p>
+        </div>  
+        <div class="field">
+          <p class="control">
+            <label>Port:</label>
+            <input
+              class="input"
+              type="number"
+              bind:value={configLocal.smtp_port} />
+          </p>
+        </div>          
+      </ExpansionPanel>
+    </div>
+ 
+    <hr />
+    <Button on:click={actualizarConfiguraciones}>
+      <i class="fas fa-save mr-3"></i>
+      Actualizar Configuraciones
+    </Button>
   </div>
 
+
+<hr />
+
+
+
   {#if $cameras.length > 0}
+  <h5 class="title info"> Camaras</h5>
     {#each $cameras as camera, i}  
       <CamaraCard on:toast={saved} visible:bind({$cameras.id}) {camera} id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
     {/each}
@@ -141,7 +264,7 @@
   <div class="add-camera">
     <div class="card" >
       <header class="card-header" on:click={toggleAddCamera}>
-        <p class="card-header-title editar mr-4">
+        <p class="card-header-title editar mr-5">
           <Button>
             <i class="fas fa-plus mr-3"></i>
             Agregar Camara
@@ -152,6 +275,19 @@
       </header>
     
       {#if addCameraExpand}
+        <div class="card-content"  transition:fade="{{ duration: 200 }}">
+            <div class="notification  {cssDisabled} is-info editar is-light">
+
+              <div class="editable">
+                <CamaraForm on:toast={saved} on:cancelar={cancelar}  {editable} accion="agregar"></CamaraForm>
+              </div>
+
+          </div>
+          
+        </div>
+      <!--
+
+      
         <div class="card-content"  transition:fade="{{ duration: 200 }}">
             <div class="notification  editar is-light">
               <div class="form_add_camera">
@@ -242,8 +378,9 @@
           </div>
           
         </div>
-    
+      -->
       {/if}
+
     </div>
   </div>
 </div>

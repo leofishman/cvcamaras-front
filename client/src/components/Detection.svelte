@@ -6,7 +6,7 @@
 
 
   //  import 'bulma/css/bulma.css'
-    import SvelteTooltip from 'svelte-tooltip';
+    import SvelteTooltip from './SvelteTooltip.svelte';
 
   //  export let camera;
     export let detection;
@@ -20,6 +20,7 @@
         iconEvent = 'history';
     }
     function estado(element) {
+        console.log(23, element)
         if (element) {
             return 'detection'
         } else {
@@ -29,60 +30,36 @@
 </script>
 
 
-    <tr>
-        <td>{dateFormat(detection.datetimetz, "dd-mm-yy  h:M")}</td>
-        <td><div class="text"> 
-                 <span class="alert"> {type}</span> 
+<tr>
+    <td>{dateFormat(detection.datetimetz, "dd-mm-yy  h:M")}</td>
+    <td><div class="text"> 
+                <span class="alert"> {type}</span> 
+        </div>
+    </td>
+    <td>{detection.source}</td>
+    <td>
+        <div class="columns ">
+            <div class="column is-one-third-mobile">
+                <SvelteTooltip tip="certeza: {detection.detections_confidences[0]}" top >
+                    <i class="fas fa-vest {estado(detection.detections[0])}" ></i>
+                </SvelteTooltip>
+            </div>                
+            <div class="column is-one-third-mobile">
+                <SvelteTooltip tip="certeza: {detection.detections_confidences[1]}" top >
+                    <i class="fas fa-hard-hat {estado(detection.detections[1])} {detection.detections[1]}"></i>
+                </SvelteTooltip>
             </div>
-        </td>
-        <td>{detection.source}</td>
-        <td>
-            <div class="columns">
-                <div class="column">
-                    <SvelteTooltip tip="certeza: {detection.detections_confidences[1]}" top >
-                        <i class="fas fa-hard-hat {estado(detection.detections[1])}"></i>
-                    </SvelteTooltip>
-                </div>
-                <div class="column">
-                    <SvelteTooltip tip="certeza: {detection.detections_confidences[0]}" top >
-                        <i class="fas fa-head-side-mask {estado(detection.detections[0])}" ></i>
-                    </SvelteTooltip>
-                </div>
-                <div class="column ">
-                    <i class="fas fa-vest {estado(detection.chaleco)}"></i>  
-                </div>
+
+            <div class="column is-one-third-mobile">
+                <SvelteTooltip tip="certeza: {detection.detections_confidences[2]}" top >
+                     <i class="fas fa-head-side-mask {estado(detection.chaleco)}"></i> 
+                </SvelteTooltip>                        
             </div>
-        </td>
-    </tr>
-    <!--
-    <tr>
-        <td colspan="4">
-            <ExpansionPanel name="Fotos">
-                <div class="container">
-            
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">               
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">               
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">      
- 
-                </div>
-
-            </ExpansionPanel>
-        </td>
-    </tr>
-
-    -->
-
+        </div>
+    </td>
+</tr>
     
 <style>
-    .detection {
-        background-color: rgb(100, 134, 5);
-        
-    }
     .text {
         padding-left: 30px;
     }

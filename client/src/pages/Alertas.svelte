@@ -1,12 +1,10 @@
-
 <script>
     import axios from "axios";
     import Alertas from "../components/Alertas.svelte"
     import { querystring } from "svelte-spa-router";
     import Loading from "../components/Loading.svelte";
     import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
-    import { onMount } from "svelte";
-    
+    import { onMount } from "svelte";   
     import {
       cameras,
       pageAction
@@ -16,15 +14,19 @@
     let id = '';
     let idn = 0;
     let feed = '';
-    let fps = 1;
-    let det_barbijo = true;
-    let det_casco = true;
-    let det_chaleco = false;
-    let frames_capt = 50;
-    let active = true;
+    let totalDocs;
+    let limit;
+    let page;
+    let totalPages;
+    let hasNextPage;
+    let nextPage;
+    let hasPrevPage;
+    let prevPage;
+    let pagingCounter;
     let loading = false;
     let query = $querystring;
     $: alertas = '';
+    $: mostrando = alertas.length
     $: disabled = (feed == '' || id == '');
 
     let opciones = {}
@@ -36,8 +38,11 @@
     }
 
     async function getAlerts() {
+      console.log(31, opciones)
       const { data } = await axios.post("/api/alertas/", {opciones});
-      return data
+      console.log(38, data)
+      totalDocs = data.totalDocs
+      return data.docs
     }    
 
     onMount(async () => {
@@ -45,14 +50,21 @@
       alertas = await getAlerts()
       loading = false;
       $pageAction = 'Alertas';
+      console.log(47, alertas.length)
     });
-    
-    // optional import focus-visible polyfill only once
-    import 'focus-visible';
 
-
+    function clean(obj) {
+      for (var propName in obj) {
+        if (obj[propName] === null || obj[propName] === undefined || obj[propName] === '' || obj[propName] === false) {
+          delete obj[propName];
+        }
+      }
+      return obj
+    }
 
     async function filtrar() {
+      opciones = clean(opciones)
+      console.log(57, opciones)
       loading = true;
       alertas = await getAlerts()
       loading = false;
@@ -60,9 +72,7 @@
     }
 </script>
     
-{#if loading}
-<Loading />
-{/if}
+
 
 <div class="container">
   <ExpansionPanel name="Filtros">
@@ -78,6 +88,7 @@
       <div class="column">
         <div class="select">
           <select bind:value="{opciones.cam}">Camara
+            <option value="">Todas</option>
             {#each $cameras as camera, i}
               <option value="{camera.id}">{camera.id} </option>
             {/each}
@@ -88,6 +99,7 @@
         <div class="select">
           <select bind:value="{opciones.tipo}">Tipo de Alerta
             <!--option value="">--TODAS--</option-->
+            <option value="">Todas</option>
             <option value="inmediata">Inmediata</option>
             <option value="dia">Diaria</option>
             <option value="hora">horaria</option>
@@ -116,34 +128,45 @@
 
     </div>Filtros x fecha, tipo de alerta, camara y elementos
   </ExpansionPanel>
-  
-  <table class="table is-fullwidth">
-    <thead>
-      <tr>
-        <th><i class="far fa-calendar-alt mr-3"></i>Fecha</th>
-        <th><i class="fas fa-bell mr-3"></i>Tipo</th>
-        <th><i class="fas fa-video mr-3"></i>Camara</th>
-        <th>Elemento</th>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <th>Fecha</th>
-        <th><i class="fas fa-bell mr-3"></i>Tipo</th>
-        <th>Camara</th>
-        <th>Elemento</th>
-      </tr>
-    </tfoot>
-    <tbody>
-      {#if alertas.length > 0}
-        {#each alertas as alerta, i}
-            <Alertas eventType={'alerta'} alertType={alerta.tipo} {alerta} {i} />
-        {/each} 
-      {:else}
-        No se registran alertas
-      {/if}
+  {#if loading}
+    <Loading />
+  {:else}
+      <div >mostrando: {mostrando} de {totalDocs} alertas</div> 
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th><i class="far fa-calendar-alt mr-3"></i>Fecha</th>
+            <th><i class="fas fa-bell mr-3"></i>Tipo</th>
+            <th><i class="fas fa-video mr-3"></i>Camara</th>
+            <th>Elemento</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Fecha</th>
+            <th><i class="fas fa-bell mr-3"></i>Tipo</th>
+            <th>Camara</th>
+            <th>Elemento</th>
+          </tr>
+        </tfoot>
+        <tbody>
+
+        {#if alertas.length > 0}
+          {#each alertas as alerta, i}
+              <Alertas eventType={'alerta'} alertType={alerta.tipo} {alerta} {i} />
+          {/each} 
+        {:else}
+            <tr>
+              <td>
+                No se registran alertas
+              </td>
+            </tr>
+
+        {/if}
 
 
-    </tbody>
-  </table> 
+      </tbody>
+    </table> 
+  {/if}
+    
 </div>
