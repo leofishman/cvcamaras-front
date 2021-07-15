@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const User = require('../models/User')
 const Camera = require('../models/Camera')
-const Config = require('../models/Configuraciones')
+const Config = require('../models/Config')
 const Configuraciones = require('../models/Configuraciones')
 
 const router = Router()
