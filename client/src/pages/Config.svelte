@@ -124,65 +124,7 @@
 
 
 <div class="app container">
-  <div class="conf-alertas">
-    {#if $config.length > 0}
-      <ExpansionPanel name="Configuraciones Globales">
-          {#each $config as configuracion, i }
-            <div class="column is-4">
-
-              <div class="columns">
-                <div class="column is-8">
-                  <label>{configuracion['key']}: </label>
-                </div>
-                <div class="column is-4">
-                  {configuracion['value']}
-                </div>
-              </div>
-            </div>
-          {/each} 
-      </ExpansionPanel>
-    {/if} 
-
-    <div class="field">
-      <p class="control">
-        <label>Email de alertas</label>
-        <input
-          class="input"
-          type="email"
-          bind:value={$config.alertas_email}
-          placeholder="alertas@mail.com" />
-          A que direccion de email se envian las alertas
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <label>Telefono/Telegram de alertas</label>
-        <input
-          class="input"
-          type="number"
-          bind:value={$config.alertas_telefono}
-          placeholder="Telefono / Telegram que se envian las alertas" />
-          Telefono / Telegram que se envian las alertas
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <label>Periodicidad de alertas</label>
-        <input
-          class="input"
-          type="number"
-          bind:value={$config.alertas_periodicidad}
-          placeholder="tiempo de alerta" />
-          Cuanto tiempo del evento genera una alerta?
-      </p>
-    </div>    
-    <hr />
-    <Button on:click={actualizarConfiguraciones}>
-      <i class="fas fa-save mr-3"></i>
-      Actualizar Configuraciones
-    </Button>
-  </div>
-
+ 
 
 <hr />
 
