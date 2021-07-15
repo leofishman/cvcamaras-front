@@ -65,6 +65,8 @@ const AlertSchema = new Schema({
 
 AlertSchema.plugin(mongoosePaginate);
 
+//AlertSchema.virtual(casco) = AlertSchema.detections[2]
+
 AlertSchema.statics.queryAlerts = async function(filter) {
 
     const options = {
@@ -89,6 +91,22 @@ AlertSchema.statics.queryAlerts = async function(filter) {
         delete filter.fecha_desde;
         delete filter.fecha_hasta;
     }
+    filter.detections = [];
+
+    if (filter.chaleco) {
+         filter.detections[0] = "person"
+    }
+    if (filter.barbijo) {
+        filter.detections[1] = "no facemask"
+    }
+    if (filter.casco) {
+        filter.detections[2] = "hard hat"
+    }
+
+    if (filter.detections.length == 0) delete filter.detections
+    delete filter.casco
+    delete filter.chaleco
+    delete filter.barbijo
 
     const result = await this.paginate(filter, options, function (err, resultado) {
         return resultado;

@@ -13,34 +13,52 @@
     } from "../stores";
   
     let loading = false;
-    let detections;
+    let detections, head;
     // $: disabled = (feed == '' || id == '');
     $: detections = '';
     $: mostrando = detections.length
     let opciones = {};
     let totalDocs, hasNextPage, hasPrevPage, limit, nextPage, page, pagingCounter, prevPage, totalPages;
 
+    function arrayBufferToBase64(buffer) {
+      var binary = '';
+      var bytes = [].slice.call(new Uint8Array(buffer));
+      console.log(26, bytes)
+      bytes.forEach((b) => binary += String.fromCharCode(b));
+      console.log(27, bytes, binary, buffer)
+      return window.btoa(binary);
+    };  
 
+    async function getHead() {
+            const { data } = await axios.post("/api/detections/head", {opciones});
+
+      var base64Flag = 'data:image/jpeg;base64,';
+        var imageStr = arrayBufferToBase64(data);
+        console.log(37, data.toString('base64'))
+      head = base64Flag +  data// "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAA9TXL0Y4OHwAAAABJRU5ErkJggg=="
+      console.log(33, head, 1111111, data)
+    }
 
     async function getDetections() {
+
       const { data } = await axios.post("/api/detections/", {opciones});
+
       totalDocs = data.totalDocs
       hasNextPage = data.hasNextPage
       hasPrevPage = data.hasPrevPage
       page = data.page
-      console.log(27, data)
+      console.log(43, data)
       return data.docs
     }
+  
 
     onMount(async () => {
       $pageAction = 'Detecciones 😷 ';
       loading = true;
-      detections = await getDetections();
+      let detections = await getDetections();
+      let head = await getHead()
       loading = false;
     });
-    
-    // optional import focus-visible polyfill only once
-    import 'focus-visible';
 
     async function filtrar() {
       loading = true;
@@ -67,6 +85,13 @@
 </script>
 
   <div class="container">
+    11<img src="{head}">22
+    <div>
+      <p>Taken from wikpedia</p>
+      <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
+        AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+            9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+    </div>
     <ExpansionPanel name="Filtros">
       <div class="columns" on:change="{filtrar}">
         <div class="column">

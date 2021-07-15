@@ -12,8 +12,10 @@
       addToast,
     } from "../stores";
     import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+    import { createEventDispatcher } from 'svelte';
 
-  
+
+    const dispatch = createEventDispatcher();
     let id = '';
     let idn = 0;
     let feed = '';
@@ -45,6 +47,14 @@
     async function getConfig() {
       const  {data} = await axios.get("/api/config/");
       $config = data;
+      console.log(50, data, $config)
+    }
+
+    async function actualizarConfiguraciones() {
+      const response = await axios.put("/api/config", $config)
+      $config = response.data
+
+      dispatch('toast', {message:'Configuracion actualizada', type: 'info', element: ''})
     }
     async function getCameras() {
       const { data } = await axios.get("/api/config/cameras");
@@ -86,7 +96,6 @@
     }
 
     function saved(event) {
-
       message = event.detail.message;
       type = event.detail.type;
       addToast({
@@ -133,20 +142,54 @@
           {/each} 
       </ExpansionPanel>
     {/if} 
+
     <div class="field">
       <p class="control">
-        <label>Tiempo de generacion de alerta</label>
+        <label>Email de alertas</label>
         <input
           class="input"
-          type="text"
-          bind:value={config.trigeralert}
+          type="email"
+          bind:value={$config.alertas_email}
+          placeholder="alertas@mail.com" />
+          A que direccion de email se envian las alertas
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        <label>Telefono/Telegram de alertas</label>
+        <input
+          class="input"
+          type="number"
+          bind:value={$config.alertas_telefono}
+          placeholder="Telefono / Telegram que se envian las alertas" />
+          Telefono / Telegram que se envian las alertas
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        <label>Periodicidad de alertas</label>
+        <input
+          class="input"
+          type="number"
+          bind:value={$config.alertas_periodicidad}
           placeholder="tiempo de alerta" />
           Cuanto tiempo del evento genera una alerta?
       </p>
-    </div>
+    </div>    
+    <hr />
+    <Button on:click={actualizarConfiguraciones}>
+      <i class="fas fa-save mr-3"></i>
+      Actualizar Configuraciones
+    </Button>
   </div>
 
+
+<hr />
+
+
+
   {#if $cameras.length > 0}
+  <h5 class="title info"> Camaras</h5>
     {#each $cameras as camera, i}  
       <CamaraCard on:toast={saved} visible:bind({$cameras.id}) {camera} id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
     {/each}
@@ -158,7 +201,7 @@
   <div class="add-camera">
     <div class="card" >
       <header class="card-header" on:click={toggleAddCamera}>
-        <p class="card-header-title editar mr-4">
+        <p class="card-header-title editar mr-5">
           <Button>
             <i class="fas fa-plus mr-3"></i>
             Agregar Camara

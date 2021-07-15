@@ -1,7 +1,8 @@
 const { Router } = require('express')
 const User = require('../models/User')
 const Camera = require('../models/Camera')
-const Config = require('../models/Config')
+const Config = require('../models/Configuraciones')
+const Configuraciones = require('../models/Configuraciones')
 
 const router = Router()
 
@@ -14,7 +15,7 @@ function ensureLogin(req, res, next) {
 
 router.get('/', ensureLogin, async(req, res) => {
     try {
-        const configuraciones = await Config.find({});
+        const configuraciones = await Configuraciones.findOne({});
         if (!configuraciones) {
             throw new Error('No hay configuraciones guardadas');
         }
@@ -22,7 +23,27 @@ router.get('/', ensureLogin, async(req, res) => {
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
+})
 
+router.put('/', ensureLogin, async(req, res) =>{
+    const filter = {_id: req.body._id}
+    let configuraciones = {}
+    try {
+        if (filter._id) {
+             configuraciones = await Configuraciones.findOneAndUpdate(filter, req.body, {new:true})
+
+        } else {
+            const configuracionesNuevas = new Configuraciones(req.body)
+             configuraciones = await configuracionesNuevas.save()
+        }
+        console.log(configuraciones)
+        if (!configuraciones) {
+            throw new Error('Hubo un problema actualizando la configuración')
+        }
+        res.status(200).json(configuraciones)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
 })
 
 router.get('/cameras/', ensureLogin, async(req, res) => {

@@ -1,3 +1,4 @@
+const stringify = require('fast-json-stable-stringify');
 const {Schema, model} = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
@@ -10,9 +11,11 @@ const DetectionSchema = new Schema({
     person_crop: Schema.Types.Mixed,
     detections: Array,
     detections_confidences: Array,
+    frame_id: String,
+    head_crop: { data: Buffer, contentType: String },
+    person_crop: { data: Buffer, contentType: String },
     person_id: Number,
-    person_crop_confidence: Number,
-    head_crop_confidence: Number,
+    
 });
 
 DetectionSchema.plugin(mongoosePaginate);
