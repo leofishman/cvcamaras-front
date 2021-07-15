@@ -27,9 +27,11 @@
     let active = true;
     let loading = false;
     let addCameraExpand = false;
+    let configLocal = {};
+
 
     $: disabled = (feed == '' || id == '');
-    $: cssDisabled = active ? '' : 'disabled' 
+    $: cssDisabled = configLocal.smtp_enable ? '' : 'disabled' 
 
     let editable = false;
       function enableEdit() {
@@ -45,16 +47,28 @@
     });
   
     async function getConfig() {
-      const  {data} = await axios.get("/api/config/");
-      $config = data;
-      console.log(50, data, $config)
+      const  {data} = await axios.get("/api/config/")
+      $config = data
+      configLocal = $config
     }
 
-    async function actualizarConfiguraciones() {
-      const response = await axios.put("/api/config", $config)
-      $config = response.data
+    async function actualizarConfiguraciones () {
+      const igual = $config != configLocal
+      console.log(56,igual,  $config, configLocal)
+      if ($config == configLocal) {
+         const response = await axios.put("/api/config", configLocal)
+         console.log(60, response)
+        $config = response.data
+        addToast({
+          message: 'Configuración actualizada',
+          type: 'info',
+          dismissible: true,
+          timeout: 3000,
+          });
+        dispatch('toast');
+        console.log(67, response)
+      }
 
-      dispatch('toast', {message:'Configuracion actualizada', type: 'info', element: ''})
     }
     async function getCameras() {
       const { data } = await axios.get("/api/config/cameras");
@@ -114,14 +128,14 @@
   .app {
     margin: 40px auto;
   }
+  .disabled {
+      opacity: 0.4;
+  }
 </style>
- 
 
 {#if loading}
   <Loading />
 {/if}
-
-
 
 <div class="app container">
   <div class="conf-alertas">
@@ -129,7 +143,6 @@
       <ExpansionPanel name="Configuraciones Globales">
           {#each $config as configuracion, i }
             <div class="column is-4">
-
               <div class="columns">
                 <div class="column is-8">
                   <label>{configuracion['key']}: </label>
@@ -149,7 +162,7 @@
         <input
           class="input"
           type="email"
-          bind:value={$config.alertas_email}
+          bind:value={configLocal.alertas_email}
           placeholder="alertas@mail.com" />
           A que direccion de email se envian las alertas
       </p>
@@ -160,7 +173,7 @@
         <input
           class="input"
           type="number"
-          bind:value={$config.alertas_telefono}
+          bind:value={configLocal.alertas_telefono}
           placeholder="Telefono / Telegram que se envian las alertas" />
           Telefono / Telegram que se envian las alertas
       </p>
@@ -171,11 +184,61 @@
         <input
           class="input"
           type="number"
-          bind:value={$config.alertas_periodicidad}
+          bind:value={configLocal.alertas_periodicidad}
           placeholder="tiempo de alerta" />
           Cuanto tiempo del evento genera una alerta?
       </p>
-    </div>    
+    </div>
+    <div class="config-smtp">
+      <ExpansionPanel name="smtp">
+        <div class="field {cssDisabled}">
+          <p class="control">
+            <label>
+              <input type=checkbox  bind:checked={configLocal.smtp_enable}>
+              Habilitado
+            </label>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <label>Server:</label>
+            <input
+              class="input"
+              type="text"
+              bind:value={configLocal.smtp_server}
+              placeholder="smtp.example.com" />
+          </p>
+        </div>        
+        <div class="field">
+          <p class="control">
+            <label>Usuario:</label>
+            <input
+              class="input"
+              type="text"
+              bind:value={configLocal.smtp_user} />
+          </p>
+        </div>  
+        <div class="field">
+          <p class="control">
+            <label>Password:</label>
+            <input
+              class="input"
+              type="password"
+              bind:value={configLocal.smtp_password} />
+          </p>
+        </div>  
+        <div class="field">
+          <p class="control">
+            <label>Port:</label>
+            <input
+              class="input"
+              type="number"
+              bind:value={configLocal.smtp_port} />
+          </p>
+        </div>          
+      </ExpansionPanel>
+    </div>
+ 
     <hr />
     <Button on:click={actualizarConfiguraciones}>
       <i class="fas fa-save mr-3"></i>
