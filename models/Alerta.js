@@ -63,6 +63,6 @@ AlertSchema.statics.queryAlerts = async function(filter) {
 }
 
 
-const Alerta = model ('alertas', AlertSchema)
+const Alerta = model ('alerts', AlertSchema)
 
 module.exports = Alerta

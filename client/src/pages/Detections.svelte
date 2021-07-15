@@ -20,7 +20,7 @@
     let opciones = {};
     let totalDocs, hasNextPage, hasPrevPage, limit, nextPage, page, pagingCounter, prevPage, totalPages;
 
-    /*
+   
     function arrayBufferToBase64(buffer) {
       var binary = '';
       var bytes = [].slice.call(new Uint8Array(buffer));
@@ -29,15 +29,15 @@
       console.log(27, bytes, binary, buffer)
       return window.btoa(binary);
     };  
-*/
+
     async function getHead() {
-            const { data } = await axios.post("/api/detections/head", {opciones});
+      const { data } = await axios.post("/api/detections/head", {opciones});
 
       var base64Flag = 'data:image/jpeg;base64,';
-      //  var imageStr = arrayBufferToBase64(data);
-        console.log(37, data.toString('base64'))
-      head = base64Flag +  data// "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAA9TXL0Y4OHwAAAABJRU5ErkJggg=="
- //     console.log(33, head, 1111111, data)
+        var imageStr = arrayBufferToBase64(data);
+        console.log(37, data, imageStr)
+      head = base64Flag +  data.toString('base64')// "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAA9TXL0Y4OHwAAAABJRU5ErkJggg=="
+      console.log(33, head, 1111111, data)
     }
 
     async function getDetections() {
@@ -57,7 +57,7 @@
       $pageAction = 'Detecciones 😷 ';
       loading = true;
       let detections = await getDetections();
-   //   let head = await getHead()
+      let head = await getHead()
       loading = false;
     });
 
@@ -78,7 +78,7 @@
         page++
         opciones = {page}
       loading = true;
-   //   detections = await getDetections();
+      detections = await getDetections();
       loading = false;
       }
 
@@ -86,7 +86,7 @@
 </script>
 
   <div class="container">
-    11<!--img src="{head}"-->22
+    11<img src="{head}">22
     <div>
       <p>Taken from wikpedia</p>
       <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA

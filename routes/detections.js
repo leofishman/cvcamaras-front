@@ -52,7 +52,7 @@ router.post('/head',  async(req, res) => {
       // res.contentType('image/jpg');
    //   res.header('Content-Type', 'image/png');
 
-     res.send(head.toString('base64'))
+     res.send(head)
     //   res.render(thumb);
 
     //   res.status(200).json(detections)

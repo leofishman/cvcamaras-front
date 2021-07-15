@@ -5,17 +5,15 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 const DetectionSchema = new Schema({
     name: String,
     source: String,
-    datetime: Date,
-    source_storage_path: String,
-    person: Boolean,
-    person_crop: Schema.Types.Mixed,
-    detections: Array,
-    detections_confidences: Array,
+    site: String,
+    camera: String,
     frame_id: String,
-    head_crop: { data: Buffer, contentType: String },
-    person_crop: { data: Buffer, contentType: String },
-    person_id: Number,
-    
+    datetime: Date,
+    person_crop: Schema.Types.Mixed,
+    head_crop: Schema.Types.Mixed,
+    detections: Array,
+    detections_confidences: Array,  
+    person_id: Number,    
 });
 
 DetectionSchema.plugin(mongoosePaginate);
