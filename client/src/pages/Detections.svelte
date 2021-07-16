@@ -54,7 +54,7 @@
   
 
     onMount(async () => {
-      $pageAction = 'Detecciones 😷 ';
+      $pageAction = 'Detecciones';
       loading = true;
       let detections = await getDetections();
       let head = await getHead()
