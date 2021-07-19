@@ -30,6 +30,6 @@
     "svelte-mui": "^0.3.3-7",
     "svelte-preprocess": "^4.7.3",
     "svelte-spa-router": "^2.2.0",
-    "webpack": "^5.1.0"
+    "webpack": "^5.45.1"
   }
 }
