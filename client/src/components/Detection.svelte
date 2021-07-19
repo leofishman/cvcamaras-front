@@ -64,7 +64,6 @@
                     </div>
                     <div class="mt-0 column">
                         <img src={'data:image/jpeg;base64,' + atob(detection.head_crop)} class="mt-0">
-
                     </div>   
                 </div>
                 
