@@ -33,7 +33,7 @@
       totalPages = data.totalPages
       mostrando = data.docs.length
       detections = data.docs
-
+console.log(36, data)
       return data.docs
     }
 

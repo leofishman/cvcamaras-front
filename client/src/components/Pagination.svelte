@@ -26,7 +26,7 @@
 </script>
 
 <p>
-  Page <code>{page}</code> of <code>{totalPages}</code> ( on <code>{totalDocs}</code> items)
+  Pagina <code>{page}</code> de <code>{totalPages}</code> (  <code>{totalDocs}</code> detecciones)
 </p>
 
 <nav class="pagination">

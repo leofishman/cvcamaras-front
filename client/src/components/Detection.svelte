@@ -51,8 +51,27 @@
                      <i class="fas fa-head-side-mask {estado(detection.chaleco)}"></i> 
                 </SvelteTooltip>                        
             </div>
+            
         </div>
     </td>
+</tr>
+<tr>
+        <td colspan="4">
+            <ExpansionPanel name="fotos">
+                <div class="columns">
+                    <div class="text-center column">
+                        <img src={'data:image/jpeg;base64,' + atob(detection.person_crop)} >
+                    </div>
+                    <div class="mt-0 column">
+                        <img src={'data:image/jpeg;base64,' + atob(detection.head_crop)} class="mt-0">
+
+                    </div>   
+                </div>
+                
+            </ExpansionPanel>
+        </td>        
+    
+
 </tr>
     
 <style>
