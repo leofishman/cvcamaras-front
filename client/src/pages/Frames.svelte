@@ -16,10 +16,8 @@
   onMount(async () => {
     loading = true;
     const { data } = await axios.get("/api/frames");
-    console.log(19, data);
     loading = false;
     frames = data
-    
   });
 
 </script>

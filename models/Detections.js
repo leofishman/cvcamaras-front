@@ -18,12 +18,13 @@ const DetectionSchema = new Schema({
 
 DetectionSchema.plugin(mongoosePaginate);
 
-DetectionSchema.statics.queryDetections = async function(filter) {
+DetectionSchema.statics.queryDetections = async function(filter, options) {
+  /*
     const options = {
         page: 1,
         limit: 6,
       };
-
+*/
     let fecha_desde = filter.fecha_desde;
     let fecha_hasta = filter.fecha_hasta;
     if (!fecha_hasta) {

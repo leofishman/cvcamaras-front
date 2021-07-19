@@ -38,9 +38,7 @@
     }
 
     async function getAlerts() {
-      console.log(31, opciones)
       const { data } = await axios.post("/api/alertas/", {opciones});
-      console.log(38, data)
       totalDocs = data.totalDocs
       return data.docs
     }    
@@ -50,7 +48,6 @@
       alertas = await getAlerts()
       loading = false;
       $pageAction = 'Alertas';
-      console.log(47, alertas.length)
     });
 
     function clean(obj) {
@@ -64,7 +61,6 @@
 
     async function filtrar() {
       opciones = clean(opciones)
-      console.log(57, opciones)
       loading = true;
       alertas = await getAlerts()
       loading = false;
