@@ -2,9 +2,9 @@
   "name": "algolabs-app",
   "version": "1.0.0",
   "devDependencies": {
-    "serve": "^11.0.0",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.3.1"
+    "serve": "^12.0.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.1"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
