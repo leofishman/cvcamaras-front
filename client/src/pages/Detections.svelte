@@ -1,9 +1,8 @@
-
 <script>
     import axios from "axios";
     import Detection from "../components/Detection.svelte"
-    import { querystring } from "svelte-spa-router";
     import Loading from "../components/Loading.svelte";
+    import Pagination from "../components/Pagination.svelte"
     import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import { onMount } from "svelte";
     
@@ -11,57 +10,43 @@
       cameras,
       pageAction
     } from "../stores";
-  
+
     let loading = false;
     let detections, head;
-    // $: disabled = (feed == '' || id == '');
-    $: detections = '';
-    $: mostrando = detections.length
-    let opciones = {};
+    let opciones = {limit: 6, page: 1};
     let totalDocs, hasNextPage, hasPrevPage, limit, nextPage, page, pagingCounter, prevPage, totalPages;
-
-   
-    function arrayBufferToBase64(buffer) {
-      var binary = '';
-      var bytes = [].slice.call(new Uint8Array(buffer));
-      console.log(26, bytes)
-      bytes.forEach((b) => binary += String.fromCharCode(b));
-      console.log(27, bytes, binary, buffer)
-      return window.btoa(binary);
-    };  
-
-    async function getHead() {
-      const { data } = await axios.post("/api/detections/head", {opciones});
-
-      var base64Flag = 'data:image/jpeg;base64,';
-        var imageStr = arrayBufferToBase64(data);
-        console.log(37, data, imageStr)
-      head = base64Flag +  data.toString('base64')// "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAA9TXL0Y4OHwAAAABJRU5ErkJggg=="
-      console.log(33, head, 1111111, data)
-    }
+    let mostrando = 0;
+    
+   // $:detections = '';
+  //  $:mostrando = detections.length
 
     async function getDetections() {
-
       const { data } = await axios.post("/api/detections/", {opciones});
-
       totalDocs = data.totalDocs
       hasNextPage = data.hasNextPage
       hasPrevPage = data.hasPrevPage
+      limit = data.limit
+      nextPage = data.nextPage
       page = data.page
-      console.log(43, data)
+      pagingCounter = data.pagingCounter
+      prevPage = data.prevPage
+      totalPages = data.totalPages
+      mostrando = data.docs.length
+      detections = data.docs
+
       return data.docs
     }
-  
 
-    onMount(async () => {
-      $pageAction = 'Detecciones';
-      loading = true;
-      let detections = await getDetections();
-      let head = await getHead()
-      loading = false;
-    });
+    async function getHead(frame_id) {
+      //TODO: query head by frame_id
+      const { data } = await axios.post("/api/detections/head", {opciones});
+      const base64Flag = 'data:image/jpeg;base64,';
+      head = base64Flag + atob(data)
+      return head
+    }
 
-    async function filtrar() {
+    async function filtrar(filtro) {
+      opciones.page = filtro.page
       loading = true;
       detections = await getDetections();
       loading = false;
@@ -73,74 +58,65 @@
       }
     }
 
-    async function handlePagination(handle) {
-      if (handle == ('next')) {
-        page++
-        opciones = {page}
+    
+    onMount(async () => {
+      $pageAction = 'Detecciones';
       loading = true;
       detections = await getDetections();
       loading = false;
-      }
+    });
+    
 
-    }
 </script>
 
-  <div class="container">
-    11<img src="{head}">22
-    <div>
-      <p>Taken from wikpedia</p>
-      <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
-        AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
-            9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
-    </div>
-    <ExpansionPanel name="Filtros">
-      <div class="columns" on:change="{filtrar}">
-        <div class="column">
-          <input type="date" bind:value={opciones.fecha_desde} />
-          Desde
-          {#if (opciones.fecha_desde) }
-            <input type="date" bind:value={opciones.fecha_hasta} bind/>
-          hasta 
-          {/if}
-        </div>
-        <div class="column">
-          <div class="select">
-            <select bind:value="{opciones.source}">Camara
-              {#each $cameras as camera, i}
-                <option value="{camera.id}">{camera.id} </option>
-              {/each}
-            </select>
-          </div>
-        </div>
 
-        <div class="column">
-          <Checkbox name="casco" value="casco" bind:checked="{opciones.casco}">
-            <i class="fas fa-hard-hat"></i>
-            Casco
-          </Checkbox>
-        </div>
-        <div class="column">
-          <Checkbox name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
-            <i class="fas fa-head-side-mask"></i>
-            Barbijo
-          </Checkbox>        
-        </div>
-        <div class="column">
-          <Checkbox name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
-            <i class="fas fa-vest"></i>
-            Chaleco
-          </Checkbox>        
-        </div>
-
-      </div>Filtros x fecha, tipo de alerta, camara y elementos
-    </ExpansionPanel>    
-  </div>
 {#if loading}
   <Loading />
 {:else}
-
 <div class="container">
   <div >mostrando: {mostrando} de {totalDocs} detecciones</div> 
+
+  <ExpansionPanel name="Filtros">
+    <div class="columns" on:change="{filtrar}">
+      <div class="column">
+        <input type="date" bind:value={opciones.fecha_desde} />
+        Desde
+        {#if (opciones.fecha_desde) }
+          <input type="date" bind:value={opciones.fecha_hasta} bind/>
+        hasta 
+        {/if}
+      </div>
+      <div class="column">
+        <div class="select">
+          <select bind:value="{opciones.source}">Camara
+            {#each $cameras as camera, i}
+              <option value="{camera.id}">{camera.id} </option>
+            {/each}
+          </select>
+        </div>
+      </div>
+
+      <div class="column">
+        <Checkbox name="casco" value="casco" bind:checked="{opciones.casco}">
+          <i class="fas fa-hard-hat"></i>
+          Casco
+        </Checkbox>
+      </div>
+      <div class="column">
+        <Checkbox name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
+          <i class="fas fa-head-side-mask"></i>
+          Barbijo
+        </Checkbox>        
+      </div>
+      <div class="column">
+        <Checkbox name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
+          <i class="fas fa-vest"></i>
+          Chaleco
+        </Checkbox>        
+      </div>
+
+    </div>Filtros x fecha, tipo de alerta, camara y elementos
+  </ExpansionPanel>  
     <table class="table is-fullwidth">
       <thead>
         <tr>
@@ -159,38 +135,34 @@
         </tr>
       </tfoot>
       <tbody>
-        {#each detections as detection, i}
-          <Detection {detection} {i}></Detection>
-        {:else}
-          No se registrarion detecciones
-        {/each}
-
+        {#if (mostrando > 1)}
+          {#each detections as detection, i}
+            <Detection {detection} {i}></Detection>
+          {:else}
+            No se registrarion detecciones
+          {/each}
+        {/if}
 
 
       </tbody>
     </table> 
   </div>
-  {#if detections}
-    <nav class="pagination" role="navigation" aria-label="pagination">
-      <a class="pagination-previous {estado(hasPrevPage)}"> anterior </a>
-      <a class="pagination-next {estado(hasNextPage)}" on:click={handlePagination('next')}> proxima </a>
-      <ul class="pagination-list">
-        <li>
-          <a class="pagination-link" aria-label="Ir a pagina 1">1</a>
-        </li>
-        <li>
-          <span class="pagination-ellipsis">&hellip;</span>
-        </li>
-      
-        <li>
-          <span class="pagination-ellipsis">&hellip;</span>
-        </li>
-
-      </ul>
-    </nav>
-    {/if}
+  {#if totalDocs > limit}
+    <Pagination
+      {page}
+      {totalPages}
+      {hasNextPage}
+      {hasPrevPage}
+      {limit}
+      {nextPage}
+      {pagingCounter}
+      {prevPage}
+      {totalDocs}
+      on:change="{(ev) => filtrar({page: ev.detail})}">
+    ></Pagination>
+  {/if}
+  
 {/if}
-
 
 <style>
   .disabled {
@@ -199,4 +171,3 @@
   } 
   
 </style>
-

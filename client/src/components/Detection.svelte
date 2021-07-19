@@ -4,11 +4,8 @@
         cameras,
     } from "../stores";
 
-
-  //  import 'bulma/css/bulma.css'
     import SvelteTooltip from './SvelteTooltip.svelte';
 
-  //  export let camera;
     export let detection;
     export  let type = "detection";
     var dateFormat = require("dateformat");
@@ -20,7 +17,6 @@
         iconEvent = 'history';
     }
     function estado(element) {
-        console.log(23, element)
         if (element) {
             return 'detection'
         } else {
