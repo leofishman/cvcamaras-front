@@ -4,7 +4,6 @@
   export let mode = "balance";
 
   export let camera, id = '';
-  export let idn = 0;
   export let sitio;
   export let det_barbijo = true;
   export let det_casco = true;
@@ -108,11 +107,11 @@
   <header class="card-header" on:click={toggleConfig}>
     <p class="card-header-title mr-4  {cssDisabled} ">
       <i class="fas fa-video mr-3">  </i>
-        {id}: {sitio} 
-        <i class="fas fa-hard-hat ml-6 {estado(det_casco)}"></i>
+        {id} : {sitio} 
+        <i class="fas fa-male ml-6 {estado(det_persona)}"></i>
+        <i class="fas fa-hard-hat ml-3 {estado(det_casco)}"></i>
         <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}"></i>  
         <i class="fas fa-vest ml-3 {estado(det_chaleco)}"></i>
-        <i class="fas fa-male ml-3 {estado(det_persona)}"></i>
     </p>
     <button class="card-header-icon" aria-label="more options">
       <span class="icon">
