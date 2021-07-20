@@ -41,22 +41,23 @@
                 </SvelteTooltip>
             </div>                
             <div class="column is-one-third-mobile">
-                <SvelteTooltip tip="certeza: {detection.detections_confidences[0]}" top >
-                    <i class="fas fa-head-side-mask {estado(detection.detections[0])} {detection.detections[0]}"></i>
+                <SvelteTooltip tip="certeza: {detection.detections_confidences[1]}" top >
+                    <i class="fas fa-head-side-mask {estado(detection.detections[1])} {detection.detections[1]}"></i>
                 </SvelteTooltip>
             </div>
 
             <div class="column is-one-third-mobile">
                 <SvelteTooltip tip="certeza: {detection.detections_confidences[2]}" top >
-                     <i class="fas fa-hard-hat {estado(detection.chaleco)}"></i> 
+                     <i class="fas fa-hard-hat {estado(detection.casco)}"></i> 
                 </SvelteTooltip>                        
             </div>
+            {#if detection.detections_confidences[3]}
             <div class="column is-one-third-mobile">
-                <SvelteTooltip tip="certeza: {detection.detections_confidences[2]}" top >
+                <SvelteTooltip tip="certeza: {detection.detections_confidences[3]}" top >
                      <i class="fas fa-vest {estado(detection.chaleco)}"></i> 
                 </SvelteTooltip>                        
             </div>
-            
+            {/if}
         </div>
     </td>
 </tr>
