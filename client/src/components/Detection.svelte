@@ -17,6 +17,7 @@
         iconEvent = 'history';
     }
     function estado(element) {
+        console.log(20, element)
         if (element) {
             return 'detection'
         } else {
@@ -36,19 +37,19 @@
     <td>
         <div class="columns ">
             <div class="column is-one-third-mobile">
-                <SvelteTooltip tip="certeza: {detection.detections_confidences[0]}" top >
+                <SvelteTooltip tip="persona: {detection.detections_confidences[0]}" top >
                     <i class="fas fa-male {estado(detection.detections[0])}" ></i>
                 </SvelteTooltip>
             </div>                
             <div class="column is-one-third-mobile">
-                <SvelteTooltip tip="certeza: {detection.detections_confidences[1]}" top >
+                <SvelteTooltip tip="barbijo: {detection.detections_confidences[1]}" top >
                     <i class="fas fa-head-side-mask {estado(detection.detections[1])} {detection.detections[1]}"></i>
                 </SvelteTooltip>
             </div>
 
             <div class="column is-one-third-mobile">
-                <SvelteTooltip tip="certeza: {detection.detections_confidences[2]}" top >
-                     <i class="fas fa-hard-hat {estado(detection.casco)}"></i> 
+                <SvelteTooltip tip="casco: {detection.detections_confidences[2]}" top >
+                     <i class="fas fa-hard-hat {estado(detection.detections[2])}"></i> 
                 </SvelteTooltip>                        
             </div>
             {#if detection.detections_confidences[3]}
