@@ -110,8 +110,8 @@
     }
 
     function saved(event) {
-      message = event.detail.message;
-      type = event.detail.type;
+      message = event.detail.message || '';
+      type = event.detail.type || '';
       addToast({
         message: message,
         type: type,
@@ -254,7 +254,7 @@
   {#if $cameras.length > 0}
   <h5 class="title info"> Camaras</h5>
     {#each $cameras as camera, i}  
-      <CamaraCard on:toast={saved} visible:bind({$cameras.id}) {camera} id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
+      <CamaraCard on:toast={saved} visible:bind({$cameras.id}) {camera} id={camera.id} sitio={camera.sitio} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
     {/each}
   {:else if !loading}
     <div class="notification">Agregue la primera camera</div>
