@@ -95,7 +95,12 @@ console.log(36, data)
           </select>
         </div>
       </div>
-
+      <div class="column">
+        <Checkbox name="person" value="person" bind:checked="{opciones.person}">
+          <i class="fas fa-male"></i>
+          Casco
+        </Checkbox>
+      </div>
       <div class="column">
         <Checkbox name="casco" value="casco" bind:checked="{opciones.casco}">
           <i class="fas fa-hard-hat"></i>
