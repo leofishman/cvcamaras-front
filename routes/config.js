@@ -61,9 +61,9 @@ router.get('/cameras/', ensureLogin, async(req, res) => {
 
 router.post('/cameras', ensureLogin, async (req, res) => {
     const {
-        id, idn, feed, fps, det_barbijo, det_casco, det_chaleco, frames_capt, active
+        id, idn, sitio, feed, fps, det_barbijo, det_casco, det_chaleco, frames_capt, active
      } = req.body
-    const newCamera = new Camera({ id, idn, feed, fps, det_barbijo, det_casco, det_chaleco, frames_capt, active })
+    const newCamera = new Camera({ id, idn, sitio, feed, fps, det_barbijo, det_casco, det_chaleco, frames_capt, active })
 
     try {
         const camera = await newCamera.save()

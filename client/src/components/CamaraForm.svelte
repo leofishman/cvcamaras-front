@@ -85,6 +85,17 @@
     </div>
     <div class="field">
       <p class="control">
+        <input
+          class="input"
+          type="text"
+          bind:value={camera.sitio}
+          placeholder="Sitio de la camara" />
+          Sitio de la Camara (Ubicación física)
+      </p>
+    </div>
+    
+    <div class="field">
+      <p class="control">
         <label on:click={camera.det_persona = !camera.det_persona}>
           <input type=checkbox  bind:checked={camera.det_persona }>
           {#if camera.det_persona}
