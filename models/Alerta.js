@@ -2,16 +2,27 @@ const {Schema, model} = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const AlertSchema = new Schema({
-    source: String,
-    frame_id: String,
+    site: String,
+    camera: String,
+    person: Number,
+    interval: Number,
+    minute: Number,
+    hour: Number,
+    month: Number,
+    day: Number,
+    year: Number,
     datetime: Date,
-    person_crop: Buffer,
-    head_crop: Buffer,
-    detections: Array,
-    detections_confidences: Array,
-    frame_id: String,
-
+    detections_count: Number,
+    facemask_count: Number,
+    frames: Array,
+    hardhat_count: Number,
+    mean_no_facemask_confidence: Number,
+    mean_no_hardhat_confidence: Number,
+    no_facemask_count: Number,
+    no_hardhat_count: Number,
+    person_crops: Schema.Types.Mixed,
 })
+
 
 AlertSchema.plugin(mongoosePaginate);
 
