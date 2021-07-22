@@ -8,8 +8,10 @@
     export let alerta;
     export  let eventType;
 
-    var dateFormat = require("dateformat");
+    let dateFormat = require("dateformat");
     let iconEvent = '';
+    let person_crops = [];
+
     if (eventType == "alerta") {
         iconEvent = 'bell';
     }
@@ -25,7 +27,12 @@
         }
     }
 
-
+    function array2base64(imgArr) {
+        person_crops = [];
+        imgArr.forEach((item, index, arr) =>
+            person_crops[index] = 'data:image/jpeg;base64,' + atob(alerta.person_crops[index])
+        )
+    }
 </script>
 
 
@@ -56,13 +63,14 @@
             </div>
         </td>
     </tr>
-    <!--tr>
+    <tr>
         <td colspan="4">
             <ExpansionPanel name="Fotos">
                 <div class="container">
-            
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">               
+                    {array2base64(alerta.person_crops)}
+
+                          <img src={person_crops[0]} alt="Sin Casco">
+                          <img src={person_crops[1]} alt="Sin Casco">               
                           <img src="images/1.png" alt="Sin Casco">
                           <img src="images/1.png" alt="Sin Casco">
                           <img src="images/1.png" alt="Sin Casco">
@@ -74,7 +82,7 @@
 
             </ExpansionPanel>
         </td>
-    </tr-->
+    </tr>
     
 <style>
     .alerta {
