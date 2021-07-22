@@ -3,7 +3,7 @@
     import Alertas from "../components/Alertas.svelte"
     import { querystring } from "svelte-spa-router";
     import Loading from "../components/Loading.svelte";
-    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+//    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import { onMount } from "svelte";   
     import {
       cameras,
@@ -71,7 +71,7 @@
 
 
 <div class="container">
-  <ExpansionPanel name="Filtros">
+  <!--ExpansionPanel name="Filtros">
     <div class="columns" on:change="{filtrar}">
       <div class="column">
         <input type="date" bind:value={opciones.fecha_desde} />
@@ -94,7 +94,6 @@
       <div class="column">
         <div class="select">
           <select bind:value="{opciones.tipo}">Tipo de Alerta
-            <!--option value="">--TODAS--</option-->
             <option value="">Todas</option>
             <option value="inmediata">Inmediata</option>
             <option value="dia">Diaria</option>
@@ -123,7 +122,7 @@
       </div>
 
     </div>Filtros x fecha, tipo de alerta, camara y elementos
-  </ExpansionPanel>
+  </ExpansionPanel-->
   {#if loading}
     <Loading />
   {:else}

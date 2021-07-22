@@ -3,7 +3,7 @@
     import Detection from "../components/Detection.svelte"
     import Loading from "../components/Loading.svelte";
     import Pagination from "../components/Pagination.svelte"
-    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+//    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import { onMount } from "svelte";
     
     import {
@@ -76,7 +76,7 @@ console.log(36, data)
 <div class="container">
   <div >mostrando: {mostrando} de {totalDocs} detecciones</div> 
 
-  <ExpansionPanel name="Filtros">
+  <!--ExpansionPanel name="Filtros">
     <div class="columns" on:change="{filtrar}">
       <div class="column">
         <input type="date" bind:value={opciones.fecha_desde} />
@@ -121,7 +121,7 @@ console.log(36, data)
       </div>
 
     </div>Filtros x fecha, tipo de alerta, camara y elementos
-  </ExpansionPanel>  
+  </ExpansionPanel-->  
     <table class="table is-fullwidth">
       <thead>
         <tr>

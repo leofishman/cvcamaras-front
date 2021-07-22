@@ -11,7 +11,7 @@
       config,
       addToast,
     } from "../stores";
-    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+//    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import { createEventDispatcher } from 'svelte';
 
 
@@ -140,7 +140,7 @@
 <div class="app container">
   <div class="conf-alertas">
     {#if $config.length > 0}
-      <ExpansionPanel name="Configuraciones Globales">
+      <!--ExpansionPanel name="Configuraciones Globales">
           {#each $config as configuracion, i }
             <div class="column is-4">
               <div class="columns">
@@ -153,7 +153,7 @@
               </div>
             </div>
           {/each} 
-      </ExpansionPanel>
+      </ExpansionPanel-->
     {/if} 
 
     <div class="field">
@@ -189,7 +189,7 @@
           Cuanto tiempo del evento genera una alerta?
       </p>
     </div>
-    <div class="config-smtp">
+    <!--div class="config-smtp">
       <ExpansionPanel name="smtp">
         <div class="field {cssDisabled}">
           <p class="control">
@@ -237,7 +237,7 @@
           </p>
         </div>          
       </ExpansionPanel>
-    </div>
+    </div-->
  
     <hr />
     <Button on:click={actualizarConfiguraciones}>

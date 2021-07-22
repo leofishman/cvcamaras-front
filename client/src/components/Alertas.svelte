@@ -1,5 +1,5 @@
 <script>
-    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+  //  import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import {
         cameras,
     } from "../stores";
@@ -65,7 +65,7 @@
             </div>
         </td>
     </tr>
-    <tr>
+    <!--tr>
         <td colspan="4">
             <ExpansionPanel name="Fotos">
                 <div class="container">
@@ -77,7 +77,7 @@
 
             </ExpansionPanel>
         </td>
-    </tr>
+    </tr-->
     
 <style>
     .alerta {
