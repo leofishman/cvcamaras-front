@@ -8,20 +8,19 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "dev": "webpack-dev-server --content-base public"
+    "dev": "webpack serve --content-base public"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "buffer": "^6.0.3",
+    "bulma": "^0.9.3",
+    "cross-env": "^7.0.0",
     "css-loader": "^6.1.0",
+    "dateformat": "^4.5.1",
     "focus-visible": "^5.2.0",
     "mini-css-extract-plugin": "^2.1.0",
     "node-sass": "^6.0.1",
     "rollup-plugin-postcss": "^4.0.0",
-    "axios": "^0.19.2",
-    "bulma": "^0.9.3",
-    "cross-env": "^7.0.0",
-    "cvcamaras": "file:..",
-    "CVCamaras": "file:..",
-    "dateformat": "^4.5.1",
     "sirv-cli": "^1.0.6",
     "style-loader": "^3.1.0",
     "svelma": "^0.4.5",

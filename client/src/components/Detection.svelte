@@ -10,6 +10,8 @@
     export  let type = "detection";
     var dateFormat = require("dateformat");
     let iconEvent = '';
+
+    
     if (type == "detection") {
         iconEvent = 'bell';
     }
@@ -70,7 +72,7 @@
                         <img src={'data:image/jpeg;base64,' + atob(detection.person_crop)} >
                     </div>
                     <div class="mt-0 column">
-                        <img src={'data:image/jpeg;base64,' + atob(detection.head_crop)} class="mt-0">
+                        <img src={'data:image/jpeg;base64,' + atob(detection.head_crop)} >
                     </div>   
                 </div>
                 

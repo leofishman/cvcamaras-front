@@ -12,6 +12,7 @@
     let iconEvent = '';
     let person_crops = [];
 
+    
     if (eventType == "alerta") {
         iconEvent = 'bell';
     }
@@ -32,6 +33,7 @@
         imgArr.forEach((item, index, arr) =>
             person_crops[index] = 'data:image/jpeg;base64,' + atob(alerta.person_crops[index])
         )
+        console.log(35, person_crops)
     }
 </script>
 
@@ -68,16 +70,9 @@
             <ExpansionPanel name="Fotos">
                 <div class="container">
                     {array2base64(alerta.person_crops)}
-
-                          <img src={person_crops[0]} alt="Sin Casco">
-                          <img src={person_crops[1]} alt="Sin Casco">               
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">               
-                          <img src="images/1.png" alt="Sin Casco">
-                          <img src="images/1.png" alt="Sin Casco">      
- 
+                    {#each person_crops as person_crop, i}
+                          <img src={person_crop} alt="Sin..">
+                    {/each}
                 </div>
 
             </ExpansionPanel>
