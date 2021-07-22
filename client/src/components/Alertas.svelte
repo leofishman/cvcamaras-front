@@ -3,12 +3,8 @@
     import {
         cameras,
     } from "../stores";
+    import SvelteTooltip from './SvelteTooltip.svelte';
 
-    
-   // import 'bulma/css/bulma.css'
-
-    export let alertType;
-    export let camera;
     export let alerta;
     export  let eventType;
 
@@ -28,26 +24,34 @@
             return 'disabled'
         }
     }
+
+
 </script>
 
 
     <tr>
         <td>{dateFormat(alerta.datetime, "dd-mm-yy  h:M")}</td>
+        <td>{alerta.cam || 'camara X'}</td>
         <td><div class="text"> 
-                 <span class="alert"> {alerta.tipo || 'alerta'}</span> 
+                 <span class="alert"> {alerta.detections_count || 'alerta'}</span> 
             </div>
         </td>
-        <td>{alerta.cam || 'camara X'}</td>
+        
         <td>
             <div class="columns">
                 <div class="column">
-                    <i class="fas fa-hard-hat {estado(alerta.detections[2])}"></i>
+                    <SvelteTooltip tip="Sin casco: {alerta.no_hardhat_count} - {alerta.mean_no_hardhat_confidence}" top >
+                        <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
+                   </SvelteTooltip> 
+                    
                 </div>
                 <div class="column">
-                    <i class="fas fa-head-side-mask {estado(alerta.detections[1])}"></i>
+                    <SvelteTooltip tip="Sin barbijo: {alerta.no_facemask_count} - {alerta.mean_no_facemask_confidence}" top >
+                       <i class="fas fa-head-side-mask {estado(alerta.no_facemask_count)}"></i> 
+                   </SvelteTooltip> 
                 </div>
                 <div class="column ">
-                    <i class="fas fa-vest {estado(alerta.detections[0])}"></i>  
+                    <i class="fas fa-vest {estado(alerta.no_vest_count)}"></i>  
                 </div>
             </div>
         </td>
