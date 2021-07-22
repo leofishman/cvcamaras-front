@@ -13,7 +13,7 @@
     } from "../stores";
 //    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import { createEventDispatcher } from 'svelte';
-
+    import GenericCard from "../components/GenericCard.svelte"
 
     const dispatch = createEventDispatcher();
     let id = '';
@@ -140,7 +140,7 @@
 <div class="app container">
   <div class="conf-alertas">
     {#if $config.length > 0}
-      <!--ExpansionPanel name="Configuraciones Globales">
+      <GenericCard header="Configuraciones Globales">
           {#each $config as configuracion, i }
             <div class="column is-4">
               <div class="columns">
@@ -153,9 +153,8 @@
               </div>
             </div>
           {/each} 
-      </ExpansionPanel-->
+      </GenericCard>
     {/if} 
-
     <div class="field">
       <p class="control">
         <label>Email de alertas</label>
@@ -189,8 +188,8 @@
           Cuanto tiempo del evento genera una alerta?
       </p>
     </div>
-    <!--div class="config-smtp">
-      <ExpansionPanel name="smtp">
+    <div class="config-smtp">
+      <GenericCard header="smtp">
         <div class="field {cssDisabled}">
           <p class="control">
             <label>
@@ -236,14 +235,14 @@
               bind:value={configLocal.smtp_port} />
           </p>
         </div>          
-      </ExpansionPanel>
-    </div-->
+      </GenericCard>
+    </div>
  
     <hr />
-    <Button on:click={actualizarConfiguraciones}>
+    <button on:click={actualizarConfiguraciones}>
       <i class="fas fa-save mr-3"></i>
       Actualizar Configuraciones
-    </Button>
+    </button>
   </div>
 
 
@@ -265,11 +264,10 @@
     <div class="card" >
       <header class="card-header" on:click={toggleAddCamera}>
         <p class="card-header-title editar mr-5">
-          <Button>
+          <button class="button">
             <i class="fas fa-plus mr-3"></i>
             Agregar Camara
-          </Button>
-          
+          </button>
         </p>
         
       </header>

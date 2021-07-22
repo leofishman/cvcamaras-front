@@ -1,8 +1,9 @@
 <script>
- //   import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+//    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import {
         cameras,
     } from "../stores";
+    import GenericCard from "./GenericCard.svelte";
 
     import SvelteTooltip from './SvelteTooltip.svelte';
 
@@ -10,8 +11,6 @@
     export  let type = "detection";
     var dateFormat = require("dateformat");
     let iconEvent = '';
-
-    
     if (type == "detection") {
         iconEvent = 'bell';
     }
@@ -64,23 +63,23 @@
         </div>
     </td>
 </tr>
-<!--tr>
+<tr>
         <td colspan="4">
-            <ExpansionPanel name="fotos">
+            <GenericCard header="fotos">
                 <div class="columns">
                     <div class="text-center column">
                         <img src={'data:image/jpeg;base64,' + atob(detection.person_crop)} >
                     </div>
                     <div class="mt-0 column">
-                        <img src={'data:image/jpeg;base64,' + atob(detection.head_crop)} >
+                        <img src={'data:image/jpeg;base64,' + atob(detection.head_crop)} class="mt-0">
                     </div>   
                 </div>
                 
-            </ExpansionPanel>
+            </GenericCard>
         </td>        
     
 
-</tr-->
+</tr>
     
 <style>
     .text {

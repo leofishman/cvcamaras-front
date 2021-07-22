@@ -3,6 +3,7 @@
     import {
         cameras,
     } from "../stores";
+    import GenericCard from "./GenericCard.svelte";
     import SvelteTooltip from './SvelteTooltip.svelte';
 
     export let alerta;
@@ -65,9 +66,10 @@
             </div>
         </td>
     </tr>
-    <!--tr>
+    <tr>
         <td colspan="4">
-            <ExpansionPanel name="Fotos">
+
+            <GenericCard header="Fotos">
                 <div class="container">
                     {array2base64(alerta.person_crops)}
                     {#each person_crops as person_crop, i}
@@ -75,9 +77,9 @@
                     {/each}
                 </div>
 
-            </ExpansionPanel>
+            </GenericCard>
         </td>
-    </tr-->
+    </tr>
     
 <style>
     .alerta {

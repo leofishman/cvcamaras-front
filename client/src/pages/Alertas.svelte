@@ -9,8 +9,8 @@
       cameras,
       pageAction
     } from "../stores";
-   // import 'bulma/css/bulma.css'
-  
+    import GenericCard from "../components/GenericCard.svelte"
+
     let id = '';
     let idn = 0;
     let feed = '';
@@ -71,7 +71,7 @@
 
 
 <div class="container">
-  <!--ExpansionPanel name="Filtros">
+  <GenericCard header="Filtros">
     <div class="columns" on:change="{filtrar}">
       <div class="column">
         <input type="date" bind:value={opciones.fecha_desde} />
@@ -94,6 +94,7 @@
       <div class="column">
         <div class="select">
           <select bind:value="{opciones.tipo}">Tipo de Alerta
+            <!--option value="">--TODAS--</option-->
             <option value="">Todas</option>
             <option value="inmediata">Inmediata</option>
             <option value="dia">Diaria</option>
@@ -103,26 +104,24 @@
         </div>
       </div>
       <div class="column">
-        <Checkbox name="casco" value="casco" bind:checked="{opciones.casco}">
+        <input type="checkbox" name="casco" value="casco" bind:checked="{opciones.casco}">
           <i class="fas fa-hard-hat"></i>
           Casco
-        </Checkbox>
       </div>
       <div class="column">
-        <Checkbox name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
+        <input type="checkbox" name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
           <i class="fas fa-head-side-mask"></i>
-          Barbijo
-        </Checkbox>        
+          Barbijo     
       </div>
       <div class="column">
-        <Checkbox name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
+        <input type="checkbox" name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
           <i class="fas fa-vest"></i>
           Chaleco
-        </Checkbox>        
+                
       </div>
 
     </div>Filtros x fecha, tipo de alerta, camara y elementos
-  </ExpansionPanel-->
+  </GenericCard>
   {#if loading}
     <Loading />
   {:else}
