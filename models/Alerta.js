@@ -31,6 +31,11 @@ AlertSchema.statics.queryAlerts = async function(filter) {
     const options = {
         page: 1,
         limit: 6,
+        select: [
+                'site', 'camera', 'person','datetime','detections_count',
+                 'facemas_count', 'hardhat_count','mean_no_facemask_confidence',
+                 'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count'
+                ]
       };
 
     let fecha_desde = filter.fecha_desde;
@@ -68,11 +73,19 @@ AlertSchema.statics.queryAlerts = async function(filter) {
     delete filter.barbijo
 
     const result = await this.paginate(filter, options, function (err, resultado) {
+        console.log(72, resultado)
         return resultado;
     })
     return result;
 }
 
+AlertSchema.statics.get_person_crops = async function (id) {
+    const datetime = new Date(id.datetime)
+    const opciones = {datetime: datetime}
+
+    const result = await this.findOne(opciones)
+    return result.person_crops
+}
 
 const Alerta = model ('alerts', AlertSchema)
 

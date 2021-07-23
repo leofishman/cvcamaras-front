@@ -1,17 +1,23 @@
 <script>
-  //  import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import {
         cameras,
     } from "../stores";
     import GenericCard from "./GenericCard.svelte";
+    import Person_crops from "./Person_crops.svelte"
+    import Loading from "../components/Loading.svelte";
     import SvelteTooltip from './SvelteTooltip.svelte';
+    import { onMount } from "svelte"
+    import axios from "axios"
+
 
     export let alerta;
     export  let eventType;
 
     let dateFormat = require("dateformat");
     let iconEvent = '';
-    let person_crops = [];
+    let person_crops = [0];
+    let loading = true;
+    let images = [];
 
     
     if (eventType == "alerta") {
@@ -31,11 +37,25 @@
 
     function array2base64(imgArr) {
         person_crops = [];
-        imgArr.forEach((item, index, arr) =>
-            person_crops[index] = 'data:image/jpeg;base64,' + atob(alerta.person_crops[index])
-        )
-        console.log(35, person_crops)
+        imgArr.forEach((item, index, arr) => {
+          person_crops[index] = 'data:image/jpeg;base64,' + atob(imgArr[index])  
+          images[index] = {path:'data:image/jpeg;base64,' + atob(imgArr[index]), id: index}
+        })
     }
+
+    async function get_person_crops() {
+        loading = true
+        const opciones = {datetime: alerta.datetime}
+        const { data } = await axios.post("/api/alertas/person_crops", {opciones});
+        loading = false
+        console.log(48, data)
+      return data
+    }
+
+    onMount(async () => {
+      person_crops = await get_person_crops()
+      array2base64(person_crops)
+    });
 </script>
 
 
@@ -68,13 +88,22 @@
     </tr>
     <tr>
         <td colspan="4">
-
             <GenericCard header="Fotos">
                 <div class="container">
-                    {array2base64(alerta.person_crops)}
-                    {#each person_crops as person_crop, i}
-                          <img src={person_crop} alt="Sin..">
-                    {/each}
+                    {#if loading}
+                        <Loading />
+                    {:else}
+                       <Person_crops 
+                       {images}
+                       imageWidth={250}
+                       imageSpacing={15}
+                       controlColor={'white'}
+                       controlScale={0.8}
+                       displayControls={false}
+                       autoplay={true}
+                       autoplaySpeed={3000}
+                        />
+                    {/if}
                 </div>
 
             </GenericCard>
