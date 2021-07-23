@@ -4,6 +4,7 @@
     } from "../stores";
     import GenericCard from "./GenericCard.svelte";
     import Person_crops from "./Person_crops.svelte"
+    import { ChevronLeftIcon, ChevronRightIcon } from 'svelte-feather-icons';
     import Loading from "../components/Loading.svelte";
     import SvelteTooltip from './SvelteTooltip.svelte';
     import { onMount } from "svelte"
@@ -97,11 +98,11 @@
                        {images}
                        imageWidth={250}
                        imageSpacing={15}
-                       controlColor={'white'}
+                       controlColor={'grey'}
                        controlScale={0.8}
-                       displayControls={false}
+                       displayControls={true}
                        autoplay={true}
-                       autoplaySpeed={3000}
+                       autoplaySpeed={2000}
                         />
                     {/if}
                 </div>
