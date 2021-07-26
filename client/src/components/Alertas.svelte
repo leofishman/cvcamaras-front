@@ -49,7 +49,6 @@
         const opciones = {datetime: alerta.datetime}
         const { data } = await axios.post("/api/alertas/person_crops", {opciones});
         loading = false
-        console.log(48, data)
       return data
     }
 
@@ -101,8 +100,7 @@
                        controlColor={'grey'}
                        controlScale={0.8}
                        displayControls={true}
-                       autoplay={true}
-                       autoplaySpeed={2000}
+                       autoplay={false}
                         />
                     {/if}
                 </div>

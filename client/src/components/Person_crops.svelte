@@ -11,13 +11,14 @@
   export let autoplaySpeed = 5000;
   export let displayControls = true;
   let interval;
-  const rotateLeft = e => {
+  function rotateLeft(e) {
     const transitioningImage = images[images.length - 1]
     document.getElementById(transitioningImage.id).style.opacity = 0;
     images = [images[images.length -1],...images.slice(0, images.length - 1)]
     setTimeout(() => (document.getElementById(transitioningImage.id).style.opacity = 1), speed);
   }
-  const rotateRight = e => {
+
+  function rotateRight(e) {
     const transitioningImage = images[0]
     document.getElementById(transitioningImage.id).style.opacity = 0;
     images = [...images.slice(1, images.length), images[0]]
@@ -35,9 +36,23 @@
     startAutoPlay()
   }
   onDestroy(()=>{stopAutoPlay()})
-</script>
 
+  function arrowPressed(event) {
+    if (event.key == 'ArrowLeft') {
+      speed = 0
+      clearInterval(interval)
+      rotateLeft()
+    }
+    if (event.key == 'ArrowRight') {
+      speed = 0
+      clearInterval(interval)      
+      rotateRight()
+    }
+  }
+</script>
+<svelte:window  on:keydown={arrowPressed} />
 <div id="carousel-container">
+
   <div id="carousel-images">
     {#each images as image (image.id)}
       <img
