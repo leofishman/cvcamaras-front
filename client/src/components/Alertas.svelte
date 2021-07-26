@@ -19,6 +19,10 @@
     let person_crops = [0];
     let loading = true;
     let images = [];
+    let cause = [];
+
+    if (alerta.no_facemask_count) cause.push('no facemask')
+    if (alerta.hardhat_count) cause.push('no hardhat')
 
     
     if (eventType == "alerta") {
@@ -70,10 +74,17 @@
         <td>
             <div class="columns">
                 <div class="column">
-                    <SvelteTooltip tip="Sin casco: {alerta.no_hardhat_count} - {alerta.mean_no_hardhat_confidence}" top >
-                        <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
-                   </SvelteTooltip> 
-                    
+                    {#if alerta.no_hardhat_count}
+                        <SvelteTooltip tip="Sin casco: {alerta.no_hardhat_count} - {alerta.mean_no_hardhat_confidence}" top >
+                            <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
+                        </SvelteTooltip> 
+                    {/if}
+                        
+                    {#if alerta.hardhat_count}
+                        <SvelteTooltip tip="Con casco: {alerta.hardhat_count}" top >
+                            <i class="fas fa-hard-hat cumple"></i>
+                        </SvelteTooltip> 
+                    {/if}
                 </div>
                 <div class="column">
                     <SvelteTooltip tip="Sin barbijo: {alerta.no_facemask_count} - {alerta.mean_no_facemask_confidence}" top >
@@ -95,6 +106,8 @@
                     {:else}
                        <Person_crops 
                        {images}
+                       {cause}
+                       {alerta}
                        imageWidth={250}
                        imageSpacing={15}
                        controlColor={'grey'}
@@ -110,10 +123,6 @@
     </tr>
     
 <style>
-    .alerta {
-        background-color: rgb(100, 134, 5);
-        
-    }
     .text {
         padding-left: 30px;
     }
@@ -126,5 +135,10 @@
     .alerta {
         color: red;
         background-color: white;
+    }
+
+    .cumple {
+        color: blue;
+        background-color: aliceblue;
     }
 </style>

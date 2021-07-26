@@ -2,6 +2,7 @@
   import { flip } from 'svelte/animate';
   import { onDestroy } from 'svelte';
   export let images;
+  export let cause, alerta;
   export let imageWidth = 300;
   export let imageSpacing = 20;
   export let speed = 500;
@@ -25,9 +26,10 @@
     setTimeout(() => (document.getElementById(transitioningImage.id).style.opacity = 1), speed);
   }
   const startAutoPlay = () => {
-    if(autoplay){
+   /* if(autoplay){
       interval = setInterval(rotateLeft, autoplaySpeed)
     }
+    */
   }
   const stopAutoPlay = () => {
     clearInterval(interval)
@@ -36,7 +38,7 @@
     startAutoPlay()
   }
   onDestroy(()=>{stopAutoPlay()})
-
+console.log(40, cause, alerta)
   function arrowPressed(event) {
     if (event.key == 'ArrowLeft') {
       speed = 0
@@ -51,13 +53,15 @@
   }
 </script>
 <svelte:window  on:keydown={arrowPressed} />
-<div id="carousel-container">
 
+<h3 class="title">{cause.toString()}</h3>
+<div id="carousel-container">
   <div id="carousel-images">
+    
     {#each images as image (image.id)}
       <img
         src={image.path}
-        alt={image.id}
+        alt={cause.toString()}
         id={image.id}
         style={`width:${imageWidth}px; margin: 0 ${imageSpacing}px;`}
         on:mouseover={stopAutoPlay}
