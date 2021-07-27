@@ -21,8 +21,10 @@
     let images = [];
     let cause = [];
 
-    if (alerta.no_facemask_count) cause.push('no facemask')
-    if (alerta.hardhat_count) cause.push('no hardhat')
+    if (alerta.no_facemask_count) cause.push('no facemask ')
+    if (alerta.no_hardhat_count) cause.push('no hardhat')
+    if (alerta.hardhat_count) cause.push(' hardhat')
+    
 
     
     if (eventType == "alerta") {
@@ -108,8 +110,8 @@
                        {images}
                        {cause}
                        {alerta}
-                       imageWidth={250}
-                       imageSpacing={15}
+                       imageWidth={200}
+                       imageSpacing={5}
                        controlColor={'grey'}
                        controlScale={0.8}
                        displayControls={true}

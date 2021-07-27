@@ -71,7 +71,6 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
     delete filter.barbijo
 
     const result = await this.paginate(filter, options, function (err, resultado) {
-        console.log(72, resultado)
         return resultado;
     })
     return result;
@@ -82,7 +81,7 @@ AlertSchema.statics.get_person_crops = async function (id) {
     const opciones = {datetime: datetime}
 
     const result = await this.findOne(opciones)
-    return result.person_crops
+    return result.person_crops.slice(0,120)
 }
 
 const Alerta = model ('alerts', AlertSchema)
