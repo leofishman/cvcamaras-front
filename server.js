@@ -20,7 +20,7 @@ const MongoStore = require('connect-mongo')(session)
 app.use(cors())
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
-
+const HOST = '0.0.0.0';
 mongoose
     .connect(mongoURI, {
         useNewUrlParser: true,
@@ -61,4 +61,4 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-app.listen(port, () => console.log('Express is running at port ' + port))
+app.listen(port, HOST, () => console.log('Express is running at '+ HOST + ' port ' + port))
