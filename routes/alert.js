@@ -15,7 +15,7 @@ function ensureLogin(req, res, next) {
 
 router.post('/person_crops', ensureLogin, async(req, res) => {
     let filter = {};
-    if (req.body.opciones) {
+    if (req.body) {
         filter = req.body.opciones;
     }
     try {
@@ -29,13 +29,14 @@ router.post('/person_crops', ensureLogin, async(req, res) => {
     }
 })
 
-router.post('/', ensureLogin, async(req, res) => {
+router.post('/',ensureLogin, async(req, res) => {
     let filter = {};
+    let opciones = {}
     if (req.body.opciones) {
-        filter = req.body.opciones;
+       opciones = req.body.opciones;
     }
     try {
-        const alertas = await Alerta.queryAlerts(filter); 
+        const alertas = await Alerta.queryAlerts(filter, opciones); 
         if (!alertas) {
             throw new Error('No hay alertas')
         }

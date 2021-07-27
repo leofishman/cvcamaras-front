@@ -3,13 +3,13 @@
     import Alertas from "../components/Alertas.svelte"
     import { querystring } from "svelte-spa-router";
     import Loading from "../components/Loading.svelte";
-//    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import { onMount } from "svelte";   
     import {
       cameras,
       pageAction
     } from "../stores";
     import GenericCard from "../components/GenericCard.svelte"
+    import Pagination from "../components/Pagination.svelte"
 
     let id = '';
     let idn = 0;
@@ -29,7 +29,7 @@
     $: mostrando = alertas.length
     $: disabled = (feed == '' || id == '');
 
-    let opciones = {}
+    let opciones = { limit: 6, page: 1 };
     let queries = query.split("&");
     if (queries.length > 1) {
       queries.forEach(element => {
@@ -38,12 +38,24 @@
     }
 
     async function getAlerts() {
+console.log(41,opciones)
       const { data } = await axios.post("/api/alertas/", {opciones});
+      console.log(42,data, opciones)
       totalDocs = data.totalDocs
+      hasNextPage = data.hasNextPage
+      hasPrevPage = data.hasPrevPage
+      limit = data.limit
+      nextPage = data.nextPage
+      page = data.page
+      pagingCounter = data.pagingCounter
+      prevPage = data.prevPage
+      totalPages = data.totalPages
+      console.log(51,data)
       return data.docs
-    }    
+    }
 
     onMount(async () => {
+      console.log(58, opciones)
       loading = true;
       alertas = await getAlerts()
       loading = false;
@@ -59,7 +71,8 @@
       return obj
     }
 
-    async function filtrar() {
+    async function filtrar(filtro) {
+      opciones.page = filtro.page
       opciones = clean(opciones)
       loading = true;
       alertas = await getAlerts()
@@ -161,6 +174,21 @@
 
       </tbody>
     </table> 
+
+    {#if totalDocs > limit}
+      <Pagination
+        {page}
+        {totalPages}
+        {hasNextPage}
+        {hasPrevPage}
+        {limit}
+        {nextPage}
+        {pagingCounter}
+        {prevPage}
+        {totalDocs}
+        on:change="{(ev) => filtrar({page: ev.detail})}">
+      ></Pagination>
+    {/if}
   {/if}
     
 </div>

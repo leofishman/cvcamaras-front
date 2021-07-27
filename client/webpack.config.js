@@ -26,6 +26,7 @@ module.exports = {
                 target: 'http://localhost:3000',
             },
         },
+        clientLogLevel: 'silent',
     },
     module: {
         rules: [
@@ -60,4 +61,5 @@ module.exports = {
         }),
     ],
     devtool: prod ? false : 'source-map',
+
 }

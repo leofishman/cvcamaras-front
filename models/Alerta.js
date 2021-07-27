@@ -26,17 +26,15 @@ const AlertSchema = new Schema({
 
 AlertSchema.plugin(mongoosePaginate);
 
-AlertSchema.statics.queryAlerts = async function(filter) {
+AlertSchema.statics.queryAlerts = async function(filter, options) {
 
-    const options = {
-        page: 1,
-        limit: 6,
-        select: [
+    if (!options) options = {}
+    options.select = [
                 'site', 'camera', 'person','datetime','detections_count',
                  'facemas_count', 'hardhat_count','mean_no_facemask_confidence',
                  'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count'
                 ]
-      };
+      
 
     let fecha_desde = filter.fecha_desde;
     let fecha_hasta = filter.fecha_hasta;

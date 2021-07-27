@@ -3,7 +3,7 @@
     import Detection from "../components/Detection.svelte"
     import Loading from "../components/Loading.svelte";
     import Pagination from "../components/Pagination.svelte"
-//    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+    import GenericCard from "../components/GenericCard.svelte"
     import { onMount } from "svelte";
     
     import {
@@ -33,7 +33,6 @@
       totalPages = data.totalPages
       mostrando = data.docs.length
       detections = data.docs
-console.log(36, data)
       return data.docs
     }
 
