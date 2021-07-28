@@ -34,15 +34,16 @@ router.post('/',ensureLogin, async(req, res) => {
     let pagination = {}
     if (req.body.opciones) {
        pagination = req.body.opciones.pagination;
-       filter = req.body.opciones.filter;
-
+       if (req.body.opciones.filter) {
+          filter = req.body.opciones.filter; 
+       } 
     }
     try {
-        const alertas = await Alerta.queryAlerts(filter, pagination); 
-        if (!alertas) {
+        const data = await Alerta.queryAlerts(filter, pagination); 
+        if (!data) {
             throw new Error('No hay alertas')
         }
-        res.status(200).json(alertas)
+        res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ message: error.message })
     }

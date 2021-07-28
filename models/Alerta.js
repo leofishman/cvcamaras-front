@@ -29,13 +29,14 @@ AlertSchema.plugin(mongoosePaginate);
 AlertSchema.statics.queryAlerts = async function(filter, options) {
 
     if (!options) options = {}
+    if (!filter) filter = {}
     options.select = [
                 'site', 'camera', 'person','datetime','detections_count',
                  'facemas_count', 'hardhat_count','mean_no_facemask_confidence',
                  'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count'
                 ]
       
-    if (filter) {
+    if (filter.fecha_desde) {
             let fecha_desde = filter.fecha_desde;
         let fecha_hasta = filter.fecha_hasta;
         if (!fecha_hasta) {
@@ -77,7 +78,7 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
     const result = await this.paginate(filter, options, function (err, resultado) {
         return resultado;
     })
-    return result;
+    return [result,filter];
 }
 
 AlertSchema.statics.get_person_crops = async function (id) {

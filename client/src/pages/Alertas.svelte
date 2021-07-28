@@ -24,13 +24,15 @@
     let prevPage;
     let pagingCounter;
     let loading = false;
+    let barbijo = false
     let query = $querystring;
-    $: alertas = '';
+    $: alertas = [];
     $: opciones.det_persona;
     $: mostrando = alertas.length
     $: disabled = (feed == '' || id == '');
+    $: barbijo = opciones.filter.no_facemask_count
 
-    let opciones = {pagination: { limit: 6, page: 1 }};
+    let opciones = {pagination: { limit: 6, page: 1 }, filter: {}};
 
     /* TODO: remove querystring if not used!!! 
     let queries = query.split("&");
@@ -42,17 +44,18 @@
 */
     async function getAlerts() {
       const { data } = await axios.post("/api/alertas/", {opciones});
-      
-      totalDocs = data.totalDocs
-      hasNextPage = data.hasNextPage
-      hasPrevPage = data.hasPrevPage
-      limit = data.limit
-      nextPage = data.nextPage
-      page = data.page
-      pagingCounter = data.pagingCounter
-      prevPage = data.prevPage
-      totalPages = data.totalPages
-      return data.docs
+      console.log(45, data)
+      opciones.filter = data[1]
+      totalDocs = data[0].totalDocs
+      hasNextPage = data[0].hasNextPage
+      hasPrevPage = data[0].hasPrevPage
+      limit = data[0].limit
+      nextPage = data[0].nextPage
+      page = data[0].page
+      pagingCounter = data[0].pagingCounter
+      prevPage = data[0].prevPage
+      totalPages = data[0].totalPages
+      return data[0].docs
     }
 
     onMount(async () => {
@@ -71,18 +74,36 @@
       return obj
     }
 
-    async function filtrar(filtro) {
-      opciones.pagination.page = filtro.page
-      if (opciones.barbijo) {
+    async function filtrar() {
+      if (barbijo) {
           opciones.filter = {no_facemask_count: {$gte: 1}};
           delete opciones.barbijo;
       }
        
-      opciones = clean(opciones)
+      opciones.filter = clean(opciones.filter)
+      opciones.pagination.page = 1
       loading = true;
       alertas = await getAlerts()
       loading = false;
       $pageAction = 'Alertas';
+    }
+
+    async function paginar(page) {
+      console.log(89, page)
+      opciones.pagination.page = page.page
+      loading = true;
+      alertas = await getAlerts()
+      loading = false;
+    }
+
+    function toggle_det_persona() {
+      opciones.det_persona = !opciones.det_persona
+      filtrar()
+    }
+
+    function toggle_barbijo() {
+      barbijo = !barbijo
+      filtrar()
     }
 </script>
     
@@ -109,34 +130,56 @@
           </select>
         </div>
       </div>
-      <div class="column">
-        <div class="select">
-          <select bind:value="{opciones.tipo}">Tipo de Alerta
-            <option value="">Todas</option>
-            <option value="inmediata">Inmediata</option>
-            <option value="dia">Diaria</option>
-            <option value="hora">horaria</option>
-            <option value="especial">Especiales</option>
-          </select>
+      {#if 1==2}
+        <div class="column">
+          <div class="select">
+            <select bind:value="{opciones.tipo}">Tipo de Alerta
+              <option value="">Todas</option>
+              <option value="inmediata">Inmediata</option>
+              <option value="dia">Diaria</option>
+              <option value="hora">horaria</option>
+              <option value="especial">Especiales</option>
+            </select>
+          </div>
         </div>
-      </div>
+      {/if}
       <div class="column">
+        <div on:click={toggle_barbijo}>
+          {#if barbijo}
+          <i class="fas fa-head-side-mask ml-3"></i>  
+            Barbijo?
+          <i class="fas fa-toggle-on"></i>
+        {:else}
+          <i class="fas fa-head-side-mask ml-3 disabled"></i>  
+           Barbijo?
+          <i class="fas fa-toggle-off"></i>
+        {/if}
+        </div>
         <input type="checkbox" name="casco" value="casco" bind:checked="{opciones.casco}">
           <i class="fas fa-hard-hat"></i>
           Casco
       </div>
       <div class="column">
-        <input type="checkbox" name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
-          <i class="fas fa-head-side-mask"></i>
-          Barbijo     
+        <div on:click={toggle_det_persona}>
+          {#if opciones.det_persona}
+            <i class="fas fa-toggle-on"></i>
+            <i class="fas fa-male ml-3"></i>  
+              Persona?
+          {:else}
+            <i class="fas fa-toggle-off"></i>
+            <i class="fas fa-male ml-3 disabled"></i>  
+              Persona?  
+          {/if}
+        </div>
       </div>
-      <div class="column">
+
+      <!--div class="column">
         <input type="checkbox" name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
           <i class="fas fa-vest"></i>
           Chaleco
-      </div>
+      </div-->
 
-    </div>Filtros x fecha, tipo de alerta, camara y elementos
+    </div>Filtros x fecha
   </GenericCard>
   {#if loading}
     <Loading />
@@ -189,7 +232,7 @@
         {pagingCounter}
         {prevPage}
         {totalDocs}
-        on:change="{(ev) => filtrar({page: ev.detail})}">
+        on:change="{(ev) => paginar({page: ev.detail})}">
       ></Pagination>
     {/if}
   {/if}
