@@ -29,18 +29,19 @@
     $: mostrando = alertas.length
     $: disabled = (feed == '' || id == '');
 
-    let opciones = { limit: 6, page: 1 };
+    let opciones = {pagination: { limit: 6, page: 1 }};
+
+    /* TODO: remove querystring if not used!!! 
     let queries = query.split("&");
     if (queries.length > 1) {
       queries.forEach(element => {
         opciones[element.split("=")[0]] = element.split("=")[1]
       });
     }
-
+*/
     async function getAlerts() {
-console.log(41,opciones)
       const { data } = await axios.post("/api/alertas/", {opciones});
-      console.log(42,data, opciones)
+      
       totalDocs = data.totalDocs
       hasNextPage = data.hasNextPage
       hasPrevPage = data.hasPrevPage
@@ -50,12 +51,10 @@ console.log(41,opciones)
       pagingCounter = data.pagingCounter
       prevPage = data.prevPage
       totalPages = data.totalPages
-      console.log(51,data)
       return data.docs
     }
 
     onMount(async () => {
-      console.log(58, opciones)
       loading = true;
       alertas = await getAlerts()
       loading = false;
@@ -72,7 +71,12 @@ console.log(41,opciones)
     }
 
     async function filtrar(filtro) {
-      opciones.page = filtro.page
+      opciones.pagination.page = filtro.page
+      if (opciones.barbijo) {
+          opciones.filter = {no_facemask_count: {$gte: 1}};
+          delete opciones.barbijo;
+      }
+       
       opciones = clean(opciones)
       loading = true;
       alertas = await getAlerts()
@@ -107,7 +111,6 @@ console.log(41,opciones)
       <div class="column">
         <div class="select">
           <select bind:value="{opciones.tipo}">Tipo de Alerta
-            <!--option value="">--TODAS--</option-->
             <option value="">Todas</option>
             <option value="inmediata">Inmediata</option>
             <option value="dia">Diaria</option>
@@ -130,7 +133,6 @@ console.log(41,opciones)
         <input type="checkbox" name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
           <i class="fas fa-vest"></i>
           Chaleco
-                
       </div>
 
     </div>Filtros x fecha, tipo de alerta, camara y elementos

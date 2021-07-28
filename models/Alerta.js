@@ -35,40 +35,44 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
                  'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count'
                 ]
       
+    if (filter) {
+            let fecha_desde = filter.fecha_desde;
+        let fecha_hasta = filter.fecha_hasta;
+        if (!fecha_hasta) {
+            fecha_hasta = new Date();
+        } else {
+            fecha_hasta =  new Date(fecha_hasta);
+        }
+        if (fecha_desde) {
+            fecha_desde = new Date(fecha_desde);
+            fecha_hasta = fecha_hasta;
+            filter.datetime = {
+                $gte:  fecha_desde, 
+                $lte: fecha_hasta, 
+            };
+            delete filter.fecha_desde;
+            delete filter.fecha_hasta;
+        }
+        filter.detections = [];
 
-    let fecha_desde = filter.fecha_desde;
-    let fecha_hasta = filter.fecha_hasta;
-    if (!fecha_hasta) {
-        fecha_hasta = new Date();
+        if (filter.chaleco) {
+            filter.detections[0] = "person"
+        }
+        if (filter.barbijo) {
+            filter.detections[1] = "no facemask"
+        }
+        if (filter.casco) {
+            filter.detections[2] = "hard hat"
+        }
+
+        if (filter.detections.length == 0) delete filter.detections
+        delete filter.casco
+        delete filter.chaleco
+        delete filter.barbijo
     } else {
-        fecha_hasta =  new Date(fecha_hasta);
+        let filter = {}
     }
-    if (fecha_desde) {
-        fecha_desde = new Date(fecha_desde);
-        fecha_hasta = fecha_hasta;
-        filter.datetime = {
-            $gte:  fecha_desde, 
-            $lte: fecha_hasta, 
-        };
-        delete filter.fecha_desde;
-        delete filter.fecha_hasta;
-    }
-    filter.detections = [];
-
-    if (filter.chaleco) {
-         filter.detections[0] = "person"
-    }
-    if (filter.barbijo) {
-        filter.detections[1] = "no facemask"
-    }
-    if (filter.casco) {
-        filter.detections[2] = "hard hat"
-    }
-
-    if (filter.detections.length == 0) delete filter.detections
-    delete filter.casco
-    delete filter.chaleco
-    delete filter.barbijo
+   
 
     const result = await this.paginate(filter, options, function (err, resultado) {
         return resultado;
@@ -77,6 +81,7 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
 }
 
 AlertSchema.statics.get_person_crops = async function (id) {
+
     const datetime = new Date(id.datetime)
     const opciones = {datetime: datetime}
 

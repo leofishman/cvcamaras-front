@@ -14,12 +14,12 @@ function ensureLogin(req, res, next) {
 
 
 router.post('/person_crops', ensureLogin, async(req, res) => {
-    let filter = {};
+    let opciones = {};
     if (req.body) {
-        filter = req.body.opciones;
+        opciones = req.body.opciones;
     }
     try {
-        const person_crops = await Alerta.get_person_crops(filter); 
+        const person_crops = await Alerta.get_person_crops(opciones); 
         if (!person_crops) {
             throw new Error('No hay recortes')
         }
@@ -31,12 +31,14 @@ router.post('/person_crops', ensureLogin, async(req, res) => {
 
 router.post('/',ensureLogin, async(req, res) => {
     let filter = {};
-    let opciones = {}
+    let pagination = {}
     if (req.body.opciones) {
-       opciones = req.body.opciones;
+       pagination = req.body.opciones.pagination;
+       filter = req.body.opciones.filter;
+
     }
     try {
-        const alertas = await Alerta.queryAlerts(filter, opciones); 
+        const alertas = await Alerta.queryAlerts(filter, pagination); 
         if (!alertas) {
             throw new Error('No hay alertas')
         }

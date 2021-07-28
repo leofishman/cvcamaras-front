@@ -38,7 +38,6 @@
     startAutoPlay()
   }
   onDestroy(()=>{stopAutoPlay()})
-console.log(40, cause, alerta)
   function arrowPressed(event) {
     if (event.key == 'ArrowLeft') {
       speed = 0

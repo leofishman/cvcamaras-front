@@ -18,7 +18,6 @@
         iconEvent = 'history';
     }
     function estado(element) {
-        console.log(20, element)
         if (element) {
             return 'detection'
         } else {

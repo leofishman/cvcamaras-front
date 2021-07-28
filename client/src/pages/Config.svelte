@@ -54,10 +54,8 @@
 
     async function actualizarConfiguraciones () {
       const igual = $config != configLocal
-      console.log(56,igual,  $config, configLocal)
       if ($config == configLocal) {
          const response = await axios.put("/api/config", configLocal)
-         console.log(60, response)
         $config = response.data
         addToast({
           message: 'Configuración actualizada',
@@ -66,7 +64,6 @@
           timeout: 3000,
           });
         dispatch('toast');
-        console.log(67, response)
       }
 
     }
