@@ -26,7 +26,7 @@
     let loading = false;
     let query = $querystring;
     $: alertas = '';
-    $: opciones;
+    $: opciones.det_persona;
     $: mostrando = alertas.length
     $: disabled = (feed == '' || id == '');
 
@@ -124,20 +124,6 @@
         <input type="checkbox" name="casco" value="casco" bind:checked="{opciones.casco}">
           <i class="fas fa-hard-hat"></i>
           Casco
-      </div>
-      <div class="column">
-        <div on:click={opciones.det_persona = !opciones.det_persona}>
-          {#if opciones.det_persona}
-            <i class="fas fa-male ml-3"></i>  
-              Detectar persona?
-            <i class="fas fa-toggle-on"></i>
-            
-          {:else}
-            <i class="fas fa-male ml-3 disabled"></i>  
-              Detectar persona?
-            <i class="fas fa-toggle-off"></i>
-          {/if}
-        </div>
       </div>
       <div class="column">
         <input type="checkbox" name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
