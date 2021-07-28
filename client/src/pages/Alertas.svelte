@@ -78,6 +78,8 @@
       if (barbijo) {
           opciones.filter = {no_facemask_count: {$gte: 1}};
           delete opciones.barbijo;
+      } else {
+        delete opciones.filter.no_facemask_count
       }
        
       opciones.filter = clean(opciones.filter)
@@ -146,18 +148,18 @@
       <div class="column">
         <div on:click={toggle_barbijo}>
           {#if barbijo}
-          <i class="fas fa-head-side-mask ml-3"></i>  
+            <i class="fas fa-toggle-on"></i>
+            <i class="fas fa-head-side-mask ml-3"></i>  
+              Barbijo?
+          {:else}
+            <i class="fas fa-toggle-off"></i>
+            <i class="fas fa-head-side-mask ml-3 disabled"></i>  
             Barbijo?
-          <i class="fas fa-toggle-on"></i>
-        {:else}
-          <i class="fas fa-head-side-mask ml-3 disabled"></i>  
-           Barbijo?
-          <i class="fas fa-toggle-off"></i>
-        {/if}
+          {/if}
         </div>
-        <input type="checkbox" name="casco" value="casco" bind:checked="{opciones.casco}">
-          <i class="fas fa-hard-hat"></i>
-          Casco
+        <!--input type="checkbox" name="casco" value="casco" bind:checked="{opciones.casco}">
+          <i class="fas fa-hard-hat"></i-->
+          
       </div>
       <div class="column">
         <div on:click={toggle_det_persona}>
