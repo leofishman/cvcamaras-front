@@ -3,7 +3,7 @@
   import { onDestroy } from 'svelte';
   export let images;
   export let cause, alerta;
-  export let imageWidth = 200;
+  export let imageHeight = 200;
   export let imageSpacing = 5;
   export let speed = 500;
   export let controlColor= '#444';
@@ -38,6 +38,7 @@
     startAutoPlay()
   }
   onDestroy(()=>{stopAutoPlay()})
+
   function arrowPressed(event) {
     if (event.key == 'ArrowLeft') {
       speed = 0
@@ -62,7 +63,7 @@
           src={image.path}
           alt={cause.toString()}
           id={image.id}
-          style={`width:${imageWidth}px; margin: 0 ${imageSpacing}px;`}
+          style={`height:${imageHeight}px; margin: 0 ${imageSpacing}px;`}
           on:mouseover={stopAutoPlay}
           on:mouseout={startAutoPlay}
           animate:flip={{duration: speed}}/>

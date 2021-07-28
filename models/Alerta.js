@@ -86,7 +86,7 @@ AlertSchema.statics.get_person_crops = async function (id) {
     const opciones = {datetime: datetime}
 
     const result = await this.findOne(opciones)
-    return result.person_crops.slice(0,12)
+    return result.person_crops.slice(0,32)
 }
 
 const Alerta = model ('alerts', AlertSchema)

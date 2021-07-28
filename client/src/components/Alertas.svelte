@@ -110,8 +110,8 @@
                        {images}
                        {cause}
                        {alerta}
-                       imageWidth={200}
-                       imageSpacing={5}
+                       imageHeight={300}
+                       imageSpacing={10}
                        controlColor={'grey'}
                        controlScale={0.8}
                        displayControls={true}
