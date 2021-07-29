@@ -77,13 +77,13 @@
         <td>
             <div class="columns">
                 <div class="column">
-                    {#if alerta.no_hardhat_count}
+                    {#if (alerta.no_hardhat_count || 1 == 1)}
                         <SvelteTooltip tip="Sin casco: {alerta.no_hardhat_count} - {alerta.mean_no_hardhat_confidence}" top >
                             <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
                         </SvelteTooltip> 
                     {/if}
                         
-                    {#if alerta.hardhat_count}
+                    {#if (alerta.hardhat_count || 1 == 1)}
                         <SvelteTooltip tip="Con casco: {alerta.hardhat_count}" top >
                             <i class="fas fa-hard-hat cumple"></i>
                         </SvelteTooltip> 
