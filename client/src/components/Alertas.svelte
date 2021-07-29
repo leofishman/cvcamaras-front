@@ -61,12 +61,13 @@
     onMount(async () => {
       person_crops = await get_person_crops()
       array2base64(person_crops)
+      console.log('alerta', alerta)
     });
 </script>
 
 
     <tr>
-        <td>{dateFormat(alerta.datetime, "dd-mm-yy  h:M")}</td>
+        <td>{dateFormat(alerta.datetime)}</td>
         <td>{alerta.cam || 'camara X'}</td>
         <td><div class="text"> 
                  <span class="alert"> {alerta.detections_count || 'alerta'}</span> 
