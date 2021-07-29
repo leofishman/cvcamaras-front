@@ -24,7 +24,7 @@
       start_p = 1
     }
   }
- console.log(26, start_p, total_p)
+  
   const dispatch = createEventDispatcher();
 
   function range(size, startAt = 0) {

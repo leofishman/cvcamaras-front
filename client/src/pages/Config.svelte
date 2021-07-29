@@ -16,10 +16,7 @@
     import GenericCard from "../components/GenericCard.svelte"
 
     const dispatch = createEventDispatcher();
-    let id = '';
-    let idn = 0;
-    let feed = '';
-    let fps = 1;
+    let id, feed = '';
     let det_barbijo = true;
     let det_casco = true;
     let det_chaleco = false;
@@ -49,7 +46,12 @@
     async function getConfig() {
       const  {data} = await axios.get("/api/config/")
       $config = data
+      console.log(49, $config)
+      if (!$config.alerta_umbral_detection) {
+        $config.alerta_umbral_detection = 10
+      }
       configLocal = $config
+      console.log(54, $config)
     }
 
     async function actualizarConfiguraciones () {
@@ -57,6 +59,7 @@
       if ($config == configLocal) {
          const response = await axios.put("/api/config", configLocal)
         $config = response.data
+        console.log(60, $config)
         addToast({
           message: 'Configuración actualizada',
           type: 'info',
@@ -176,13 +179,13 @@
     </div>
     <div class="field">
       <p class="control">
-        <label>Periodicidad de alertas</label>
+        <label>Umbral detecciones para generar alerta</label>
         <input
           class="input"
           type="number"
-          bind:value={configLocal.alertas_periodicidad}
+          bind:value={configLocal.alerta_umbral_detection}
           placeholder="tiempo de alerta" />
-          Cuanto tiempo del evento genera una alerta?
+          Cuantos detecciones generan una alerta?
       </p>
     </div>
     <div class="config-smtp">

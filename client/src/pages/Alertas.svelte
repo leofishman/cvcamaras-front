@@ -6,6 +6,7 @@
     import { onMount } from "svelte";   
     import {
       cameras,
+      config,
       pageAction
     } from "../stores";
     import GenericCard from "../components/GenericCard.svelte"
@@ -33,7 +34,9 @@
     $: barbijo = opciones.filter.no_facemask_count
 
     let opciones = {pagination: { limit: 6, page: 1 }, filter: {}};
-
+    if (!$config.alerta_umbral_detection) {
+        $config.alerta_umbral_detection = 10
+    }
     /* TODO: remove querystring if not used!!! 
     let queries = query.split("&");
     if (queries.length > 1) {
@@ -42,9 +45,9 @@
       });
     }
 */
+    console.log(48, $config.alerta_umbral_detection)
     async function getAlerts() {
       const { data } = await axios.post("/api/alertas/", {opciones});
-      console.log(45, data)
       opciones.filter = data[1]
       totalDocs = data[0].totalDocs
       hasNextPage = data[0].hasNextPage
@@ -76,7 +79,7 @@
 
     async function filtrar() {
       if (barbijo) {
-          opciones.filter = {no_facemask_count: {$gte: 10}};
+          opciones.filter = {no_facemask_count: {$gte: $config.alerta_umbral_detection}};
           delete opciones.barbijo;
       } else {
         delete opciones.filter.no_facemask_count
@@ -91,7 +94,6 @@
     }
 
     async function paginar(page) {
-      console.log(89, page)
       opciones.pagination.page = page.page
       loading = true;
       alertas = await getAlerts()

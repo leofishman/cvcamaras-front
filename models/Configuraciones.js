@@ -11,6 +11,7 @@ const configuracionesSchema = new mongoose.Schema ({
   smtp_password:mongoose.SchemaTypes.String,
   smtp_port:mongoose.SchemaTypes.Number,
   smtp_enable:mongoose.SchemaTypes.Boolean,
+  alerta_umbral_detection: Number,
 })
 
 const Configuraciones = mongoose.model('configuraciones', configuracionesSchema)

@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const User = require('../models/User')
 const Alerta = require('../models/Alerta')
+const Configuraciones = require('../models/Configuraciones')
 
 const router = Router()
 
@@ -36,7 +37,16 @@ router.post('/',ensureLogin, async(req, res) => {
        pagination = req.body.opciones.pagination;
        if (req.body.opciones.filter) {
           filter = req.body.opciones.filter; 
-       } 
+       }
+
+       const configuraciones = await Configuraciones.findOne({alerta_umbral_detection:{$gt:0}});
+       if (!configuraciones) {
+        alerta_umbral_detection = 10
+       } else {
+        alerta_umbral_detection = configuraciones._doc.alerta_umbral_detection
+       }
+
+       filter.detections_count = {$gte: alerta_umbral_detection} 
     }
     try {
         const data = await Alerta.queryAlerts(filter, pagination); 
