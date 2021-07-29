@@ -46,7 +46,7 @@
   <ul>
     <li class="{page === 1 ? 'disabled' : ''} mr-2">
       <a href="javascript:void(0)" on:click="{() => changePage(1)}">
-        <span aria-hidden="true"> |« </span>
+        <span aria-hidden="true">«« </span>
       </a>
     </li>
     <li class="{page === 1 ? 'disabled' : ''} mr-2">
@@ -78,7 +78,7 @@
     </li>
     <li class="{page === totalPages ? 'disabled' : ''} ml-4">
       <a href="javascript:void(0)" on:click="{() => changePage(totalPages)}">
-        <span aria-hidden="true">»|</span>
+        <span aria-hidden="true">»»</span>
       </a>
     </li>
     
