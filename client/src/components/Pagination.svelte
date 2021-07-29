@@ -44,12 +44,16 @@
 
 <nav class="pagination">
   <ul>
-    <li class="{page === 1 ? 'disabled' : ''}">
-      <a href="javascript:void(0)" on:click="{() => changePage(page - 1)}">
-        <span aria-hidden="true">«</span>
+    <li class="{page === 1 ? 'disabled' : ''} mr-2">
+      <a href="javascript:void(0)" on:click="{() => changePage(1)}">
+        <span aria-hidden="true"> |« </span>
       </a>
     </li>
-
+    <li class="{page === 1 ? 'disabled' : ''} mr-2">
+      <a href="javascript:void(0)" on:click="{() => changePage(page - 1)}">
+        <span aria-hidden="true"> «  </span>
+      </a>
+    </li>
     {#if start_p > 1}
       <li class="ellipsis">
         <i class="fas fa-ellipsis-h mb-0 pb-0 p-3">  </i> 
@@ -67,11 +71,17 @@
         <i class="fas fa-ellipsis-h mb-0 pb-0 p-3">  </i> 
       </li>
     {/if}
-    <li class="{page === totalPages ? 'disabled' : ''}">
+    <li class="{page === totalPages ? 'disabled' : ''} ml-2">
       <a href="javascript:void(0)" on:click="{() => changePage(page + 1)}">
         <span aria-hidden="true">»</span>
       </a>
     </li>
+    <li class="{page === totalPages ? 'disabled' : ''} ml-4">
+      <a href="javascript:void(0)" on:click="{() => changePage(totalPages)}">
+        <span aria-hidden="true">»|</span>
+      </a>
+    </li>
+    
   </ul>
 </nav>
 
