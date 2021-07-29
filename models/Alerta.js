@@ -32,7 +32,7 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
     if (!filter) filter = {}
     options.select = [
                 'site', 'camera', 'person','datetime','detections_count',
-                 'facemas_count', 'hardhat_count','mean_no_facemask_confidence',
+                 'facemask_count', 'hardhat_count','mean_no_facemask_confidence',
                  'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count'
                 ]
       

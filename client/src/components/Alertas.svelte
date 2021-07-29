@@ -93,6 +93,9 @@
                     <SvelteTooltip tip="Sin barbijo: {alerta.no_facemask_count} - {alerta.mean_no_facemask_confidence}" top >
                        <i class="fas fa-head-side-mask {estado(alerta.no_facemask_count)}"></i> 
                    </SvelteTooltip> 
+                    <SvelteTooltip tip="Con barbijo: {alerta.facemask_count}" top >
+                       <i class="fas fa-head-side-mask cumple"></i> 
+                   </SvelteTooltip>                    
                 </div>
                 <div class="column ">
                     <i class="fas fa-vest {estado(alerta.no_vest_count)}"></i>  
@@ -141,7 +144,7 @@
     }
 
     .cumple {
-        color: blue;
+        color: green;
         background-color: aliceblue;
     }
 </style>
