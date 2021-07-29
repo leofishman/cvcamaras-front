@@ -76,7 +76,7 @@
 
     async function filtrar() {
       if (barbijo) {
-          opciones.filter = {no_facemask_count: {$gte: 1}};
+          opciones.filter = {no_facemask_count: {$gte: 10}};
           delete opciones.barbijo;
       } else {
         delete opciones.filter.no_facemask_count
