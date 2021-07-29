@@ -5,15 +5,8 @@ const CameraSchema = new Schema({
         type: String,
         required: true,
     },
-    idn: {
-        type: Number,
-    },
     feed: {
         type: String,
-    },
-    fps: {
-        type: Number,
-        defaultValue: 1,
     },
     det_persona: Boolean,
     det_barbijo: {
@@ -27,10 +20,6 @@ const CameraSchema = new Schema({
     det_chaleco: {
         type: Boolean,
         defaultValue: false,
-    },
-    frames_capt: {
-        type: Number,
-        defaultValue: 50,
     },
     active: {
         type: Boolean,

@@ -5,7 +5,7 @@
   let isActive = false;
 
   if ($pageAction === null) {
-    $pageAction = 'AlgoLabs powerfull Dashboard'
+    $pageAction = ''
   }
 
   async function logout() {
