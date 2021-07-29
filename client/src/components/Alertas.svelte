@@ -24,6 +24,7 @@
     if (alerta.no_facemask_count) cause.push('no facemask ')
     if (alerta.no_hardhat_count) cause.push('no hardhat')
     if (alerta.hardhat_count) cause.push(' hardhat')
+    if (alerta.facemask_count) cause.push(' facemask')
     
 
     
@@ -67,7 +68,7 @@
 
 
     <tr>
-        <td>{dateFormat(alerta.datetime)}</td>
+        <td>{i} - {dateFormat(alerta.datetime)}  [{cause}] </td>
         <td>{alerta.cam || 'camara X'}</td>
         <td><div class="text"> 
                  <span class="alert"> {alerta.detections_count || 'alerta'}</span> 
