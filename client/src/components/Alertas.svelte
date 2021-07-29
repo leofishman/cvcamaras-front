@@ -11,7 +11,7 @@
     import axios from "axios"
 
 
-    export let alerta;
+    export let alerta, i;
     export  let eventType;
 
     let dateFormat = require("dateformat");
@@ -61,7 +61,7 @@
     onMount(async () => {
       person_crops = await get_person_crops()
       array2base64(person_crops)
-      console.log('alerta', alerta)
+      console.log('alerta',i ,  alerta)
     });
 </script>
 

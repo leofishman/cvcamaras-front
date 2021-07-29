@@ -45,7 +45,6 @@
       });
     }
 */
-    console.log(48, $config.alerta_umbral_detection)
     async function getAlerts() {
       const { data } = await axios.post("/api/alertas/", {opciones});
       opciones.filter = data[1]

@@ -46,12 +46,10 @@
     async function getConfig() {
       const  {data} = await axios.get("/api/config/")
       $config = data
-      console.log(49, $config)
       if (!$config.alerta_umbral_detection) {
         $config.alerta_umbral_detection = 10
       }
       configLocal = $config
-      console.log(54, $config)
     }
 
     async function actualizarConfiguraciones () {
@@ -59,7 +57,7 @@
       if ($config == configLocal) {
          const response = await axios.put("/api/config", configLocal)
         $config = response.data
-        console.log(60, $config)
+
         addToast({
           message: 'Configuración actualizada',
           type: 'info',
