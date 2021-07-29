@@ -87,17 +87,16 @@ AlertSchema.statics.get_person_crops = async function (id) {
     const opciones = {datetime: datetime}
 
     const result = await this.findOne(opciones)
+    
+    /* this will shrink person_crops array to 20 images max */
     let skip_crop
     if ( result.person_crops.length > 20) {
         skip_crop = Math.floor((result.person_crops.length / 15))
         const result_shrinked = result.person_crops.filter(function(value, index) {
             return (index + 1) % skip_crop == 0;
         });
-
-        console.log(result_shrinked.length, skip_crop, result.person_crops.length)
         return result_shrinked.slice(0,20)      
     } 
-
     return result.person_crops.slice(0,20)
 }
 
