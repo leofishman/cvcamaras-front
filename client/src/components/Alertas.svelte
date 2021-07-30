@@ -20,12 +20,17 @@
     let loading = true;
     let images = [];
     let cause = [];
+    let camera, site = "X"
 
     if (alerta.no_facemask_count) cause.push('no facemask ')
     if (alerta.no_hardhat_count) cause.push('no hardhat')
     if (alerta.hardhat_count) cause.push(' hardhat')
     if (alerta.facemask_count) cause.push(' facemask')
-    
+    if (alerta._id) {
+        site = alerta._id.site
+        camera = site + '/' + alerta._id.camera
+    } 
+
 
     
     if (eventType == "alerta") {
@@ -69,7 +74,7 @@
 
     <tr>
         <td>{i} - {dateFormat(alerta.datetime)} - [{cause}] </td>
-        <td>{alerta.cam || 'camara X'}</td>
+        <td>{camera}</td>
         <td><div class="text"> 
                  <span class="alert"> {alerta.detections_count || 'alerta'}</span> 
             </div>

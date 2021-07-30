@@ -2,6 +2,7 @@ const {Schema, model} = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const AlertSchema = new Schema({
+    _id: Schema.Types.Mixed,
     site: String,
     camera: String,
     person: Number,
@@ -31,7 +32,7 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
     if (!options) options = {}
     if (!filter) filter = {}
     options.select = [
-                'site', 'camera', 'person','datetime','detections_count',
+                '_id','site', 'camera', 'person','datetime','detections_count',
                  'facemask_count', 'hardhat_count','mean_no_facemask_confidence',
                  'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count'
                 ]
