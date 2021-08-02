@@ -85,13 +85,23 @@
     </div>
     <div class="field">
       <p class="control">
+        <input
+          class="input"
+          type="text"
+          bind:value={camera.sitio}
+          placeholder="Sitio de la camara" />
+          Sitio de la Camara (Ubicación física)
+      </p>
+    </div>
+    
+    <div class="field">
+      <p class="control">
         <label on:click={camera.det_persona = !camera.det_persona}>
           <input type=checkbox  bind:checked={camera.det_persona }>
           {#if camera.det_persona}
             <i class="fas fa-male ml-3"></i>  
              Detectar persona?
             <i class="fas fa-toggle-on"></i>
-            Date
           {:else}
             <i class="fas fa-male ml-3 disabled"></i>  
             Detectar persona?
@@ -158,33 +168,7 @@
           Feed
       </p>
     </div>
-    <div class="field">
-      <p class="control">
-        <label>
-        <input type=number bind:value={camera.idn} placeholder="IDn">
-        valor de idn
-      </label>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <label>
-        <input type=number bind:value={camera.fps} placeholder="fps">
-        FPS
-      </label>
-      </p>
-    </div>
-
-
-    <div class="field">
-      <p class="control">
-        <label>
-        <input type=number bind:value={camera.frames_capt} placeholder="frames capt">
-        Frames Capt
-      </label>
-      </p>
-    </div>    
-
+ 
     <footer class="card-footer is-flex">
       <div class="field flex-wrap">
         <p class="control is-flex-direction-row">

@@ -11,15 +11,11 @@
       config,
       addToast,
     } from "../stores";
-    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import { createEventDispatcher } from 'svelte';
-
+    import GenericCard from "../components/GenericCard.svelte"
 
     const dispatch = createEventDispatcher();
-    let id = '';
-    let idn = 0;
-    let feed = '';
-    let fps = 1;
+    let id, feed = '';
     let det_barbijo = true;
     let det_casco = true;
     let det_chaleco = false;
@@ -49,16 +45,22 @@
     async function getConfig() {
       const  {data} = await axios.get("/api/config/")
       $config = data
+      if (!$config.alerta_umbral_detection) {
+        $config.alerta_umbral_detection = 10
+      }
+      if (!$config.alertas_precision) {
+        $config.alertas_precision = 90
+      }
+
       configLocal = $config
     }
 
     async function actualizarConfiguraciones () {
       const igual = $config != configLocal
-      console.log(56,igual,  $config, configLocal)
       if ($config == configLocal) {
          const response = await axios.put("/api/config", configLocal)
-         console.log(60, response)
         $config = response.data
+
         addToast({
           message: 'Configuración actualizada',
           type: 'info',
@@ -66,7 +68,6 @@
           timeout: 3000,
           });
         dispatch('toast');
-        console.log(67, response)
       }
 
     }
@@ -110,8 +111,8 @@
     }
 
     function saved(event) {
-      message = event.detail.message;
-      type = event.detail.type;
+      message = event.detail.message || '';
+      type = event.detail.type || '';
       addToast({
         message: message,
         type: type,
@@ -140,7 +141,7 @@
 <div class="app container">
   <div class="conf-alertas">
     {#if $config.length > 0}
-      <ExpansionPanel name="Configuraciones Globales">
+      <GenericCard header="Configuraciones Globales">
           {#each $config as configuracion, i }
             <div class="column is-4">
               <div class="columns">
@@ -153,9 +154,8 @@
               </div>
             </div>
           {/each} 
-      </ExpansionPanel>
+      </GenericCard>
     {/if} 
-
     <div class="field">
       <p class="control">
         <label>Email de alertas</label>
@@ -180,17 +180,28 @@
     </div>
     <div class="field">
       <p class="control">
-        <label>Periodicidad de alertas</label>
+        <label>Umbral precision para detectar alerta</label>
         <input
           class="input"
           type="number"
-          bind:value={configLocal.alertas_periodicidad}
+          bind:value={configLocal.alertas_precision}
           placeholder="tiempo de alerta" />
-          Cuanto tiempo del evento genera una alerta?
+          Precision de la detección en porcentaje %?
+      </p>
+    </div>    
+    <div class="field">
+      <p class="control">
+        <label>Umbral detecciones para generar alerta</label>
+        <input
+          class="input"
+          type="number"
+          bind:value={configLocal.alerta_umbral_detection}
+          placeholder="tiempo de alerta" /> 
+          Cuantos detecciones generan una alerta?
       </p>
     </div>
     <div class="config-smtp">
-      <ExpansionPanel name="smtp">
+      <GenericCard header="smtp">
         <div class="field {cssDisabled}">
           <p class="control">
             <label>
@@ -236,14 +247,14 @@
               bind:value={configLocal.smtp_port} />
           </p>
         </div>          
-      </ExpansionPanel>
+      </GenericCard>
     </div>
  
     <hr />
-    <Button on:click={actualizarConfiguraciones}>
+    <button on:click={actualizarConfiguraciones}>
       <i class="fas fa-save mr-3"></i>
       Actualizar Configuraciones
-    </Button>
+    </button>
   </div>
 
 
@@ -254,7 +265,7 @@
   {#if $cameras.length > 0}
   <h5 class="title info"> Camaras</h5>
     {#each $cameras as camera, i}  
-      <CamaraCard on:toast={saved} visible:bind({$cameras.id}) {camera} id={camera.id} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
+      <CamaraCard on:toast={saved} visible:bind({$cameras.id}) {camera} id={camera.id} sitio={camera.sitio} idn={camera.idn} feed={camera.feed} fps={camera.fps} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} frames_capt={camera.frames_capt} active={camera.active} } />
     {/each}
   {:else if !loading}
     <div class="notification">Agregue la primera camera</div>
@@ -265,11 +276,10 @@
     <div class="card" >
       <header class="card-header" on:click={toggleAddCamera}>
         <p class="card-header-title editar mr-5">
-          <Button>
+          <button class="button">
             <i class="fas fa-plus mr-3"></i>
             Agregar Camara
-          </Button>
-          
+          </button>
         </p>
         
       </header>

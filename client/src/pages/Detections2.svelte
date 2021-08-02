@@ -47,7 +47,6 @@ console.log(43, data)
       $pageAction = 'Detecciones';
       loading = true;
       let detections = await getDetections();
-      console.log(48, detections)
       head = await getHead()
       if (detections.length > 0) {
               loading = false;

@@ -3,14 +3,16 @@
     import Alertas from "../components/Alertas.svelte"
     import { querystring } from "svelte-spa-router";
     import Loading from "../components/Loading.svelte";
-    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
     import { onMount } from "svelte";   
     import {
       cameras,
+      config,
       pageAction
     } from "../stores";
-   // import 'bulma/css/bulma.css'
-  
+    import GenericCard from "../components/GenericCard.svelte"
+    import Pagination from "../components/Pagination.svelte"
+import { debug } from "svelte/internal";
+
     let id = '';
     let idn = 0;
     let feed = '';
@@ -24,24 +26,44 @@
     let prevPage;
     let pagingCounter;
     let loading = false;
+    let barbijo = false;
+    let chaleco = false;
+    let casco = false
     let query = $querystring;
-    $: alertas = '';
+    $: alertas = [];
+    $: opciones.det_persona;
     $: mostrando = alertas.length
     $: disabled = (feed == '' || id == '');
+    $: barbijo = opciones.filter.no_facemask_count
+    $: chaleco = opciones.filter.no_vest_count
+    $: casco = opciones.filter.no_hardhat_count
 
-    let opciones = {}
+    let opciones = {pagination: { limit: 6, page: 1 }, filter: {}};
+    if (!$config.alerta_umbral_detection) {
+        $config.alerta_umbral_detection = 10
+    }
+    /* TODO: remove querystring if not used!!! 
     let queries = query.split("&");
     if (queries.length > 1) {
       queries.forEach(element => {
         opciones[element.split("=")[0]] = element.split("=")[1]
       });
     }
-
+*/
     async function getAlerts() {
       const { data } = await axios.post("/api/alertas/", {opciones});
-      totalDocs = data.totalDocs
-      return data.docs
-    }    
+      opciones.filter = data[1]
+      totalDocs = data[0].totalDocs
+      hasNextPage = data[0].hasNextPage
+      hasPrevPage = data[0].hasPrevPage
+      limit = data[0].limit
+      nextPage = data[0].nextPage
+      page = data[0].page
+      pagingCounter = data[0].pagingCounter
+      prevPage = data[0].prevPage
+      totalPages = data[0].totalPages
+      return data[0].docs
+    }
 
     onMount(async () => {
       loading = true;
@@ -60,18 +82,67 @@
     }
 
     async function filtrar() {
-      opciones = clean(opciones)
+      console.log('opciones: ', opciones.filter)
+      
+      if (barbijo) {
+          opciones.filter.no_facemask_count = {$gte: $config.alerta_umbral_detection};
+      } else {
+        delete opciones.filter.no_facemask_count
+      }
+
+      if (chaleco) {
+          opciones.filter.no_vest_count = {$gte: $config.alerta_umbral_detection};
+      } else {
+        delete opciones.filter.no_vest_count
+      }
+      
+      if (casco) {
+        opciones.filter.no_hardhat_count = {$gte: $config.alerta_umbral_detection}
+      } else{
+        delete opciones.filter.no_hardhat_count
+      }
+       
+      opciones.filter = clean(opciones.filter)
+      opciones.pagination.page = 1
       loading = true;
       alertas = await getAlerts()
       loading = false;
       $pageAction = 'Alertas';
     }
+
+    async function paginar(page) {
+      opciones.pagination.page = page.page
+      loading = true;
+      alertas = await getAlerts()
+      loading = false;
+    }
+
+    function toggle_det_persona() {
+      opciones.det_persona = !opciones.det_persona
+      filtrar()
+    }
+
+    function toggle_casco() {
+      casco = !casco
+      console.log(127, casco)
+      filtrar()
+    } 
+
+    function toggle_barbijo() {
+      barbijo = !barbijo
+      console.log(barbijo)
+      filtrar()
+    }
+
+    function toggle_chaleco() {
+      chaleco = !chaleco
+      filtrar()
+    }    
 </script>
     
 
-
 <div class="container">
-  <ExpansionPanel name="Filtros">
+  <GenericCard header="Filtros">
     <div class="columns" on:change="{filtrar}">
       <div class="column">
         <input type="date" bind:value={opciones.fecha_desde} />
@@ -91,49 +162,100 @@
           </select>
         </div>
       </div>
-      <div class="column">
-        <div class="select">
-          <select bind:value="{opciones.tipo}">Tipo de Alerta
-            <!--option value="">--TODAS--</option-->
-            <option value="">Todas</option>
-            <option value="inmediata">Inmediata</option>
-            <option value="dia">Diaria</option>
-            <option value="hora">horaria</option>
-            <option value="especial">Especiales</option>
-          </select>
+      {#if 1==2}
+        <div class="column">
+          <div class="select">
+            <select bind:value="{opciones.tipo}">Tipo de Alerta
+              <option value="">Todas</option>
+              <option value="inmediata">Inmediata</option>
+              <option value="dia">Diaria</option>
+              <option value="hora">horaria</option>
+              <option value="especial">Especiales</option>
+            </select>
+          </div>
+        </div>
+      {/if}
+    </div>  
+    <div class="columns">
+      <div class="column is-one-quarter">
+        <div on:click={toggle_barbijo}>
+          {#if barbijo}
+            <i class="fas fa-toggle-on"></i>
+            <i class="fas fa-head-side-mask ml-3"></i>  
+              Barbijo?
+          {:else}
+            <i class="fas fa-toggle-off"></i>
+            <i class="fas fa-head-side-mask ml-3 disabled"></i>  
+            Barbijo?
+          {/if}
+        </div> 
+      </div>
+      <div class="column is-one-quarter">
+        <div on:click={toggle_det_persona}>
+          {#if opciones.det_persona}
+            <i class="fas fa-toggle-on"></i>
+            <i class="fas fa-male ml-3"></i>  
+              Persona?
+          {:else}
+            <i class="fas fa-toggle-off"></i>
+            <i class="fas fa-male ml-3 disabled"></i>  
+              Persona?  
+          {/if}
         </div>
       </div>
-      <div class="column">
-        <Checkbox name="casco" value="casco" bind:checked="{opciones.casco}">
-          <i class="fas fa-hard-hat"></i>
-          Casco
-        </Checkbox>
+      <div class="column is-one-quarter">
+        <div on:click={toggle_casco}>
+          {#if casco}
+            <i class="fas fa-toggle-on"></i>
+            <i class="fas fa-hard-hat ml-3"></i>  
+              Casco?
+          {:else}
+            <i class="fas fa-toggle-off"></i>
+            <i class="fas fa-hard-hat ml-3 disabled"></i>  
+              Casco?  
+          {/if}
+        </div>
       </div>
-      <div class="column">
-        <Checkbox name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
-          <i class="fas fa-head-side-mask"></i>
-          Barbijo
-        </Checkbox>        
-      </div>
-      <div class="column">
-        <Checkbox name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
-          <i class="fas fa-vest"></i>
-          Chaleco
-        </Checkbox>        
+      <div class="column is-one-quarter">
+        <div on:click={toggle_chaleco}>
+          {#if chaleco}
+            <i class="fas fa-toggle-on"></i>
+            <i class="fas fa-vest ml-3"></i>  
+              Chaleco?
+          {:else}
+            <i class="fas fa-toggle-off"></i>
+            <i class="fas fa-vest ml-3 disabled"></i>  
+              Chaleco?  
+          {/if}
+        </div>
       </div>
 
-    </div>Filtros x fecha, tipo de alerta, camara y elementos
-  </ExpansionPanel>
+    </div>
+  </GenericCard>
   {#if loading}
     <Loading />
   {:else}
-      <div >mostrando: {mostrando} de {totalDocs} alertas</div> 
+      <!--div >mostrando: {mostrando} de {totalDocs} alertas</div--> 
+      {#if totalDocs > limit}
+      <Pagination
+        {page}
+        {totalPages}
+        {hasNextPage}
+        {hasPrevPage}
+        {limit}
+        {nextPage}
+        {pagingCounter}
+        {prevPage}
+        {totalDocs}
+        on:change="{(ev) => paginar({page: ev.detail})}">
+      ></Pagination>
+    {/if}
       <table class="table is-fullwidth">
         <thead>
           <tr>
             <th><i class="far fa-calendar-alt mr-3"></i>Fecha</th>
-            <th><i class="fas fa-bell mr-3"></i>Tipo</th>
-            <th><i class="fas fa-video mr-3"></i>Camara</th>
+            <th><i class="fas fa-video mr-3"></i>Sitio/Camara</th>
+            <th><i class="fas fa-bullhorn mr-3"></i>Cantidad</th>
             <th>Elemento</th>
           </tr>
         </thead>
@@ -163,6 +285,21 @@
 
       </tbody>
     </table> 
+
+    {#if totalDocs > limit}
+      <Pagination
+        {page}
+        {totalPages}
+        {hasNextPage}
+        {hasPrevPage}
+        {limit}
+        {nextPage}
+        {pagingCounter}
+        {prevPage}
+        {totalDocs}
+        on:change="{(ev) => paginar({page: ev.detail})}">
+      ></Pagination>
+    {/if}
   {/if}
     
 </div>

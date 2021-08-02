@@ -21,11 +21,15 @@ module.exports = {
         chunkFilename: '[name].[id].js',
     },
     devServer: {
+	host: '0.0.0.0',
+	port: 8080,
+	disableHostCheck: true,
         proxy: {
             '/api': {
                 target: 'http://localhost:3000',
             },
         },
+        clientLogLevel: 'silent',
     },
     module: {
         rules: [
@@ -60,4 +64,5 @@ module.exports = {
         }),
     ],
     devtool: prod ? false : 'source-map',
+
 }

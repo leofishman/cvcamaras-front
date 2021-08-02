@@ -3,7 +3,7 @@
     import Detection from "../components/Detection.svelte"
     import Loading from "../components/Loading.svelte";
     import Pagination from "../components/Pagination.svelte"
-    import { ExpansionPanel, Modal, Button, Datepicker, Sidepanel, Dialog, Snackbar, Checkbox } from 'svelte-mui';
+    import GenericCard from "../components/GenericCard.svelte"
     import { onMount } from "svelte";
     
     import {
@@ -33,7 +33,6 @@
       totalPages = data.totalPages
       mostrando = data.docs.length
       detections = data.docs
-console.log(36, data)
       return data.docs
     }
 
@@ -76,7 +75,7 @@ console.log(36, data)
 <div class="container">
   <div >mostrando: {mostrando} de {totalDocs} detecciones</div> 
 
-  <ExpansionPanel name="Filtros">
+  <GenericCard header="Filtros">
     <div class="columns" on:change="{filtrar}">
       <div class="column">
         <input type="date" bind:value={opciones.fecha_desde} />
@@ -95,28 +94,29 @@ console.log(36, data)
           </select>
         </div>
       </div>
-
       <div class="column">
-        <Checkbox name="casco" value="casco" bind:checked="{opciones.casco}">
+        <input type="checkbox" name="person" value="person" bind:checked="{opciones.person}">
+          <i class="fas fa-male"></i>
+          Casco
+      </div>
+      <div class="column">
+        <input type="checkbox"  name="casco" value="casco" bind:checked="{opciones.casco}">
           <i class="fas fa-hard-hat"></i>
           Casco
-        </Checkbox>
       </div>
       <div class="column">
-        <Checkbox name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
+        <input type="checkbox"  name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
           <i class="fas fa-head-side-mask"></i>
-          Barbijo
-        </Checkbox>        
+          Barbijo     
       </div>
       <div class="column">
-        <Checkbox name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
+        <input type="checkbox"  name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
           <i class="fas fa-vest"></i>
-          Chaleco
-        </Checkbox>        
+          Chaleco     
       </div>
 
     </div>Filtros x fecha, tipo de alerta, camara y elementos
-  </ExpansionPanel>  
+  </GenericCard>  
     <table class="table is-fullwidth">
       <thead>
         <tr>

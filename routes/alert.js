@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const User = require('../models/User')
 const Alerta = require('../models/Alerta')
+const Configuraciones = require('../models/Configuraciones')
 
 const router = Router()
 
@@ -12,20 +13,51 @@ function ensureLogin(req, res, next) {
 }
 
 
-router.post('/', ensureLogin, async(req, res) => {
-    let filter = {};
-    if (req.body.opciones) {
-        filter = req.body.opciones;
+
+router.post('/person_crops', ensureLogin, async(req, res) => {
+    let opciones = {};
+    if (req.body) {
+        opciones = req.body.opciones;
     }
     try {
-        const alertas = await Alerta.queryAlerts(filter); 
-        if (!alertas) {
-            throw new Error('No hay alertas')
+        const person_crops = await Alerta.get_person_crops(opciones); 
+        if (!person_crops) {
+            throw new Error('No hay recortes')
         }
-        res.status(200).json(alertas)
+        res.status(200).json(person_crops)
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
 })
+
+router.post('/',ensureLogin, async(req, res) => {
+    let filter = {};
+    let pagination = {}
+    if (req.body.opciones) {
+       pagination = req.body.opciones.pagination;
+       if (req.body.opciones.filter) {
+          filter = req.body.opciones.filter; 
+       }
+
+       const configuraciones = await Configuraciones.findOne({alerta_umbral_detection:{$gt:0}});
+       if (!configuraciones) {
+        alerta_umbral_detection = 10
+       } else {
+        alerta_umbral_detection = configuraciones._doc.alerta_umbral_detection
+       }
+
+       filter.detections_count = {$gte: alerta_umbral_detection} 
+    }
+    try {
+        const data = await Alerta.queryAlerts(filter, pagination); 
+        if (!data) {
+            throw new Error('No hay alertas')
+        }
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
+
 
 module.exports = router
