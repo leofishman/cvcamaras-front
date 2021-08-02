@@ -187,7 +187,21 @@
   {#if loading}
     <Loading />
   {:else}
-      <div >mostrando: {mostrando} de {totalDocs} alertas</div> 
+      <!--div >mostrando: {mostrando} de {totalDocs} alertas</div--> 
+      {#if totalDocs > limit}
+      <Pagination
+        {page}
+        {totalPages}
+        {hasNextPage}
+        {hasPrevPage}
+        {limit}
+        {nextPage}
+        {pagingCounter}
+        {prevPage}
+        {totalDocs}
+        on:change="{(ev) => paginar({page: ev.detail})}">
+      ></Pagination>
+    {/if}
       <table class="table is-fullwidth">
         <thead>
           <tr>

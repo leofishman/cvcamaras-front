@@ -64,6 +64,10 @@
       return data
     }
 
+    function percent(num) {
+        return (num * 100).toFixed(2)
+    }
+
     onMount(async () => {
       person_crops = await get_person_crops()
       array2base64(person_crops)
@@ -84,7 +88,7 @@
             <div class="columns">
                 <div class="column">
                     {#if (alerta.no_hardhat_count || 1 == 1)}
-                        <SvelteTooltip tip="Sin casco: {alerta.no_hardhat_count} - {alerta.mean_no_hardhat_confidence}" top >
+                        <SvelteTooltip tip="Sin casco: {alerta.no_hardhat_count} - {percent(alerta.mean_no_hardhat_confidence)}%" top >
                             <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
                         </SvelteTooltip> 
                     {/if}
@@ -96,7 +100,7 @@
                     {/if}
                 </div>
                 <div class="column">
-                    <SvelteTooltip tip="Sin barbijo: {alerta.no_facemask_count} - {alerta.mean_no_facemask_confidence}" top >
+                    <SvelteTooltip tip="Sin barbijo: {alerta.no_facemask_count} - {percent(alerta.mean_no_facemask_confidence)}%" top >
                        <i class="fas fa-head-side-mask {estado(alerta.no_facemask_count)}"></i> 
                    </SvelteTooltip> 
                     <SvelteTooltip tip="Con barbijo: {alerta.facemask_count}" top >
