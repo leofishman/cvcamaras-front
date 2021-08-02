@@ -192,7 +192,7 @@
         <thead>
           <tr>
             <th><i class="far fa-calendar-alt mr-3"></i>Fecha</th>
-            <th><i class="fas fa-video mr-3"></i>Camara</th>
+            <th><i class="fas fa-video mr-3"></i>Sitio/Camara</th>
             <th><i class="fas fa-bullhorn mr-3"></i>Cantidad</th>
             <th>Elemento</th>
           </tr>

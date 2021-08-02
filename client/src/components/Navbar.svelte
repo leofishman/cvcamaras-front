@@ -20,7 +20,7 @@
   <div class="container">
     <div class="navbar-brand">
       <a href="#/" class="navbar-item"> 
-        <span class="title"> <img src="/images/logo.svg" alt="home" width="200px"> {$pageAction}</span>
+        <span class="title"> <img src="/images/logo.svg" alt="home" width="200px">Computer Vision - {$pageAction}</span>
       </a>
       <span
         class="navbar-burger burger"
