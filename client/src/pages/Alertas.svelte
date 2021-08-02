@@ -25,13 +25,17 @@
     let prevPage;
     let pagingCounter;
     let loading = false;
-    let barbijo = false
+    let barbijo = false;
+    let chaleco = false;
+    let casco = false
     let query = $querystring;
     $: alertas = [];
     $: opciones.det_persona;
     $: mostrando = alertas.length
     $: disabled = (feed == '' || id == '');
     $: barbijo = opciones.filter.no_facemask_count
+    $: chaleco = opciones.filter.no_vest_count
+    $: casco = opciones.filter.no_hardhat_count
 
     let opciones = {pagination: { limit: 6, page: 1 }, filter: {}};
     if (!$config.alerta_umbral_detection) {
@@ -77,11 +81,17 @@
     }
 
     async function filtrar() {
+      console.log('opciones: ', opciones)
       if (barbijo) {
           opciones.filter = {no_facemask_count: {$gte: $config.alerta_umbral_detection}};
-          delete opciones.barbijo;
-      } else {
-        delete opciones.filter.no_facemask_count
+      } 
+
+      if (chaleco) {
+          opciones.filter = {no_vest_count: {$gte: $config.alerta_umbral_detection}};
+      }
+      
+      if (casco) {
+        opciones.filter = {}
       }
        
       opciones.filter = clean(opciones.filter)
@@ -104,10 +114,20 @@
       filtrar()
     }
 
+    function toggle_casco() {
+      casco = !casco
+      filtrar()
+    } 
+
     function toggle_barbijo() {
       barbijo = !barbijo
       filtrar()
     }
+
+    function toggle_chaleco() {
+      chaleco = !chaleco
+      filtrar()
+    }    
 </script>
     
 
@@ -158,8 +178,8 @@
             Barbijo?
           {/if}
         </div>
-        <input type="checkbox" name="casco" value="casco" bind:checked="{opciones.casco}">
-          <i class="fas fa-hard-hat"></i>
+        
+       
           
       </div>
       <div class="column">
@@ -176,10 +196,33 @@
         </div>
       </div>
 
+
+
       <div class="column">
-        <input type="checkbox" name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
-          <i class="fas fa-vest"></i>
-          Chaleco
+        <div on:click={toggle_casco}>
+          {#if opciones.casco}
+            <i class="fas fa-toggle-on"></i>
+            <i class="fas fa-hard-hat ml-3"></i>  
+              Casco?
+          {:else}
+            <i class="fas fa-toggle-off"></i>
+            <i class="fas fa-hard-hat ml-3 disabled"></i>  
+              Casco?  
+          {/if}
+        </div>
+          
+      <div class="column">
+        <div on:click={toggle_chaleco}>
+          {#if opciones.chaleco}
+            <i class="fas fa-toggle-on"></i>
+            <i class="fas fa-vest ml-3"></i>  
+              Chaleco?
+          {:else}
+            <i class="fas fa-toggle-off"></i>
+            <i class="fas fa-vest ml-3 disabled"></i>  
+              Chaleco?  
+          {/if}
+        </div>
       </div>
 
     </div>Filtros x fecha

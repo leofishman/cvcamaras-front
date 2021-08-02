@@ -6,6 +6,7 @@ const configuracionesSchema = new mongoose.Schema ({
   alertas_email: mongoose.SchemaTypes.Email,
   alertas_telefono: mongoose.SchemaTypes.Phone, // TODO: Change to phone type
   alertas_periodicidad: mongoose.SchemaTypes.Number,
+  alertas_precision: mongoose.Schema.Types.Number,
   smtp_server: mongoose.SchemaTypes.String,
   smtp_user:mongoose.SchemaTypes.String,
   smtp_password:mongoose.SchemaTypes.String,

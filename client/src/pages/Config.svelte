@@ -49,6 +49,10 @@
       if (!$config.alerta_umbral_detection) {
         $config.alerta_umbral_detection = 10
       }
+      if (!$config.alertas_precision) {
+        $config.alertas_precision = 90
+      }
+
       configLocal = $config
     }
 
@@ -177,12 +181,23 @@
     </div>
     <div class="field">
       <p class="control">
+        <label>Umbral precision para detectar alerta</label>
+        <input
+          class="input"
+          type="number"
+          bind:value={configLocal.alertas_precision}
+          placeholder="tiempo de alerta" />
+          Precision de la detección en porcentaje %?
+      </p>
+    </div>    
+    <div class="field">
+      <p class="control">
         <label>Umbral detecciones para generar alerta</label>
         <input
           class="input"
           type="number"
           bind:value={configLocal.alerta_umbral_detection}
-          placeholder="tiempo de alerta" />
+          placeholder="tiempo de alerta" /> 
           Cuantos detecciones generan una alerta?
       </p>
     </div>
