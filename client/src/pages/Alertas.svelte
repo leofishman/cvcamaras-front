@@ -11,6 +11,7 @@
     } from "../stores";
     import GenericCard from "../components/GenericCard.svelte"
     import Pagination from "../components/Pagination.svelte"
+import { debug } from "svelte/internal";
 
     let id = '';
     let idn = 0;
@@ -81,17 +82,24 @@
     }
 
     async function filtrar() {
-      console.log('opciones: ', opciones)
+      console.log('opciones: ', opciones.filter)
+      
       if (barbijo) {
-          opciones.filter = {no_facemask_count: {$gte: $config.alerta_umbral_detection}};
-      } 
+          opciones.filter.no_facemask_count = {$gte: $config.alerta_umbral_detection};
+      } else {
+        delete opciones.filter.no_facemask_count
+      }
 
       if (chaleco) {
-          opciones.filter = {no_vest_count: {$gte: $config.alerta_umbral_detection}};
+          opciones.filter.no_vest_count = {$gte: $config.alerta_umbral_detection};
+      } else {
+        delete opciones.filter.no_vest_count
       }
       
       if (casco) {
-        opciones.filter = {}
+        opciones.filter.no_hardhat_count = {$gte: $config.alerta_umbral_detection}
+      } else{
+        delete opciones.filter.no_hardhat_count
       }
        
       opciones.filter = clean(opciones.filter)
@@ -116,11 +124,13 @@
 
     function toggle_casco() {
       casco = !casco
+      console.log(127, casco)
       filtrar()
     } 
 
     function toggle_barbijo() {
       barbijo = !barbijo
+      console.log(barbijo)
       filtrar()
     }
 
@@ -130,7 +140,6 @@
     }    
 </script>
     
-
 
 <div class="container">
   <GenericCard header="Filtros">
@@ -166,7 +175,9 @@
           </div>
         </div>
       {/if}
-      <div class="column">
+    </div>  
+    <div class="columns">
+      <div class="column is-one-quarter">
         <div on:click={toggle_barbijo}>
           {#if barbijo}
             <i class="fas fa-toggle-on"></i>
@@ -177,12 +188,9 @@
             <i class="fas fa-head-side-mask ml-3 disabled"></i>  
             Barbijo?
           {/if}
-        </div>
-        
-       
-          
+        </div> 
       </div>
-      <div class="column">
+      <div class="column is-one-quarter">
         <div on:click={toggle_det_persona}>
           {#if opciones.det_persona}
             <i class="fas fa-toggle-on"></i>
@@ -195,12 +203,9 @@
           {/if}
         </div>
       </div>
-
-
-
-      <div class="column">
+      <div class="column is-one-quarter">
         <div on:click={toggle_casco}>
-          {#if opciones.casco}
+          {#if casco}
             <i class="fas fa-toggle-on"></i>
             <i class="fas fa-hard-hat ml-3"></i>  
               Casco?
@@ -210,10 +215,10 @@
               Casco?  
           {/if}
         </div>
-          
-      <div class="column">
+      </div>
+      <div class="column is-one-quarter">
         <div on:click={toggle_chaleco}>
-          {#if opciones.chaleco}
+          {#if chaleco}
             <i class="fas fa-toggle-on"></i>
             <i class="fas fa-vest ml-3"></i>  
               Chaleco?
@@ -225,7 +230,7 @@
         </div>
       </div>
 
-    </div>Filtros x fecha
+    </div>
   </GenericCard>
   {#if loading}
     <Loading />

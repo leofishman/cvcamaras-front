@@ -22,10 +22,10 @@
     let cause = [];
     let camera, site = "X"
 
-    if (alerta.no_facemask_count) cause.push('no facemask ')
-    if (alerta.no_hardhat_count) cause.push('no hardhat')
-    if (alerta.hardhat_count) cause.push(' hardhat')
-    if (alerta.facemask_count) cause.push(' facemask')
+    if (alerta.no_facemask_count) cause.push('Sin Barbijo (' + alerta.no_facemask_count + ') ')
+    if (alerta.no_hardhat_count) cause.push('Sin Casco (' + alerta.no_hardhat_count + ') ')
+    if (alerta.hardhat_count) cause.push(' Con Casco (' + alerta.hardhat_count + ') ')
+    if (alerta.facemask_count) cause.push(' Con Barbijo (' + alerta.facemask_count + ') ')
     if (alerta._id) {
         site = alerta._id.site
         camera = site + '/' + alerta._id.camera
@@ -77,7 +77,7 @@
 
 
     <tr>
-        <td>{i} - {dateFormat(alerta.datetime)} - [{cause}] </td>
+        <td>{dateFormat(alerta.datetime, "dd-mm-yy  h:M")} </td>
         <td>{camera}</td>
         <td><div class="text"> 
                  <span class="alert"> {alerta.detections_count || 'alerta'}</span> 
@@ -87,25 +87,29 @@
         <td>
             <div class="columns">
                 <div class="column">
-                    {#if (alerta.no_hardhat_count || 1 == 1)}
+                    {#if (alerta.no_hardhat_count)}
                         <SvelteTooltip tip="Sin casco: {alerta.no_hardhat_count} precision: {percent(alerta.mean_no_hardhat_confidence)}%" top >
                             <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
                         </SvelteTooltip> 
                     {/if}
                         
-                    {#if (alerta.hardhat_count || 1 == 1)}
+                    {#if (alerta.hardhat_count)}
                         <SvelteTooltip tip="Con casco: {alerta.hardhat_count}" top >
                             <i class="fas fa-hard-hat cumple"></i>
                         </SvelteTooltip> 
                     {/if}
                 </div>
                 <div class="column">
-                    <SvelteTooltip tip="Sin barbijo: {alerta.no_facemask_count} precision: {percent(alerta.mean_no_facemask_confidence)}%" top >
-                       <i class="fas fa-head-side-mask {estado(alerta.no_facemask_count)}"></i> 
-                   </SvelteTooltip> 
-                    <SvelteTooltip tip="Con barbijo: {alerta.facemask_count}" top >
-                       <i class="fas fa-head-side-mask cumple"></i> 
-                   </SvelteTooltip>                    
+                    {#if alerta.no_facemask_count}
+                        <SvelteTooltip tip="Sin barbijo: {alerta.no_facemask_count} precision: {percent(alerta.mean_no_facemask_confidence)}%" top >
+                            <i class="fas fa-head-side-mask {estado(alerta.no_facemask_count)}"></i> 
+                        </SvelteTooltip> 
+                    {/if}
+                    {#if alerta.facemask_count}
+                        <SvelteTooltip tip="Con barbijo: {alerta.facemask_count}" top >
+                            <i class="fas fa-head-side-mask cumple"></i> 
+                        </SvelteTooltip>
+                    {/if}                    
                 </div>
                 <div class="column ">
                     <i class="fas fa-vest {estado(alerta.no_vest_count)}"></i>  
