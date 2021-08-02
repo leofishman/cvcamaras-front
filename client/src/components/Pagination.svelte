@@ -78,7 +78,7 @@
     </li>
     <li class="{page === totalPages ? 'disabled' : ''} ml-4">
       <a href="javascript:void(0)" on:click="{() => changePage(totalPages)}">
-        <span aria-hidden="true">Ultíma </span>
+        <span aria-hidden="true">Ultima </span>
       </a>
     </li>
     

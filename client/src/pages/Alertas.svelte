@@ -158,8 +158,8 @@
             Barbijo?
           {/if}
         </div>
-        <!--input type="checkbox" name="casco" value="casco" bind:checked="{opciones.casco}">
-          <i class="fas fa-hard-hat"></i-->
+        <input type="checkbox" name="casco" value="casco" bind:checked="{opciones.casco}">
+          <i class="fas fa-hard-hat"></i>
           
       </div>
       <div class="column">
@@ -176,11 +176,11 @@
         </div>
       </div>
 
-      <!--div class="column">
+      <div class="column">
         <input type="checkbox" name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
           <i class="fas fa-vest"></i>
           Chaleco
-      </div-->
+      </div>
 
     </div>Filtros x fecha
   </GenericCard>
