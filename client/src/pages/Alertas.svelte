@@ -42,14 +42,16 @@ import { debug } from "svelte/internal";
     if (!$config.alerta_umbral_detection) {
         $config.alerta_umbral_detection = 10
     }
-    /* TODO: remove querystring if not used!!! 
+    // TODO: remove querystring if not used!!! 
     let queries = query.split("&");
-    if (queries.length > 1) {
+    if (queries.length > 0) {console.log(queries)
       queries.forEach(element => {
-        opciones[element.split("=")[0]] = element.split("=")[1]
+        if (element.split("=")[0] == 'datetime') {
+          opciones.query = {datetime: element.split("=")[1]}
+        }
       });
     }
-*/
+
     async function getAlerts() {
       const { data } = await axios.post("/api/alertas/", {opciones});
       opciones.filter = data[1]

@@ -32,12 +32,15 @@ router.post('/person_crops', ensureLogin, async(req, res) => {
 
 router.post('/',ensureLogin, async(req, res) => {
     let filter = {};
+    let query = {};
     let pagination = {}
+
     if (req.body.opciones) {
        pagination = req.body.opciones.pagination;
        if (req.body.opciones.filter) {
           filter = req.body.opciones.filter; 
        }
+
 
        const configuraciones = await Configuraciones.findOne({alerta_umbral_detection:{$gt:0}});
        if (!configuraciones) {
@@ -48,6 +51,9 @@ router.post('/',ensureLogin, async(req, res) => {
 
        filter.detections_count = {$gte: alerta_umbral_detection} 
     }
+    if (req.body.opciones.query) {
+        filter = req.body.opciones.query
+    }    
     try {
         const data = await Alerta.queryAlerts(filter, pagination); 
         if (!data) {

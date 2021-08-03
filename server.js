@@ -16,11 +16,13 @@ const User = require('./models/User')
 const passport = require('passport')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
+const enviarAlertas = require('./enviarAlertas')
+const { setInterval } = require('timers')
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
-const HOST = '0.0.0.0';
+var HOST = '0.0.0.0';
 mongoose
     .connect(mongoURI, {
         useNewUrlParser: true,
@@ -62,3 +64,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(port, HOST, () => console.log('Express is running at '+ HOST + ' port ' + port))
+
+setTimeout(function() {enviarAlertas(2)}, 15)
+// TODO: Cambiar a setInterval
