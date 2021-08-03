@@ -17,7 +17,9 @@ function ensureLogin(req, res, next) {
 router.post('/person_crops', ensureLogin, async(req, res) => {
     let opciones = {};
     if (req.body) {
+        
         opciones = req.body.opciones;
+
     }
     try {
         const person_crops = await Alerta.get_person_crops(opciones); 

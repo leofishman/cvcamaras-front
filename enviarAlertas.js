@@ -6,6 +6,7 @@ const nets = networkInterfaces();
 const results = Object.create(null); // Or just '{}', an empty object
 let lastIp 
 
+// get server ip address, maybe better to put that in the config file?
 for (const name of Object.keys(nets)) {
     for (const net of nets[name]) {
         // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
@@ -18,7 +19,6 @@ for (const name of Object.keys(nets)) {
         }
     }
 }
-console.log(lastIp)
 
 
 
@@ -43,6 +43,7 @@ const  enviarAlertas = async (k) => {
 function prepararMail(alerta) {
     let cause = []
     let link
+    let querystring
     if (alerta.no_facemask_count) cause.push('Sin Barbijo (' + alerta.no_facemask_count + ') ')
     if (alerta.no_hardhat_count) cause.push('Sin Casco (' + alerta.no_hardhat_count + ') ')
     if (alerta.hardhat_count) cause.push(' Con Casco (' + alerta.hardhat_count + ') ')
@@ -50,13 +51,18 @@ function prepararMail(alerta) {
     if (alerta._id) {
         site = alerta._id.site
         camera = site + '/' + alerta._id.camera
+        querystring = Object.keys(alerta._id)
+        .map(key => `${key}=${alerta._id[key]}`)
+        .join('&');
     }  
     const subject = "Alerta de " + camera + ' ' + cause.toString()
     if (alerta.datetime) {
-      link = 'http://'+ lastIp + '/alerts/?datetime=' + alerta.datetime.toString() + '&'
+      link = 'http://'+ lastIp + ':8080/#/alertas/?' + querystring
     }
-    const texto = "Nueva alerta " + cause.toString() + ' datetime: ' + link
+    const texto = "Nueva alerta " + cause.toString() + ' querystring: ' + link
 
+
+    
 
     return {subject, texto}
 }

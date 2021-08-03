@@ -2,8 +2,9 @@ const {Schema, model} = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const AlertSchema = new Schema({
-    _id: Schema.Types.Mixed,
+    _id: String,
     site: String,
+    alert_cause: String,
     camera: String,
     person: Number,
     interval: Number,
@@ -33,11 +34,13 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
     if (!options) options = {}
     if (!filter) filter = {}
     options.select = [
-                '_id','site', 'camera', 'person','datetime','detections_count',
+                '_id', 'site', 'alert_cause', 'camera', 'person', 'datetime','detections_count',
                  'facemask_count', 'hardhat_count','mean_no_facemask_confidence',
-                 'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count'
+                 'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count', 'enviada'
                 ]
-      
+    
+              
+
     if (filter.fecha_desde) {
             let fecha_desde = filter.fecha_desde;
         let fecha_hasta = filter.fecha_hasta;
@@ -72,9 +75,20 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
         delete filter.casco
         delete filter.chaleco
         delete filter.barbijo
-    } else {
-        let filter = {}
-    }
+
+
+
+    } else if (filter._id){
+       /*     filter._id.day = parseInt(filter._id.day)
+            filter._id.hour = parseInt(filter._id.hour)
+            filter._id.interval = parseInt(filter._id.interval)
+            filter._id.minute = parseInt(filter._id.minute)
+            filter._id.month = parseInt(filter._id.month)
+            filter._id.person = parseInt(filter._id.person)
+            filter._id.year = parseInt(filter._id.year)            
+        */
+       console.log(filter)
+    } 
    
 
     const result = await this.paginate(filter, options, function (err, resultado) {
@@ -85,11 +99,12 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
 
 AlertSchema.statics.get_person_crops = async function (id) {
 
-    const datetime = new Date(id.datetime)
-    const opciones = {datetime: datetime}
+  //  const datetime = new Date(id.datetime)
+  //  const opciones = {datetime: datetime}
+  console.log(id)
 
-    const result = await this.findOne(opciones)
-    
+    const result = await this.findOne(id)
+ //   console.log(result)
     /* this will shrink person_crops array to 20 images max */
     let skip_crop
     if ( result.person_crops.length > 20) {
@@ -101,6 +116,8 @@ AlertSchema.statics.get_person_crops = async function (id) {
     } 
     return result.person_crops.slice(0,20)
 }
+
+
 
 AlertSchema.statics.get_not_sended = async function(k) {
 
