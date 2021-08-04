@@ -1,5 +1,6 @@
 const Alerta = require('./models/Alerta')
 const Configuraciones = require('./models/Configuraciones')
+const { frontEnd } = require('./config')
 const nodemailer = require('nodemailer')
 const { networkInterfaces } = require('os');
 const nets = networkInterfaces();
@@ -41,13 +42,15 @@ const  enviarAlertas = async (k) => {
 
 
 function prepararMail(alerta) {
-    let cause = []
+    let cause = alerta.alert_cause
     let link
     let querystring
-    if (alerta.no_facemask_count) cause.push('Sin Barbijo (' + alerta.no_facemask_count + ') ')
+ /*   if (alerta.no_facemask_count) cause.push('Sin Barbijo (' + alerta.no_facemask_count + ') ')
     if (alerta.no_hardhat_count) cause.push('Sin Casco (' + alerta.no_hardhat_count + ') ')
     if (alerta.hardhat_count) cause.push(' Con Casco (' + alerta.hardhat_count + ') ')
     if (alerta.facemask_count) cause.push(' Con Barbijo (' + alerta.facemask_count + ') ')
+
+  */
     if (alerta._id) {
         site = alerta._id.site
         camera = site + '/' + alerta._id.camera
@@ -57,7 +60,7 @@ function prepararMail(alerta) {
     }  
     const subject = "Alerta de " + camera + ' ' + cause.toString()
     if (alerta.datetime) {
-      link = 'http://'+ lastIp + ':8080/#/alertas/?' + querystring
+      link = frontEnd + '/#/alertas/?' + querystring
     }
     const texto = "Nueva alerta " + cause.toString() + ' querystring: ' + link
 
