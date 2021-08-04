@@ -2,7 +2,6 @@ const {Schema, model} = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const AlertSchema = new Schema({
-    _id: String,
     site: String,
     alert_cause: String,
     camera: String,
@@ -101,10 +100,9 @@ AlertSchema.statics.get_person_crops = async function (id) {
 
   //  const datetime = new Date(id.datetime)
   //  const opciones = {datetime: datetime}
-  console.log(id)
 
     const result = await this.findOne(id)
- //   console.log(result)
+ //   console.log(id)
     /* this will shrink person_crops array to 20 images max */
     let skip_crop
     if ( result.person_crops.length > 20) {
