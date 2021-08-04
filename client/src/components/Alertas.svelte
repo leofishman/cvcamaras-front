@@ -11,7 +11,7 @@
     import axios from "axios"
 
 
-    export let alerta, i;
+    export let alerta, i, detalle;
     export  let eventType;
 
     let dateFormat = require("dateformat");
@@ -19,9 +19,10 @@
     let person_crops = [0];
     let loading = true;
     let images = [];
-    let cause = [];
+    let cause;
     let camera, site = "X"
 
+    /*
     if (alerta.no_facemask_count) cause.push('Sin Barbijo (' + alerta.no_facemask_count + ') ')
     if (alerta.no_hardhat_count) cause.push('Sin Casco (' + alerta.no_hardhat_count + ') ')
     if (alerta.hardhat_count) cause.push(' Con Casco (' + alerta.hardhat_count + ') ')
@@ -30,8 +31,9 @@
         site = alerta._id.site
         camera = site + '/' + alerta._id.camera
     } 
-
-
+*/
+    camera = alerta.site + '/' + alerta.camera
+    cause = alerta.alert_cause
     
     if (eventType == "alerta") {
         iconEvent = 'bell';
@@ -58,7 +60,7 @@
 
     async function get_person_crops() {
         loading = true
-        const opciones = {datetime: alerta.datetime}
+        const opciones = {_id: alerta._id}
         const { data } = await axios.post("/api/alertas/person_crops", {opciones});
         loading = false
       return data
@@ -73,6 +75,8 @@
       array2base64(person_crops)
       console.log('alerta', i, alerta)
     });
+
+    console.log(77, detalle)
 </script>
 
 
@@ -119,7 +123,7 @@
     </tr>
     <tr>
         <td colspan="4">
-            <GenericCard header="Fotos">
+            <GenericCard header="Detalle" {detalle}>
                 <div class="container">
                     {#if loading}
                         <Loading />

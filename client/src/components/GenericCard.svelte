@@ -1,7 +1,7 @@
 <script>
 
   export let header;
-  
+  export  let detalle;
   import { addToast } from '../stores'
   import { fade } from 'svelte/transition';
 
@@ -9,22 +9,15 @@
 
   const dispatch = createEventDispatcher();
 
-  const onchage = ({ detail }) => {
-       console.log(detail.expanded ? 'open' : 'close', detail.name);
-  };
-
-
-  // For now I open only the first panel, latter I can open any panel with alerts
-  let expand = false;
-  expand = '';
   let editable = false;
   function enableEdit() {
     editable = !editable;
   }
 
-
   function toggleConfig() {
-    expand = !expand
+    console.log('det', detalle)
+
+    detalle = !detalle
   }
   
   function estado(element) {
@@ -60,7 +53,7 @@
     </p>
     <button class="card-header-icon" aria-label="more options">
       <span class="icon">
-        {#if expand}
+        {#if detalle}
           <i class="fas fa-angle-up" aria-hidden="true"></i>
         {:else}
           <i class="fas fa-angle-down" aria-hidden="true"></i>
@@ -69,7 +62,7 @@
     </button>
   </header>
 
-  {#if expand}
+  {#if detalle}
   <div class="card-content"  transition:fade="{{ duration: 200 }}">
       <div class="notification editar is-light">
         <div class="editable">

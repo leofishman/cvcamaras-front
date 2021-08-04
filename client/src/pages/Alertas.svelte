@@ -11,10 +11,9 @@
     } from "../stores";
     import GenericCard from "../components/GenericCard.svelte"
     import Pagination from "../components/Pagination.svelte"
-import { debug } from "svelte/internal";
+import { empty } from "svelte/internal";
 
     let id = '';
-    let idn = 0;
     let feed = '';
     let totalDocs;
     let limit;
@@ -30,6 +29,7 @@ import { debug } from "svelte/internal";
     let chaleco = false;
     let casco = false
     let query = $querystring;
+    let detalle
     $: alertas = [];
     $: opciones.det_persona;
     $: mostrando = alertas.length
@@ -38,21 +38,42 @@ import { debug } from "svelte/internal";
     $: chaleco = opciones.filter.no_vest_count
     $: casco = opciones.filter.no_hardhat_count
 
+    
     let opciones = {pagination: { limit: 6, page: 1 }, filter: {}};
     if (!$config.alerta_umbral_detection) {
         $config.alerta_umbral_detection = 10
     }
-    /* TODO: remove querystring if not used!!! 
-    let queries = query.split("&");
-    if (queries.length > 1) {
-      queries.forEach(element => {
-        opciones[element.split("=")[0]] = element.split("=")[1]
-      });
-    }
-*/
+
+    const parseParams = (querystring) => {
+
+      // parse query string
+      const params = new URLSearchParams(querystring);
+
+      const obj = {};
+
+      // iterate over all keys
+      for (const key of params.keys()) {
+          if (params.getAll(key).length > 1) {
+              obj[key] = params.getAll(key);
+          } else {
+              obj[key] = params.get(key);
+          }
+      }
+      return obj;
+    };
+
+    let queries = parseParams(query)
+   
+    
+    if (Object.keys(queries).length > 0) {
+        //opciones.query = {_id: queries}
+      console.log(68, queries)
+        detalle = true
+      }  
+
     async function getAlerts() {
       const { data } = await axios.post("/api/alertas/", {opciones});
-      opciones.filter = data[1]
+      opciones.filter = data[1]    
       totalDocs = data[0].totalDocs
       hasNextPage = data[0].hasNextPage
       hasPrevPage = data[0].hasPrevPage
@@ -70,6 +91,7 @@ import { debug } from "svelte/internal";
       alertas = await getAlerts()
       loading = false;
       $pageAction = 'Alertas';
+      console.log(95, detalle)
     });
 
     function clean(obj) {
@@ -83,7 +105,10 @@ import { debug } from "svelte/internal";
 
     async function filtrar() {
       console.log('opciones: ', opciones.filter)
-      
+      if (queries) {
+        opciones.query = {_id: queries}
+        detalle = true
+      }  
       if (barbijo) {
           opciones.filter.no_facemask_count = {$gte: $config.alerta_umbral_detection};
       } else {
@@ -124,13 +149,11 @@ import { debug } from "svelte/internal";
 
     function toggle_casco() {
       casco = !casco
-      console.log(127, casco)
       filtrar()
     } 
 
     function toggle_barbijo() {
       barbijo = !barbijo
-      console.log(barbijo)
       filtrar()
     }
 
@@ -142,96 +165,98 @@ import { debug } from "svelte/internal";
     
 
 <div class="container">
-  <GenericCard header="Filtros">
-    <div class="columns" on:change="{filtrar}">
-      <div class="column">
-        <input type="date" bind:value={opciones.fecha_desde} />
-        Desde
-        {#if (opciones.fecha_desde) }
-          <input type="date" bind:value={opciones.fecha_hasta} bind/>
-         hasta 
-        {/if}
-      </div>
-      <div class="column">
-        <div class="select">
-          <select bind:value="{opciones.cam}">Camara
-            <option value="">Todas</option>
-            {#each $cameras as camera, i}
-              <option value="{camera.id}">{camera.id} </option>
-            {/each}
-          </select>
+  {#if (!detalle)}
+    <GenericCard header="Filtros">
+      <div class="columns" on:change="{filtrar}">
+        <div class="column">
+          <input type="date" bind:value={opciones.fecha_desde} />
+          Desde
+          {#if (opciones.fecha_desde) }
+            <input type="date" bind:value={opciones.fecha_hasta} bind/>
+          hasta 
+          {/if}
         </div>
-      </div>
-      {#if 1==2}
         <div class="column">
           <div class="select">
-            <select bind:value="{opciones.tipo}">Tipo de Alerta
+            <select bind:value="{opciones.cam}">Camara
               <option value="">Todas</option>
-              <option value="inmediata">Inmediata</option>
-              <option value="dia">Diaria</option>
-              <option value="hora">horaria</option>
-              <option value="especial">Especiales</option>
+              {#each $cameras as camera, i}
+                <option value="{camera.id}">{camera.id} </option>
+              {/each}
             </select>
           </div>
         </div>
-      {/if}
-    </div>  
-    <div class="columns">
-      <div class="column is-one-quarter">
-        <div on:click={toggle_barbijo}>
-          {#if barbijo}
-            <i class="fas fa-toggle-on"></i>
-            <i class="fas fa-head-side-mask ml-3"></i>  
+        {#if 1==2}
+          <div class="column">
+            <div class="select">
+              <select bind:value="{opciones.tipo}">Tipo de Alerta
+                <option value="">Todas</option>
+                <option value="inmediata">Inmediata</option>
+                <option value="dia">Diaria</option>
+                <option value="hora">horaria</option>
+                <option value="especial">Especiales</option>
+              </select>
+            </div>
+          </div>
+        {/if}
+      </div>  
+      <div class="columns">
+        <div class="column is-one-quarter">
+          <div on:click={toggle_barbijo}>
+            {#if barbijo}
+              <i class="fas fa-toggle-on"></i>
+              <i class="fas fa-head-side-mask ml-3"></i>  
+                Barbijo?
+            {:else}
+              <i class="fas fa-toggle-off"></i>
+              <i class="fas fa-head-side-mask ml-3 disabled"></i>  
               Barbijo?
-          {:else}
-            <i class="fas fa-toggle-off"></i>
-            <i class="fas fa-head-side-mask ml-3 disabled"></i>  
-            Barbijo?
-          {/if}
-        </div> 
-      </div>
-      <div class="column is-one-quarter">
-        <div on:click={toggle_det_persona}>
-          {#if opciones.det_persona}
-            <i class="fas fa-toggle-on"></i>
-            <i class="fas fa-male ml-3"></i>  
-              Persona?
-          {:else}
-            <i class="fas fa-toggle-off"></i>
-            <i class="fas fa-male ml-3 disabled"></i>  
-              Persona?  
-          {/if}
+            {/if}
+          </div> 
         </div>
-      </div>
-      <div class="column is-one-quarter">
-        <div on:click={toggle_casco}>
-          {#if casco}
-            <i class="fas fa-toggle-on"></i>
-            <i class="fas fa-hard-hat ml-3"></i>  
-              Casco?
-          {:else}
-            <i class="fas fa-toggle-off"></i>
-            <i class="fas fa-hard-hat ml-3 disabled"></i>  
-              Casco?  
-          {/if}
+        <div class="column is-one-quarter">
+          <div on:click={toggle_det_persona}>
+            {#if opciones.det_persona}
+              <i class="fas fa-toggle-on"></i>
+              <i class="fas fa-male ml-3"></i>  
+                Persona?
+            {:else}
+              <i class="fas fa-toggle-off"></i>
+              <i class="fas fa-male ml-3 disabled"></i>  
+                Persona?  
+            {/if}
+          </div>
         </div>
-      </div>
-      <div class="column is-one-quarter">
-        <div on:click={toggle_chaleco}>
-          {#if chaleco}
-            <i class="fas fa-toggle-on"></i>
-            <i class="fas fa-vest ml-3"></i>  
-              Chaleco?
-          {:else}
-            <i class="fas fa-toggle-off"></i>
-            <i class="fas fa-vest ml-3 disabled"></i>  
-              Chaleco?  
-          {/if}
+        <div class="column is-one-quarter">
+          <div on:click={toggle_casco}>
+            {#if casco}
+              <i class="fas fa-toggle-on"></i>
+              <i class="fas fa-hard-hat ml-3"></i>  
+                Casco?
+            {:else}
+              <i class="fas fa-toggle-off"></i>
+              <i class="fas fa-hard-hat ml-3 disabled"></i>  
+                Casco?  
+            {/if}
+          </div>
         </div>
-      </div>
+        <div class="column is-one-quarter">
+          <div on:click={toggle_chaleco}>
+            {#if chaleco}
+              <i class="fas fa-toggle-on"></i>
+              <i class="fas fa-vest ml-3"></i>  
+                Chaleco?
+            {:else}
+              <i class="fas fa-toggle-off"></i>
+              <i class="fas fa-vest ml-3 disabled"></i>  
+                Chaleco?  
+            {/if}
+          </div>
+        </div>
 
-    </div>
-  </GenericCard>
+      </div>
+    </GenericCard>
+  {/if}
   {#if loading}
     <Loading />
   {:else}
@@ -269,9 +294,9 @@ import { debug } from "svelte/internal";
         </tfoot>
         <tbody>
 
-        {#if alertas.length > 0}
+        {#if alertas.length > 0} 
           {#each alertas as alerta, i}
-              <Alertas eventType={'alerta'} alertType={alerta.tipo} {alerta} {i} />
+              <Alertas eventType={'alerta'} {detalle} alertType={alerta.tipo} {alerta} {i} />
           {/each} 
         {:else}
             <tr>

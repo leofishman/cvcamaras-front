@@ -54,14 +54,14 @@
 </script>
 <svelte:window  on:keydown={arrowPressed} />
 <div class="cointainer">
-  <h3 class="title">{cause.toString()}</h3>
+  <h3 class="title">{cause}</h3>
   <div id="carousel-container">
     <div id="carousel-images">
       
       {#each images as image (image.id)}
         <img
           src={image.path}
-          alt={cause.toString()}
+          alt={cause}
           id={image.id}
           style={`height:${imageHeight}px; margin: 0 ${imageSpacing}px;`}
           on:mouseover={stopAutoPlay}
