@@ -58,11 +58,11 @@ function prepararMail(alerta) {
         .map(key => `${key}=${alerta._id[key]}`)
         .join('&');
     }  
-    const subject = "Alerta de " + camera + ' ' + cause.toString()
+    const subject = "Alerta de " + camera + ' ' + cause
     if (alerta.datetime) {
       link = frontEnd + '/#/alertas/?' + querystring
     }
-    const texto = "Nueva alerta " + cause.toString() + ' querystring: ' + link
+    const texto = "Nueva alerta " + cause + ' querystring: ' + link
 
 
     
