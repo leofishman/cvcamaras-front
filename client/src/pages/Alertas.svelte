@@ -48,6 +48,7 @@ export let params = {}
 console.log(46, params)
     if (params._id) {
       opciones.params = params
+      detalle = true
     }
     const parseParams = (querystring) => {
 

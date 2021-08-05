@@ -16,7 +16,7 @@ function ensureLogin(req, res, next) {
 
 
 
-router.post('/person_crops', ensureLogin, async(req, res) => {
+router.post('/person_crops', async(req, res) => {
     let opciones = {};
     if (req.body) {
         
