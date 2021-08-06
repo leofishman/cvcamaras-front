@@ -76,7 +76,6 @@
       console.log('alerta', i, alerta)
     });
 
-    console.log(77, detalle)
 </script>
 
 
@@ -114,9 +113,6 @@
                             <i class="fas fa-head-side-mask cumple"></i> 
                         </SvelteTooltip>
                     {/if}                    
-                </div>
-                <div class="column ">
-                    <i class="fas fa-vest {estado(alerta.no_vest_count)}"></i>  
                 </div>
             </div>
         </td>
