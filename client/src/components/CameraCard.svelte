@@ -48,8 +48,6 @@
     }
   }
 
-
-  // For now I open only the first panel, latter I can open any panel with alerts
   let expand = false;
   expand = '';
   let editable = false;

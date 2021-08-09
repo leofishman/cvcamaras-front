@@ -1,7 +1,9 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { port } = require('../config')
 const path = require('path')
 
 const mode = process.env.NODE_ENV || 'development'
+
 const prod = mode === 'production'
 
 module.exports = {
@@ -26,7 +28,7 @@ module.exports = {
 	disableHostCheck: true,
         proxy: {
             '/api': {
-                target: 'http://localhost:3000',
+                target: 'http://localhost:' + port,
             },
         },
         clientLogLevel: 'silent',
