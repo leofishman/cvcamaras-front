@@ -41,7 +41,8 @@
     "/profile": wrap(Prolife, { reason: "unauthenticated" }, () => $user),
     "/config": wrap(Config, { reason: "unauthenticated" }, () => $user),
     "/camaras": wrap(Camaras, { reason: "unauthenticated"}, () => $user),
-    "/alertas": wrap(Alertas, { reason: "unauthenticated"}, () => $user),
+    "/alertas":  wrap(Alertas, { reason: "unauthenticated"}, () => $user),
+    "/alertas/:_id": Alertas,
     "/detections": wrap(Detections, { reason: "unauthenticated"}, () => $user),
     "/frames": wrap(Frames, { reason: "unauthenticated"}, () => $user),
   };

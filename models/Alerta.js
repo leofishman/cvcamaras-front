@@ -22,7 +22,7 @@ const AlertSchema = new Schema({
     no_facemask_count: Number,
     no_hardhat_count: Number,
     person_crops: Schema.Types.Mixed,
-    enviada: Boolean,
+    enviado: Boolean,
 })
 
 
@@ -118,9 +118,14 @@ AlertSchema.statics.get_person_crops = async function (id) {
 
 
 AlertSchema.statics.get_not_sended = async function(k) {
+    const alert = this.find(
+        {enviado:false},
+        {alert_cause:1, site:1, camera:1, datetime:1, 
+         detections_count:1, no_facemask_count: 1, 
+         no_hardhat_count:1, person_crops: {$slice: -2} 
+        }).limit(k)
 
-
-    return this.find({enviada: { "$exists" : false }}, {datetime:1, detections_count:1, no_facemask_count: 1, no_hardhat_count:1 }).limit(k)
+    return alert
 }
 
 const Alerta = model ('alerts', AlertSchema)
