@@ -88,7 +88,7 @@
         <input
           class="input"
           type="text"
-          bind:value={camera.sitio}
+          bind:value={camera.site}
           placeholder="Sitio de la camara" />
           Sitio de la Camara (Ubicación física)
       </p>

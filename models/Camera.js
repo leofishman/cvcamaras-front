@@ -25,7 +25,7 @@ const CameraSchema = new Schema({
         type: Boolean,
         defaultValue: true,
     },
-    sitio: String,
+    site: String,
 })
 
 const Camera = model('camera', CameraSchema)
