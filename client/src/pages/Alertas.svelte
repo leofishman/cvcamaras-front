@@ -13,6 +13,8 @@
     import Pagination from "../components/Pagination.svelte"
 import { empty } from "svelte/internal";
 
+export let params = {}
+
     let id = '';
     let feed = '';
     let totalDocs;
@@ -43,7 +45,11 @@ import { empty } from "svelte/internal";
     if (!$config.alerta_umbral_detection) {
         $config.alerta_umbral_detection = 10
     }
-
+console.log(46, params)
+    if (params._id) {
+      opciones.params = params
+      detalle = true
+    }
     const parseParams = (querystring) => {
 
       // parse query string
@@ -63,16 +69,21 @@ import { empty } from "svelte/internal";
     };
 
     let queries = parseParams(query)
-   
-    
+    console.log(68, queries,params)
+    let path = "/api/alertas/"
     if (Object.keys(queries).length > 0) {
-        //opciones.query = {_id: queries}
-      console.log(68, queries)
+        opciones.query = {_id: queries}
+        path = "/api/alertas/notificaciones"
         detalle = true
       }  
 
     async function getAlerts() {
-      const { data } = await axios.post("/api/alertas/", {opciones});
+      
+      if (params._id) path = "/api/alertas/notificaciones"
+console.log(83, path)
+          
+      const { data } = await axios.post(path, {opciones});    
+      
       opciones.filter = data[1]    
       totalDocs = data[0].totalDocs
       hasNextPage = data[0].hasNextPage

@@ -75,77 +75,81 @@
 <div class="container">
   <div >mostrando: {mostrando} de {totalDocs} detecciones</div> 
 
-  <GenericCard header="Filtros">
-    <div class="columns" on:change="{filtrar}">
-      <div class="column">
-        <input type="date" bind:value={opciones.fecha_desde} />
-        Desde
-        {#if (opciones.fecha_desde) }
-          <input type="date" bind:value={opciones.fecha_hasta} bind/>
-        hasta 
-        {/if}
-      </div>
-      <div class="column">
-        <div class="select">
-          <select bind:value="{opciones.source}">Camara
-            {#each $cameras as camera, i}
-              <option value="{camera.id}">{camera.id} </option>
-            {/each}
-          </select>
+    <GenericCard header="Filtros">
+      <div class="columns" on:change="{filtrar}">
+        <div class="column">
+          <input type="date" bind:value={opciones.fecha_desde} />
+          Desde
+          {#if (opciones.fecha_desde) }
+            <input type="date" bind:value={opciones.fecha_hasta} bind/>
+          hasta 
+          {/if}
         </div>
-      </div>
-      <div class="column">
-        <input type="checkbox" name="person" value="person" bind:checked="{opciones.person}">
-          <i class="fas fa-male"></i>
-          Casco
-      </div>
-      <div class="column">
-        <input type="checkbox"  name="casco" value="casco" bind:checked="{opciones.casco}">
-          <i class="fas fa-hard-hat"></i>
-          Casco
-      </div>
-      <div class="column">
-        <input type="checkbox"  name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
-          <i class="fas fa-head-side-mask"></i>
-          Barbijo     
-      </div>
-      <div class="column">
-        <input type="checkbox"  name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
-          <i class="fas fa-vest"></i>
-          Chaleco     
-      </div>
+        <div class="column">
+          <div class="select">
+            <select bind:value="{opciones.source}">Camara
+              {#each $cameras as camera, i}
+                <option value="{camera.id}">{camera.id} </option>
+              {/each}
+            </select>
+          </div>
+        </div>
+        <div class="column">
+          <input type="checkbox" name="person" value="person" bind:checked="{opciones.person}">
+            <i class="fas fa-male"></i>
+            Casco
+        </div>
+        <div class="column">
+          <input type="checkbox"  name="casco" value="casco" bind:checked="{opciones.casco}">
+            <i class="fas fa-hard-hat"></i>
+            Casco
+        </div>
+        <div class="column">
+          <input type="checkbox"  name="barbijo" value="barbijo" bind:checked="{opciones.barbijo}">
+            <i class="fas fa-head-side-mask"></i>
+            Barbijo     
+        </div>
+        <div class="column">
+          <input type="checkbox"  name="chaleco" value="chaleco" bind:checked="{opciones.chaleco}">
+            <i class="fas fa-vest"></i>
+            Chaleco     
+        </div>
 
-    </div>Filtros x fecha, tipo de alerta, camara y elementos
-  </GenericCard>  
-    <table class="table is-fullwidth">
-      <thead>
-        <tr>
-          <th><i class="far fa-calendar-alt mr-3"></i>Fecha</th>
-          <th><i class="fas fa-bell mr-3"></i>Tipo</th>
-          <th><i class="fas fa-video mr-3"></i>Camara</th>
-          <th>Elemento</th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr>
-          <th>Fecha</th>
-          <th><i class="fas fa-bell mr-3"></i>Tipo</th>
-          <th>Camara</th>
-          <th>Elemento</th>
-        </tr>
-      </tfoot>
-      <tbody>
-        {#if (mostrando > 1)}
-          {#each detections as detection, i}
-            <Detection {detection} {i}></Detection>
-          {:else}
-            No se registrarion detecciones
-          {/each}
-        {/if}
+      </div>Filtros x fecha, tipo de alerta, camara y elementos
+    </GenericCard>
+    <div class="b-table">
+      <div class="table-wrapper has-mobile-cards">
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th><i class="far fa-calendar-alt mr-3"></i>Fecha</th>
+              <th><i class="fas fa-bell mr-3"></i>Tipo</th>
+              <th><i class="fas fa-video mr-3"></i>Camara</th>
+              <th>Elemento</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Fecha</th>
+              <th><i class="fas fa-bell mr-3"></i>Tipo</th>
+              <th>Camara</th>
+              <th>Elemento</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {#if (mostrando > 1)}
+              {#each detections as detection, i}
+                <Detection {detection} {i}></Detection>
+              {:else}
+                No se registrarion detecciones
+              {/each}
+            {/if}
 
 
-      </tbody>
-    </table> 
+          </tbody>
+        </table>
+      </div>
+    </div> 
   </div>
   {#if totalDocs > limit}
     <Pagination
