@@ -4,14 +4,15 @@
   export let mode = "balance";
 
   export let camera = '';
-  export let site, id;
-  export let det_barbijo = true;
-  export let det_casco = true;
-  export let det_chaleco = false;
-  export let det_persona = camera.det_persona;
+
   export let active = true;  
   export let i;
- 
+
+  let det_barbijo = camera.det_barbijo;
+  let det_casco = camera.det_casco;
+  let det_chaleco = camera.det_chaleco;
+  let det_persona = camera.det_persona;
+
   import { addToast } from '../stores'
   import { fade } from 'svelte/transition';
   import CamaraForm from "./CamaraForm.svelte";
@@ -107,7 +108,7 @@
   <header class="card-header" on:click={toggleConfig}>
     <p class="card-header-title mr-4  {cssDisabled} ">
       <i class="fas fa-video mr-3">  </i>
-        {site}:{id}   
+        {camera.site}:{camera.id}   
         <i class="fas fa-male ml-6 {estado(det_persona)}"></i>
         <i class="fas fa-hard-hat ml-3 {estado(det_casco)}"></i>
         <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}"></i>  

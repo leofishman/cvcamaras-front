@@ -50,7 +50,7 @@
 {#if $cameras.length > 0}
 <div class="container">
     {#each $cameras as camera, i}
-        <CamaraCard i={i} camera={camera}  id={camera.id} site={camera.site}  feed={camera.feed} det_persona={cameras.det_persona} det_barbijo={camera.det_barbijo} det_casco={camera.det_casco} det_chaleco={camera.det_chaleco} active={camera.active}  />
+        <CamaraCard i={i} camera={camera} />
     {/each}    
 </div>
 
