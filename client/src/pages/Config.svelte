@@ -26,7 +26,6 @@
     let configLocal = {};
 
 
-    $: disabled = (feed == '' || id == '');
     $: cssDisabled = configLocal.smtp_enable ? '' : 'disabled' 
 
     let editable = false;
@@ -51,7 +50,10 @@
       if (!$config.alertas_precision) {
         $config.alertas_precision = 90
       }
-
+      if (!$config.send_alerts_every_n_minutes) {
+        $config.send_alerts_every_n_minutes = 1
+      }
+      
       configLocal = $config
     }
 
@@ -200,6 +202,18 @@
           Cuantos detecciones generan una alerta?
       </p>
     </div>
+    <div class="field">
+      <p class="control">
+        <label>Lapso en minutos de generación de alertas</label>
+        <input
+          class="input"
+          type="number"
+          bind:value={configLocal.send_alerts_every_n_minutes}
+          placeholder="lapso de alerta" /> 
+          Cada cuanto tiempo se genera una alerta?
+      </p>
+    </div>
+    
     <div class="config-smtp">
       <GenericCard header="smtp">
         <div class="field {cssDisabled}">
