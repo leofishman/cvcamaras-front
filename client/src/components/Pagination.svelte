@@ -38,11 +38,12 @@
   }
 </script>
 
-<p>
-  Pagina <code>{page}</code> de <code>{totalPages}</code> (  <code>{totalDocs}</code> total)
-</p>
 
+<div class="container">
+  Pagina <code>{page}</code> de <code>{totalPages}</code> (  <code>{totalDocs}</code> total)
+</div>
 <nav class="pagination">
+  
   <ul>
     <li class="{page === 1 ? 'disabled' : ''} mr-2">
       <a href="javascript:void(0)" on:click="{() => changePage(1)}">
