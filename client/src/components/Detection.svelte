@@ -28,13 +28,13 @@
 
 
 <tr>
-    <td>{dateFormat(detection.datetimetz, "dd-mm-yy  h:M")}</td>
-    <td><div class="text"> 
+    <td data-label="Fecha">{dateFormat(detection.datetimetz, "dd-mm-yy  h:M")}</td>
+    <td data-label="Tipo"><div class="text"> 
                 <span class="alert"> {type}</span> 
         </div>
     </td>
-    <td>{detection.source}</td>
-    <td>
+    <td data-label="Camara">{detection.source}</td>
+    <td data-label="Elemento">
         <div class="columns ">
             <div class="column is-one-third-mobile">
                 <SvelteTooltip tip="persona: {detection.detections_confidences[0]}" top >
