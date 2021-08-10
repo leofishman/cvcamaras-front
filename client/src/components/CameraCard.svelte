@@ -5,13 +5,14 @@
 
   export let camera = '';
 
-  export let active = true;  
+    
   export let i;
 
   let det_barbijo = camera.det_barbijo;
   let det_casco = camera.det_casco;
   let det_chaleco = camera.det_chaleco;
   let det_persona = camera.det_persona;
+  let active = camera.active;
 
   import { addToast } from '../stores'
   import { fade } from 'svelte/transition';
@@ -34,7 +35,7 @@
   };
   $: label = mode.toUpperCase();
   $: cssClass = getCssClass(mode);
-  $: cssDisabled = active ? '' : 'disabled' 
+  $: cssDisabled = camera.active ? '' : 'disabled' 
   $: det_persona = camera.det_persona
 
   function getCssClass(mode) {
