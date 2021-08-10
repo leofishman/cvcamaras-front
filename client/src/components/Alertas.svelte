@@ -80,7 +80,7 @@
 
 
     <tr>
-        <td>{dateFormat(alerta.datetime, "dd-mm-yy  h:M")} </td>
+        <td>{dateFormat(alerta.datetime, "dd-mm-yy  HH:MM")} </td>
         <td>{camera}</td>
         <td><div class="text"> 
                  <span class="alert"> {alerta.detections_count || 'alerta'}</span> 

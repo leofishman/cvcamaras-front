@@ -28,7 +28,7 @@
 
 
 <tr>
-    <td data-label="Fecha">{dateFormat(detection.datetimetz, "dd-mm-yy  h:M")}</td>
+    <td data-label="Fecha">{dateFormat(detection.datetimetz, "dd-mm-yy  HH:MM")}</td>
     <td data-label="Tipo"><div class="text"> 
                 <span class="alert"> {type}</span> 
         </div>
