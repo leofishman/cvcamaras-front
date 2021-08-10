@@ -38,7 +38,7 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
                  'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count', 'enviada'
                 ]
     
-              
+    options.sort = {datetime: -1}      
 
     if (filter.fecha_desde) {
             let fecha_desde = filter.fecha_desde;

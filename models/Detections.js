@@ -25,6 +25,9 @@ DetectionSchema.statics.queryDetections = async function(filter, options) {
         limit: 6,
       };
 */
+
+options.sort = {datetime: -1}   
+
     let fecha_desde = filter.fecha_desde;
     let fecha_hasta = filter.fecha_hasta;
     if (!fecha_hasta) {
