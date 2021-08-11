@@ -14,14 +14,10 @@ function ensureLogin(req, res, next) {
     next()
 }
 
-
-
 router.post('/person_crops', async(req, res) => {
     let opciones = {};
     if (req.body) {
-        
         opciones = req.body.opciones;
-
     }
     try {
         const person_crops = await Alerta.get_person_crops(opciones); 
@@ -69,6 +65,24 @@ router.post('/',ensureLogin, async(req, res) => {
     }
 })
 
+router.post('/camaras', ensureLogin, async(req, res) => {
+    if (req.body) {
+        const camera = req.body.camara
+        const site = req.body.site
+        try {
+            const alertasXcamara = await Alerta.getAlertsByCamera(camera, site); 
+            console.log(75, alertasXcamara)
+            res.status(200).json(alertasXcamara)
+        } catch (error) {
+            res.status(400).json({ message: error.message })
+        } 
+    } else {
+        res.status(200)
+    }
+
+    
+})
+
 router.post('/notificaciones', async(req, res) => {
     let filter = {};
     let query = {};
@@ -83,8 +97,6 @@ router.post('/notificaciones', async(req, res) => {
     //       query = req.body.opciones.filter; 
     //    }
        
-
-
     //    const configuraciones = await Configuraciones.findOne({alerta_umbral_detection:{$gt:0}});
     //    if (!configuraciones) {
     //     alerta_umbral_detection = 10

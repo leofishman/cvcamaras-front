@@ -115,8 +115,6 @@ AlertSchema.statics.get_person_crops = async function (id) {
     return result.person_crops.slice(0,20)
 }
 
-
-
 AlertSchema.statics.get_not_sended = async function(k) {
     const alert = this.find(
         {enviado:false},
@@ -126,6 +124,16 @@ AlertSchema.statics.get_not_sended = async function(k) {
         }).limit(k)
 
     return alert
+}
+
+AlertSchema.statics.getAlertsByCamera = async function(camera, site) {
+    const filter = {camera:camera, site: site, enviado:false}
+    const alertas = this.find(filter,  {alert_cause:1, _id:0})
+    const alert_cause = this.aggregate([{
+            $group:{alert_cause:"$alert_cause",Total:{$sum:1}}}
+        ]);
+    console.log(132,alert_cause)
+    return alertas
 }
 
 const Alerta = model ('alerts', AlertSchema)

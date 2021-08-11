@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-
+  import axios from 'axios';
   export let mode = "balance";
 
   export let camera = '';
@@ -13,6 +13,8 @@
   let det_chaleco = camera.det_chaleco;
   let det_persona = camera.det_persona;
   let active = camera.active;
+  let alert_no_hard_hat = 0;
+  let alert_no_facemask = 0;
 
   import { addToast } from '../stores'
   import { fade } from 'svelte/transition';
@@ -27,6 +29,7 @@
   let visible = false;
   let timeout = 4;
   let type;
+  let alertasXCamara;
 
   let group = '';
 
@@ -74,6 +77,31 @@
     expand = false;
   }
 
+  async function getAlertsByCamera() {
+    const path = "/api/alertas/camaras"
+
+      const camara = camera.id
+      const site = camera.site    
+      const { data } = await axios.post(path, {camara:camara, site:site});  
+//        console.log(83, data)
+      return data  
+  }
+
+
+  
+  onMount(async () => {
+      alertasXCamara = await getAlertsByCamera()
+      let cause_alert = alertasXCamara.reduce((r, a) => {
+        r[a.alert_cause] = [...r[a.alert_cause] || [], a];
+        if (a.alert_cause == 'no hard hat') alert_no_hard_hat++
+        if (a.alert_cause == 'no facemask') alert_no_facemask++
+        return r;
+        }, {});
+      
+  //    console.log(91,alertasXCamara, cause_alert, alert_no_hard_hat)
+    });
+
+
   function toggleConfig() {
     expand = !expand
   }
@@ -109,9 +137,15 @@
       <i class="fas fa-video mr-3">  </i>
         {camera.site}:{camera.id}   
         <i class="fas fa-male ml-6 {estado(det_persona)}"></i>
-        <i class="fas fa-hard-hat ml-3 {estado(det_casco)}"></i>
-        <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}"></i>  
+        <i class="fas fa-hard-hat ml-3 {estado(det_casco)}">
+          {#if alert_no_hard_hat}<span class="tag is-danger">{alert_no_hard_hat}</span>{/if}
+        </i>
+        <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}">
+          {#if alert_no_facemask}<span class="tag is-danger">{alert_no_facemask}</span>{/if}
+        </i>  
         <i class="fas fa-vest ml-3 {estado(det_chaleco)}"></i>
+        
+        
     </p>
     <button class="card-header-icon" aria-label="more options">
       <span class="icon">
