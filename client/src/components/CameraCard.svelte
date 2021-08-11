@@ -136,13 +136,19 @@
     <p class="card-header-title mr-4  {cssDisabled} ">
       <i class="fas fa-video mr-3">  </i>
         {camera.site}:{camera.id}   
-        <i class="fas fa-male ml-6 {estado(det_persona)}"></i>
-        <i class="fas fa-hard-hat ml-3 {estado(det_casco)}">
-          {#if alert_no_hard_hat}<span class="tag is-danger">{alert_no_hard_hat}</span>{/if}
-        </i>
-        <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}">
-          {#if alert_no_facemask}<span class="tag is-danger">{alert_no_facemask}</span>{/if}
-        </i>  
+        <i class="fas fa-male ml-6 pr-2 {estado(det_persona)}"></i>
+        {#if alert_no_hard_hat}
+          <span class="tag is-danger is-rounded is-small"><i class="fas fa-hard-hat m-1 {estado(det_casco)}"></i>{alert_no_hard_hat}</span>
+        {:else}
+          <i class="fas fa-hard-hat ml-3 {estado(det_casco)}"> </i>
+        {/if}
+
+        {#if alert_no_facemask}
+          <span class="tag is-danger is-rounded is-small"><i class="fas fa-head-side-mask m-1 {estado(det_barbijo)}"></i>{alert_no_facemask}</span>
+        {:else}
+          <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}"> </i> 
+        {/if}
+        
         <i class="fas fa-vest ml-3 {estado(det_chaleco)}"></i>
         
         
