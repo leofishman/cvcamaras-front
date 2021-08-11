@@ -137,13 +137,13 @@
       <i class="fas fa-video mr-3">  </i>
         {camera.site}:{camera.id}   
         <i class="fas fa-male ml-6 pr-2 {estado(det_persona)}"></i>
-        {#if alert_no_hard_hat}
+        {#if (alert_no_hard_hat && camera.active)}
           <span class="tag is-danger is-rounded is-small"><i class="fas fa-hard-hat m-1 {estado(det_casco)}"></i>{alert_no_hard_hat}</span>
         {:else}
           <i class="fas fa-hard-hat ml-3 {estado(det_casco)}"> </i>
         {/if}
 
-        {#if alert_no_facemask}
+        {#if (alert_no_facemask && camera.active)}
           <span class="tag is-danger is-rounded is-small"><i class="fas fa-head-side-mask m-1 {estado(det_barbijo)}"></i>{alert_no_facemask}</span>
         {:else}
           <i class="fas fa-head-side-mask ml-3 {estado(det_barbijo)}"> </i> 
