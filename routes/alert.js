@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const User = require('../models/User')
 const Alerta = require('../models/Alerta')
+const Frames = require('../models/Frames')
 const Configuraciones = require('../models/Configuraciones')
 
 const router = Router()
@@ -18,9 +19,9 @@ router.post('/person_crops', async(req, res) => {
     let opciones = {};
     if (req.body) {
         opciones = req.body.opciones;
-    }
+    } 
     try {
-        const person_crops = await Alerta.get_person_crops(opciones); 
+        const person_crops = await Frames.get_person_crops(opciones); 
         if (!person_crops) {
             throw new Error('No hay recortes')
         }

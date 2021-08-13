@@ -3,7 +3,7 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 
 const AlertSchema = new Schema({
     site: String,
-    alert_cause: String,
+    alert_cause: Array,
     camera: String,
     person: Number,
     interval: Number,
@@ -15,13 +15,13 @@ const AlertSchema = new Schema({
     datetime: Date,
     detections_count: Number,
     facemask_count: Number,
-    frames: Array,
+    frames: [{ type: Schema.Types.ObjectId, ref: 'Frames' }],
     hardhat_count: Number,
     mean_no_facemask_confidence: Number,
     mean_no_hardhat_confidence: Number,
     no_facemask_count: Number,
     no_hardhat_count: Number,
-    person_crops: Schema.Types.Mixed,
+    person_crops: [{ type: Schema.Types.ObjectId, ref: 'Frames' }],
     enviado: Boolean,
 })
 
@@ -35,7 +35,7 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
     options.select = [
                 '_id', 'site', 'alert_cause', 'camera', 'person', 'datetime','detections_count',
                  'facemask_count', 'hardhat_count','mean_no_facemask_confidence',
-                 'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count', 'enviada'
+                 'mean_no_hardhat_confidence','no_facemask_count','no_hardhat_count', 'enviada', 'person_crops'
                 ]
     
     options.sort = {datetime: -1}      
@@ -100,9 +100,8 @@ AlertSchema.statics.get_person_crops = async function (id) {
 
   //  const datetime = new Date(id.datetime)
   //  const opciones = {datetime: datetime}
-
     const result = await this.findOne(id)
- //   console.log(id)
+  //  console.log(105, id, result)
     /* this will shrink person_crops array to 20 images max */
     let skip_crop
     if ( result.person_crops.length > 20) {
@@ -113,6 +112,7 @@ AlertSchema.statics.get_person_crops = async function (id) {
         return result_shrinked.slice(0,20)      
     } 
     return result.person_crops.slice(0,20)
+
 }
 
 AlertSchema.statics.get_not_sended = async function(k) {

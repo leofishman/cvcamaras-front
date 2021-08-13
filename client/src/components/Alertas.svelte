@@ -53,15 +53,17 @@
     function array2base64(imgArr) {
         person_crops = [];
         imgArr.forEach((item, index, arr) => {
-          person_crops[index] = 'data:image/jpeg;base64,' + atob(imgArr[index])  
-          images[index] = {path:'data:image/jpeg;base64,' + atob(imgArr[index]), id: index}
+           console.log(56, imgArr[index].person_crop) 
+          person_crops[index] = 'data:image/jpeg;base64,' + atob(imgArr[index].person_crop)  
+          images[index] = {path:'data:image/jpeg;base64,' + atob(imgArr[index].person_crop), id: index}
         })
     }
 
     async function get_person_crops() {
         loading = true
-        const opciones = {_id: alerta._id}
+        const opciones = {_id: alerta._id, crops:alerta.person_crops} 
         const { data } = await axios.post("/api/alertas/person_crops", {opciones});
+        console.log(65, data)
         loading = false
       return data
     }
