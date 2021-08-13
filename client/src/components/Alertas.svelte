@@ -53,7 +53,6 @@
     function array2base64(imgArr) {
         person_crops = [];
         imgArr.forEach((item, index, arr) => {
-           console.log(56, imgArr[index].person_crop) 
           person_crops[index] = 'data:image/jpeg;base64,' + atob(imgArr[index].person_crop)  
           images[index] = {path:'data:image/jpeg;base64,' + atob(imgArr[index].person_crop), id: index}
         })
@@ -63,7 +62,6 @@
         loading = true
         const opciones = {_id: alerta._id, crops:alerta.person_crops} 
         const { data } = await axios.post("/api/alertas/person_crops", {opciones});
-        console.log(65, data)
         loading = false
       return data
     }
@@ -82,7 +80,7 @@
 
 
     <tr>
-        <td>{dateFormat(alerta.datetime, "dd-mm-yy  HH:MM")} </td>
+        <td> alertid: {i} - {dateFormat(alerta.datetime, "dd-mm-yy  HH:MM")} </td>
         <td>{camera}</td>
         <td><div class="text"> 
                  <span class="alert"> {alerta.detections_count || 'alerta'}</span> 
@@ -99,7 +97,7 @@
                     {/if}
                         
                     {#if (alerta.hardhat_count)}
-                        <SvelteTooltip tip="Con casco: {alerta.hardhat_count}" top >
+                        <SvelteTooltip tip="Con casco: {alerta.hardhat_count} precision: {percent(alerta.mean_hardhat_confidence)}%" top >
                             <i class="fas fa-hard-hat cumple"></i>
                         </SvelteTooltip> 
                     {/if}
@@ -111,7 +109,7 @@
                         </SvelteTooltip> 
                     {/if}
                     {#if alerta.facemask_count}
-                        <SvelteTooltip tip="Con barbijo: {alerta.facemask_count}" top >
+                        <SvelteTooltip tip="Con barbijo: {alerta.facemask_count} precision: {percent(alerta.mean_facemask_confidence)}%" top >
                             <i class="fas fa-head-side-mask cumple"></i> 
                         </SvelteTooltip>
                     {/if}                    

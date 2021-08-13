@@ -45,33 +45,19 @@ FrameSchema.statics.get_person_crops = async function (opciones) {
 
   if (opciones.crops) {
     const array_id = opciones.crops.map(s => new ObjectId(s))
-  
-    let myid =  ObjectId(opciones.crops[0])
-    //myid = myid.toString()
-    console.log (51, myid)
-    const person = this.find({_id: myid})
-    console.log(52, person)
     const query =  { _id : { $in : array_id } } 
-    //const query = {_id:myid}
-    console.log(52, query)
-  
-   return person_crops = this.find(query, {_id:0,person_crop:1});
-   
-  } 
-  const id_array = id
-    const result = await this.findOne(id)
-  //  console.log(105, id, result)
-    /* this will shrink person_crops array to 20 images max */
-    let skip_crop
-    if ( result.person_crops.length > 20) {
-        skip_crop = Math.floor((result.person_crops.length / 15))
-        const result_shrinked = result.person_crops.filter(function(value, index) {
+
+    let person_crop = this.find(query, {_id:0,person_crop:1}).limit(20);
+    return person_crop
+    if ( person_crop.length > 20) {
+        skip_crop = Math.floor((person_crop.length / 15))
+        const result_shrinked = person_crop.filter(function(value, index) {
             return (index + 1) % skip_crop == 0;
         });
         return result_shrinked.slice(0,20)      
     } 
-    return result.person_crops.slice(0,20)
-
+    return person_crop.slice(0,20)
+  } 
 }
 
 const Frames = model('frames', FrameSchema);
