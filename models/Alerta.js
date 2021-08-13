@@ -23,7 +23,7 @@ const AlertSchema = new Schema({
     mean_no_hardhat_confidence: Number,
     no_facemask_count: Number,
     no_hardhat_count: Number,
-    person_crops: [{ type: Schema.Types.ObjectId, ref: 'Frames' }],
+    person_crops: [ String ],
     enviado: Boolean,
 })
 
