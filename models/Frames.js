@@ -3,11 +3,21 @@ const { model, Schema} = require("mongoose");
 const ObjectId = require('mongodb').ObjectID;
 
 const FrameSchema = new Schema({
+  camera: String,
   datetime: String,
+  head_crop: {
+    data: Buffer,
+    contentType: String
+  },
+  person_crop: {
+    data: Buffer,
+    contentType: String
+  },  
   frame_jpg:   {
     data: Buffer,
     contentType: String
   },
+  site: String,  
   source: String,
 });
 
@@ -23,7 +33,7 @@ FrameSchema.statics.queryFrames = async function(filter) {
   if (fecha_desde) {
       fecha_desde = new Date(fecha_desde);
       fecha_hasta = fecha_hasta;
-      filter.datetimet = {
+      filter.datetime = {
           $gte:  fecha_desde, 
           $lte: fecha_hasta, 
       };
@@ -40,14 +50,13 @@ FrameSchema.statics.queryFrames = async function(filter) {
 
 FrameSchema.statics.get_person_crops = async function (opciones) {
 
-
   let person_crops
 
   if (opciones.crops) {
     const array_id = opciones.crops.map(s => new ObjectId(s))
     const query =  { _id : { $in : array_id } } 
 
-    let person_crop = this.find(query, {_id:0,person_crop:1}).limit(20);
+    person_crop = this.find(query).limit(5);
     return person_crop
     if ( person_crop.length > 20) {
         skip_crop = Math.floor((person_crop.length / 15))

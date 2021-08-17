@@ -3,7 +3,8 @@
         cameras,
     } from "../stores";
     import GenericCard from "./GenericCard.svelte";
-    import Person_crops from "./Person_crops.svelte"
+    import Person_crops from "./Person_crops.svelte";
+    import Carousel from "./Carousel.svelte";
     import { ChevronLeftIcon, ChevronRightIcon } from 'svelte-feather-icons';
     import Loading from "../components/Loading.svelte";
     import SvelteTooltip from './SvelteTooltip.svelte';
@@ -16,8 +17,11 @@
 
     let dateFormat = require("dateformat");
     let iconEvent = '';
-    let person_crops = [0];
+    let frame_crops = [];
+    let person_crops = [];
+    let head_crops = [];
     let loading = true;
+
     let images = [];
     let cause;
     let camera, site = "X"
@@ -53,8 +57,8 @@
     function array2base64(imgArr) {
         person_crops = [];
         imgArr.forEach((item, index, arr) => {
-          person_crops[index] = 'data:image/jpeg;base64,' + atob(imgArr[index].person_crop)  
-          images[index] = {path:'data:image/jpeg;base64,' + atob(imgArr[index].person_crop), id: index}
+          person_crops[index] = 'data:image/jpeg;base64,' + atob(imgArr[index])  
+          images[index] = {path:'data:image/jpeg;base64,' + atob(imgArr[index]), id: index}
         })
     }
 
@@ -71,8 +75,16 @@
     }
 
     onMount(async () => {
-      person_crops = await get_person_crops()
-      array2base64(person_crops)
+       const crops = await get_person_crops()
+      crops.forEach((item, index, arr) => {
+        console.log(80, index, arr[index])
+
+          item.head_crop ? head_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.head_crop), id: index} : ''
+          item.person_crop ? person_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.person_crop), id: index} : ''
+console.log(81, item)
+      })
+      console.log(75,  person_crops, 22)
+   //   array2base64(person_crops)
       console.log('alerta', i, alerta)
     });
 
@@ -124,8 +136,8 @@
                     {#if loading}
                         <Loading />
                     {:else}
-                       <Person_crops 
-                       {images}
+                       <Carousel
+                       images={head_crops}
                        {cause}
                        {alerta}
                        imageHeight={300}
@@ -135,6 +147,17 @@
                        displayControls={true}
                        autoplay={false}
                         />
+
+                       <Carousel
+                       images={person_crops}
+                       imageHeight={300}
+                       imageSpacing={10}
+                       controlColor={'grey'}
+                       controlScale={0.8}
+                       displayControls={true}
+                       autoplay={false}
+                        />
+                        
                     {/if}
                 </div>
 
