@@ -101,7 +101,9 @@
     });
 
     function openDetail() {
-        console.log(i)
+        const url = '/#/detalle/' + alerta._id
+        console.log(i, url)
+        window.open(url, '_blank').focus();
     }
 
 </script>
