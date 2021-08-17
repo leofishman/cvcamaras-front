@@ -86,6 +86,7 @@
 
     onMount(async () => {
         const crops = await get_person_crops()
+        console.log(89, crops)
         crops.forEach((item, index, arr) => {
             item.head_crop ? head_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.head_crop), id: index} : ''
             item.person_crop ? person_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.person_crop), id: index} : ''

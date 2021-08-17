@@ -65,5 +65,5 @@ if (process.env.NODE_ENV === 'production') {
 
 app.listen(port, HOST, () => console.log('Express is running at '+ HOST + ' port ' + port))
 
-setTimeout(function() {enviarAlertas(2)}, 1500)
+//setTimeout(function() {enviarAlertas(2)}, 1500)
 // TODO: Cambiar a setInterval
