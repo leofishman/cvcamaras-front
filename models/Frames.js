@@ -50,23 +50,30 @@ FrameSchema.statics.queryFrames = async function(filter) {
 
 FrameSchema.statics.get_person_crops = async function (opciones) {
 
-  let person_crops
+  let person_crops, array_id
 
   if (opciones.crops) {
-    const array_id = opciones.crops.map(s => new ObjectId(s))
-    const query =  { _id : { $in : array_id } } 
-
-    person_crop = this.find(query).limit(5);
-    return person_crop
-    if ( person_crop.length > 20) {
-        skip_crop = Math.floor((person_crop.length / 15))
-        const result_shrinked = person_crop.filter(function(value, index) {
-            return (index + 1) % skip_crop == 0;
-        });
-        return result_shrinked.slice(0,20)      
-    } 
-    return person_crop.slice(0,20)
+    array_id = opciones.crops.map(s => new ObjectId(s))
   } 
+
+  if (opciones.frames) {
+    array_id = opciones.frames.map(s => new ObjectId(s))
+  }
+  
+  const query =  { _id : { $in : array_id } } 
+  person_crop = this.find(query).limit(15);
+  return person_crop
+  
+  
+  if ( person_crop.length > 20) {
+      skip_crop = Math.floor((person_crop.length / 15))
+      const result_shrinked = person_crop.filter(function(value, index) {
+          return (index + 1) % skip_crop == 0;
+      });
+      return result_shrinked.slice(0,20)      
+  } 
+  return person_crop.slice(0,20)
+
 }
 
 const Frames = model('frames', FrameSchema);

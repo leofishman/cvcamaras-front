@@ -11,7 +11,7 @@ const AlertSchema = new Schema({
     detections_count: Number,
     enviado: Boolean,
     facemask_count: Number,
-    frames: [{ type: Schema.Types.ObjectId, ref: 'Frames' }],
+    frames:  [ String ], //[{ type: Schema.Types.ObjectId, ref: 'Frames' }],
     hardhat_count: Number,
     hour: Number,
     interval: Number,
@@ -39,7 +39,7 @@ AlertSchema.statics.queryAlerts = async function(filter, options) {
     options.select = [
                 '_id', 'site', 'alert_cause', 'camera', 'person', 'datetime','detections_count',
                  'facemask_count', 'hardhat_count','mean_no_facemask_confidence',
-                 'mean_no_hardhat_confidence',,'mean_facemask_confidence',
+                 'mean_no_hardhat_confidence','frames','mean_facemask_confidence',
                  'mean_hardhat_confidence','no_facemask_count','no_hardhat_count', 'enviada', 'person_crops'
                 ]
     

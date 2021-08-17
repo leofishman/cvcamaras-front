@@ -20,6 +20,7 @@
     let frame_crops = [];
     let person_crops = [];
     let head_crops = [];
+    let frame_jpg = [];
     let loading = true;
 
     let images = [];
@@ -70,22 +71,32 @@
       return data
     }
 
+    async function get_frames() {
+        loading = true
+        const opciones = {_id: alerta._id, frames:alerta.frames} 
+        const { data } = await axios.post("/api/alertas/person_crops", {opciones});
+        loading = false
+      return data
+    }
+    
+
     function percent(num) {
         return (num * 100).toFixed(2)
     }
 
     onMount(async () => {
-       const crops = await get_person_crops()
-      crops.forEach((item, index, arr) => {
-        console.log(80, index, arr[index])
-
-          item.head_crop ? head_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.head_crop), id: index} : ''
-          item.person_crop ? person_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.person_crop), id: index} : ''
-console.log(81, item)
-      })
-      console.log(75,  person_crops, 22)
-   //   array2base64(person_crops)
-      console.log('alerta', i, alerta)
+        const crops = await get_person_crops()
+        crops.forEach((item, index, arr) => {
+            item.head_crop ? head_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.head_crop), id: index} : ''
+            item.person_crop ? person_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.person_crop), id: index} : ''
+        })
+    //   array2base64(person_crops)
+        console.log('alerta: ', i, alerta)
+        const frames = await get_frames()
+        frames.forEach((item, index, arr) => {
+            item.frame_jpg ? frame_jpg[index] =  {path:'data:image/jpeg;base64,' + atob(item.frame_jpg), id: index} : ''
+        })
+        console.log(95, frames)
     });
 
 </script>
@@ -150,6 +161,7 @@ console.log(81, item)
 
                        <Carousel
                        images={person_crops}
+                       cause="person_crop"
                        imageHeight={300}
                        imageSpacing={10}
                        controlColor={'grey'}
@@ -157,7 +169,17 @@ console.log(81, item)
                        displayControls={true}
                        autoplay={false}
                         />
-                        
+
+                       <Carousel
+                       images={frame_jpg}
+                       cause="frames"
+                       imageHeight={300}
+                       imageSpacing={10}
+                       controlColor={'grey'}
+                       controlScale={0.8}
+                       displayControls={true}
+                       autoplay={false}
+                        />                        
                     {/if}
                 </div>
 

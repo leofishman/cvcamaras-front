@@ -45,7 +45,7 @@ export let params = {}
     if (!$config.alerta_umbral_detection) {
         $config.alerta_umbral_detection = 10
     }
-console.log(46, params)
+//console.log(46, params)
     if (params._id) {
       opciones.params = params
       detalle = true
@@ -69,7 +69,7 @@ console.log(46, params)
     };
 
     let queries = parseParams(query)
-    console.log(68, queries,params)
+ //   console.log(68, queries,params)
     let path = "/api/alertas/"
     if (Object.keys(queries).length > 0) {
         opciones.query = {_id: queries}
@@ -80,7 +80,7 @@ console.log(46, params)
     async function getAlerts() {
       
       if (params._id) path = "/api/alertas/notificaciones"
-console.log(83, path)
+//console.log(83, path)
           
       const { data } = await axios.post(path, {opciones});    
       
