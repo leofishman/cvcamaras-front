@@ -15,8 +15,8 @@
   let start_p = 1
   let total_p = totalPages
 
-  if (totalPages > 6) {
-    total_p = 6
+  if (totalPages > 15) {
+    total_p = 15
 
     if (page > 2) {
       start_p = page - 2
@@ -67,7 +67,7 @@
         </li>
       {/if}
     {/each}
-    {#if ( totalPages > 6 && page < totalPages - 3 ) }
+    {#if ( totalPages > 15 && page < totalPages - 3 ) }
       <li class="ellipsis">
         <i class="fas fa-ellipsis-h mb-0 pb-0 p-3">  </i> 
       </li>

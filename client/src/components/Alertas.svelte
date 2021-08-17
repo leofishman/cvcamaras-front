@@ -100,10 +100,13 @@
         console.log(95, frames)
     });
 
+    function openDetail() {
+        console.log(i)
+    }
+
 </script>
 
-
-    <tr>
+    <tr class="enlace" on:click={openDetail}>
         <td> alertid: {i} - {dateFormat(alerta.datetime, "dd-mm-yy  HH:MM")} </td>
         <td>{camera}</td>
         <td><div class="text"> 
@@ -141,6 +144,8 @@
             </div>
         </td>
     </tr>
+
+    {#if 1==2}
     <tr>
         <td colspan="4">
             <GenericCard header="Detalle" {detalle}>
@@ -187,12 +192,15 @@
             </GenericCard>
         </td>
     </tr>
-    
+    {/if}
 <style>
     .text {
         padding-left: 30px;
     }
 
+    .enlace {
+        cursor: pointer;
+    }
     .disabled {
         pointer-events: none;
         opacity: 0.4;

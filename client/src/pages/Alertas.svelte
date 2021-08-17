@@ -41,7 +41,7 @@ export let params = {}
     $: casco = opciones.filter.no_hardhat_count
 
     
-    let opciones = {pagination: { limit: 6, page: 1 }, filter: {}};
+    let opciones = {pagination: { limit: 15, page: 1 }, filter: {}};
     if (!$config.alerta_umbral_detection) {
         $config.alerta_umbral_detection = 10
     }
