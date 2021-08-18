@@ -114,7 +114,7 @@
         <Images
         images={head_crops}
         cause="Recorte de Cabezas ({alerta.alert_cause}  {alerta.detections_count})"  
-        imageHeight={180}
+        imageHeight={160}
         imageSpacing={10}
         />
         <br />
@@ -130,8 +130,8 @@
         <Images
         images={frame_jpg}
         cause="Frames"
-        imageHeight={300}
-        imageSpacing={10}
+        imageHeight={80}
+        imageSpacing={2}
         /> 
     </div>
   {/if}
