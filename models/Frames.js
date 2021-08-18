@@ -66,12 +66,12 @@ FrameSchema.statics.get_person_crops = async function (opciones) {
 }
 
 const cap_result = function (result) {
-  if (result.length > 20) {
-    skip_crop = Math.floor((result.length / 15))
+  if (result.length > 10) {
+    skip_crop = Math.floor((result.length / 6))
     const result_shrinked = result.filter(function(value, index) {
         return (index + 1) % skip_crop == 0;
     });
-    return result_shrinked.slice(0,20)      
+    return result_shrinked.slice(0,5)      
   }
 
   return result

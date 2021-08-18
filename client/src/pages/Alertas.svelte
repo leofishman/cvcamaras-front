@@ -53,7 +53,7 @@ export let params = {}
     const parseParams = (querystring) => {
 
       // parse query string
-      const params = new URLSearchParams(querystring);
+    const params = new URLSearchParams(querystring);
 
       const obj = {};
 
