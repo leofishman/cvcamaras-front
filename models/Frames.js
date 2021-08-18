@@ -3,11 +3,21 @@ const { model, Schema} = require("mongoose");
 const ObjectId = require('mongodb').ObjectID;
 
 const FrameSchema = new Schema({
+  camera: String,
   datetime: String,
+  head_crop: {
+    data: Buffer,
+    contentType: String
+  },
+  person_crop: {
+    data: Buffer,
+    contentType: String
+  },  
   frame_jpg:   {
     data: Buffer,
     contentType: String
   },
+  site: String,  
   source: String,
 });
 
@@ -23,7 +33,7 @@ FrameSchema.statics.queryFrames = async function(filter) {
   if (fecha_desde) {
       fecha_desde = new Date(fecha_desde);
       fecha_hasta = fecha_hasta;
-      filter.datetimet = {
+      filter.datetime = {
           $gte:  fecha_desde, 
           $lte: fecha_hasta, 
       };
@@ -40,24 +50,31 @@ FrameSchema.statics.queryFrames = async function(filter) {
 
 FrameSchema.statics.get_person_crops = async function (opciones) {
 
-
-  let person_crops
-
+  let array_id, result
   if (opciones.crops) {
-    const array_id = opciones.crops.map(s => new ObjectId(s))
-    const query =  { _id : { $in : array_id } } 
-
-    let person_crop = this.find(query, {_id:0,person_crop:1}).limit(20);
-    return person_crop
-    if ( person_crop.length > 20) {
-        skip_crop = Math.floor((person_crop.length / 15))
-        const result_shrinked = person_crop.filter(function(value, index) {
-            return (index + 1) % skip_crop == 0;
-        });
-        return result_shrinked.slice(0,20)      
-    } 
-    return person_crop.slice(0,20)
+    array_id = opciones.crops.map(s => new ObjectId(s))
   } 
+
+  if (opciones.frames) {
+    array_id = opciones.frames.map(s => new ObjectId(s))
+  }
+  const query =  { _id : { $in : array_id } } 
+  result = await this.find(query);
+
+  return cap_result(result)
+
+}
+
+const cap_result = function (result) {
+  if (result.length > 10) {
+    skip_crop = Math.floor((result.length / 6))
+    const result_shrinked = result.filter(function(value, index) {
+        return (index + 1) % skip_crop == 0;
+    });
+    return result_shrinked.slice(0,5)      
+  }
+
+  return result
 }
 
 const Frames = model('frames', FrameSchema);

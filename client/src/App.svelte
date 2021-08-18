@@ -12,6 +12,7 @@
   import Toasts from "./components/Toasts.svelte"
   import Camaras from "./pages/Camaras.svelte"
   import Frames from "./pages/Frames.svelte"
+  import Detalle from "./pages/Detalle.svelte"
 
   import { onMount } from "svelte";
   import axios from "axios";
@@ -43,6 +44,7 @@
     "/camaras": wrap(Camaras, { reason: "unauthenticated"}, () => $user),
     "/alertas":  wrap(Alertas, { reason: "unauthenticated"}, () => $user),
     "/alertas/:_id": Alertas,
+    "/detalle/:_id": Detalle,
     "/detections": wrap(Detections, { reason: "unauthenticated"}, () => $user),
     "/frames": wrap(Frames, { reason: "unauthenticated"}, () => $user),
   };
