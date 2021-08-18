@@ -14,7 +14,7 @@
     <h3 class="title">{cause}</h3>
   {/if}
   <div id="carousel-container">
-    <div id="carousel-images">
+    <div id="carousel-images is-flex justify-content">
       
       {#each images as image (image.id)}
         <img

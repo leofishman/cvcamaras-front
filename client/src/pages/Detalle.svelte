@@ -81,18 +81,21 @@
   {#if loading}
     <Loading />
   {:else}
+    <section>
+
+   
     <h1 class="title is-1">
       <i class="fas fa-bell mr-2"></i> <strong>{alerta.alert_cause}</strong>  ({alerta.detections_count})
     </h1>
     <hr>
-    <h2 class="subtitle is-3">
+    <h2 class="subtitle is-2 ">
       Fecha Alerta: <strong>{dateFormat(alerta.datetime, "dd-mm-yy  HH:MM:ss")}</strong> 
       <br>
       Lugar: <strong>{alerta.site}/{alerta.camera}</strong>
      
     </h2>
 
-    <div class="subtitle is-4">
+    <div class="subtitle is-4 ">
       {#if (alerta.no_hardhat_count > $config.alerta_umbral_detection )}
         <p>
           <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
@@ -109,6 +112,8 @@
         </p>  
       {/if}
     </div>
+   </section>
+   <section>
     <div class="images">
         <Images
         images={head_crops}
@@ -132,7 +137,9 @@
         imageWidth={500}
         imageSpacing={2}
         /> 
-    </div>
+    </div>     
+   </section>
+
   {/if}
 </div>
 
