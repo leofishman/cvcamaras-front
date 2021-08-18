@@ -81,37 +81,55 @@
   {#if loading}
     <Loading />
   {:else}
-    <section>
+    <section class="section">
+    <div class="container">
 
-   
-    <h1 class="title is-1">
-      <i class="fas fa-bell mr-2"></i> <strong>{alerta.alert_cause}</strong>  ({alerta.detections_count})
-    </h1>
-    <hr>
-    <h2 class="subtitle is-2 ">
-      Fecha Alerta: <strong>{dateFormat(alerta.datetime, "dd-mm-yy  HH:MM:ss")}</strong> 
-      <br>
-      Lugar: <strong>{alerta.site}/{alerta.camera}</strong>
      
-    </h2>
+        <h1 class="title is-1">
 
-    <div class="subtitle is-4 ">
-      {#if (alerta.no_hardhat_count > $config.alerta_umbral_detection )}
-        <p>
-          <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
-           &nbsp; Sin casco: {alerta.no_hardhat_count}  <br />
-           &emsp;&nbsp;&nbsp; precision: {percent(alerta.mean_no_hardhat_confidence)}%          
-        </p>
-      {/if}
-          
-      {#if alerta.no_facemask_count > $config.alerta_umbral_detection}
-        <p>
-          <i class="fas fa-head-side-mask {estado(alerta.no_facemask_count)}"></i>
-          &nbsp;Sin barbijo: {alerta.no_facemask_count} <br />
-          &emsp;&nbsp;&nbsp;precision: {percent(alerta.mean_no_facemask_confidence)}%
-        </p>  
-      {/if}
-    </div>
+          <i class="fas fa-bell mr-2"></i> <strong>{alerta.alert_cause}</strong>  ({alerta.detections_count})
+        </h1>
+        <hr>
+        <h2 class="subtitle is-2 ">
+            <div class="columns">
+              <div class="column is-3">
+                  Fecha Alerta:
+              </div>
+              <div class="column">
+                  <strong>{dateFormat(alerta.datetime, "dd-mm-yy  HH:MM:ss")}</strong> 
+              </div>
+          </div>
+           
+          <br>
+             <div class="columns">
+              <div class="column is-3">
+                Lugar:
+              </div>
+              <div class="column">
+                <strong>{alerta.site}/{alerta.camera}</strong>
+              </div>
+          </div>         
+
+        </h2>
+
+        <div class="subtitle is-4 ">
+          {#if (alerta.no_hardhat_count > $config.alerta_umbral_detection )}
+            <p>
+              <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
+              &nbsp; Sin casco: {alerta.no_hardhat_count}  <br />
+              &emsp;&nbsp;&nbsp; precision: {percent(alerta.mean_no_hardhat_confidence)}%          
+            </p>
+          {/if}
+              
+          {#if alerta.no_facemask_count > $config.alerta_umbral_detection}
+            <p>
+              <i class="fas fa-head-side-mask {estado(alerta.no_facemask_count)}"></i>
+              &nbsp;Sin barbijo: {alerta.no_facemask_count} <br />
+              &emsp;&nbsp;&nbsp;precision: {percent(alerta.mean_no_facemask_confidence)}%
+            </p>  
+          {/if}
+        </div>
+    </div> 
    </section>
    <section>
     <div class="images">

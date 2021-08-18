@@ -11,7 +11,7 @@
 
 <div class="cointainer">
   {#if (images.length > 0)}
-    <h3 class="title">{cause}</h3>
+    <h3 class="title pl-4">{cause}</h3>
   {/if}
   <div id="carousel-container">
     <div id="carousel-images is-flex justify-content">
@@ -21,7 +21,7 @@
           src={image.path}
           alt={cause}
           id={image.id}
-          style={`Width:${imageWidth}px; margin: 0 ${imageSpacing}px;`}
+          style={`Width:${imageWidth}px; margin: 0 ${imageSpacing}px;`} class="pl-4"
           />
       {:else}
         <br>
