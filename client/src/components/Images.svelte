@@ -3,7 +3,7 @@
   import { onDestroy } from 'svelte';
   export let images =[];
   export let cause, alerta;
-  export let imageHeight = 200;
+  export let imageWidth = 200;
   export let imageSpacing = 5;
  
   
@@ -21,7 +21,7 @@
           src={image.path}
           alt={cause}
           id={image.id}
-          style={`height:${imageHeight}px; margin: 0 ${imageSpacing}px;`}
+          style={`Width:${imageWidth}px; margin: 0 ${imageSpacing}px;`}
           />
       {:else}
         <br>
