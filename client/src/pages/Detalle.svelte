@@ -122,7 +122,7 @@
         <Images
         images={person_crops}
         cause="Recorte de Personas"
-        imageHeight={320}
+        imageHeight={340}
         imageSpacing={10}
         />
         <br />
@@ -130,7 +130,7 @@
         <Images
         images={frame_jpg}
         cause="Frames"
-        imageHeight={80}
+        imageHeight={100}
         imageSpacing={2}
         /> 
     </div>
