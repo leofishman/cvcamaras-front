@@ -10,6 +10,7 @@
     import SvelteTooltip from './SvelteTooltip.svelte';
     import { onMount } from "svelte"
     import axios from "axios"
+    import { config } from "../stores"
 
 
     export let alerta, i, detalle;
@@ -119,25 +120,25 @@
         <td>
             <div class="columns">
                 <div class="column">
-                    {#if (alerta.no_hardhat_count)}
+                    {#if (alerta.no_hardhat_count > $config.alerta_umbral_detection)}
                         <SvelteTooltip tip="Sin casco: {alerta.no_hardhat_count} precision: {percent(alerta.mean_no_hardhat_confidence)}%" top >
                             <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
                         </SvelteTooltip> 
                     {/if}
                         
-                    {#if (alerta.hardhat_count)}
+                    {#if (alerta.hardhat_count > $config.alerta_umbral_detection)}
                         <SvelteTooltip tip="Con casco: {alerta.hardhat_count} precision: {percent(alerta.mean_hardhat_confidence)}%" top >
                             <i class="fas fa-hard-hat cumple"></i>
                         </SvelteTooltip> 
                     {/if}
                 </div>
                 <div class="column">
-                    {#if alerta.no_facemask_count}
+                    {#if alerta.no_facemask_count > $config.alerta_umbral_detection}
                         <SvelteTooltip tip="Sin barbijo: {alerta.no_facemask_count} precision: {percent(alerta.mean_no_facemask_confidence)}%" top >
                             <i class="fas fa-head-side-mask {estado(alerta.no_facemask_count)}"></i> 
                         </SvelteTooltip> 
                     {/if}
-                    {#if alerta.facemask_count}
+                    {#if alerta.facemask_count > $config.alerta_umbral_detection}
                         <SvelteTooltip tip="Con barbijo: {alerta.facemask_count} precision: {percent(alerta.mean_facemask_confidence)}%" top >
                             <i class="fas fa-head-side-mask cumple"></i> 
                         </SvelteTooltip>

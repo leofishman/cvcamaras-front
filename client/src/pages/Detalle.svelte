@@ -1,8 +1,8 @@
 <script>
   import axios from "axios"
   import { onMount } from "svelte"
+  import { config } from "../stores"
   import Loading from "../components/Loading.svelte";
-  import GenericCard from "../components/GenericCard.svelte";
   import Images from "../components/Images.svelte";
   //import SvelteTooltip from '../components/SvelteTooltip.svelte';
 
@@ -93,7 +93,7 @@
     </h2>
 
     <div class="subtitle is-4">
-      {#if (alerta.no_hardhat_count)}
+      {#if (alerta.no_hardhat_count > $config.alerta_umbral_detection )}
         <p>
           <i class="fas fa-hard-hat {estado(alerta.no_hardhat_count)}"></i>
            &nbsp; Sin casco: {alerta.no_hardhat_count}  <br />
@@ -101,7 +101,7 @@
         </p>
       {/if}
           
-      {#if alerta.no_facemask_count}
+      {#if alerta.no_facemask_count > $config.alerta_umbral_detection}
         <p>
           <i class="fas fa-head-side-mask {estado(alerta.no_facemask_count)}"></i>
           &nbsp;Sin barbijo: {alerta.no_facemask_count} <br />
