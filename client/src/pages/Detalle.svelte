@@ -113,17 +113,19 @@
     <div class="images">
         <Images
         images={head_crops}
-        cause="Recorte de Cabezas"
-        imageHeight={300}
+        cause="Recorte de Cabezas ({alerta.alert_cause}  {alerta.detections_count})"  
+        imageHeight={180}
         imageSpacing={10}
         />
+        <br />
 
         <Images
         images={person_crops}
         cause="Recorte de Personas"
-        imageHeight={300}
+        imageHeight={320}
         imageSpacing={10}
         />
+        <br />
 
         <Images
         images={frame_jpg}
