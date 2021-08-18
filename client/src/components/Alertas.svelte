@@ -11,6 +11,7 @@
     import { onMount } from "svelte"
     import axios from "axios"
     import { config } from "../stores"
+    import {push} from 'svelte-spa-router'
 
 
     export let alerta, i, detalle;
@@ -102,9 +103,10 @@
     });
 
     function openDetail() {
-        const url = '/#/detalle/' + alerta._id
+        const url = '/detalle/' + alerta._id
         console.log(i, url)
-        window.open(url, '_blank').focus();
+        //window.open(url, 'blank').focus()
+        push(url)
     }
 
 </script>
