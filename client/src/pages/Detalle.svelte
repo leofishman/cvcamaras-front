@@ -28,14 +28,13 @@
     console.log(89, crops)
     crops.forEach((item, index, arr) => {
         item.head_crop ? head_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.head_crop), id: index} : ''
-        item.person_crop ? person_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.person_crop), id: index} : ''
+        if (index < 4) item.person_crop ? person_crops[index] =  {path:'data:image/jpeg;base64,' + atob(item.person_crop), id: index} : ''
     })
 
     const frames = await get_frames()
-        frames.forEach((item, index, arr) => {
-            item.frame_jpg ? frame_jpg[index] =  {path:'data:image/jpeg;base64,' + atob(item.frame_jpg), id: index} : ''
+    frames.forEach((item, index, arr) => {
+        if (index < 1)     item.frame_jpg ? frame_jpg[index] =  {path:'data:image/jpeg;base64,' + atob(item.frame_jpg), id: index} : ''
     })
-
     loading = false
     console.log(14, alerta)
   })
@@ -114,23 +113,23 @@
         <Images
         images={head_crops}
         cause="Recorte de Cabezas ({alerta.alert_cause}  {alerta.detections_count})"  
-        imageHeight={160}
-        imageSpacing={10}
+        imageHeight={220}
+        imageSpacing={5}
         />
         <br />
 
         <Images
         images={person_crops}
         cause="Recorte de Personas"
-        imageHeight={340}
-        imageSpacing={10}
+        imageHeight={300}
+        imageSpacing={5}
         />
         <br />
 
         <Images
         images={frame_jpg}
         cause="Frames"
-        imageHeight={100}
+        imageHeight={300}
         imageSpacing={2}
         /> 
     </div>
